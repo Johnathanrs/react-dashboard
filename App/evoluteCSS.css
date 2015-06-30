@@ -129,10 +129,23 @@ nav{
 	margin-bottom:60px; 
 	}
 	
-.app-input{
-	margin:0 0 10px 0;
+.application-form input {
+    width:100%;
+	padding:10px;
+	border-radius:10px;
+	border:2px solid #e3e3e3;
+	margin:0 0 5px 0;
+  }
+  
+  .application-form select {
+    width:100%;
+	padding:10px;
+	border-radius:10px;
+	border:2px solid #e3e3e3;
+	margin:0 0 5px 0;
+  }
+  
+.ui-slider-horizontal .ui-slider-handle{
+	background-image:url(images/container-placeholder.png);
 	}
-	
-.hover:hover{
-	cursor:pointer;
-	}
+ 

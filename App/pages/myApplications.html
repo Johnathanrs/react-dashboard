@@ -13,11 +13,28 @@
 </div>
 <div class="row bottom-buffer">
 	<div class="col-lg-3">
-    	<input class="app-input" style="width:100%;" type="text" name="appName">
-        <input class="app-input" style="width:100%;" type="text" name="containerImage">
-        <input class="app-input" style="width:100%;" type="text" name="variables">
-        <input class="app-input" style="width:100%;" type="text" name="initCommand">
-        <div class="slider sliderSimple"></div>
+        <div ng-controller="appFormController">
+          <form novalidate class="application-form">
+            <select 
+                ng-model="appName.id" 
+                ng-options="appName.id as appName.name for appName in appNames"
+                placeholder="Application Name"
+                vd-advanced>
+            </select><br />
+            <input type="text" ng-model="app.conImage" placeholder="{{conImage}}" /><br />
+            <input type="text" ng-model="app.variable" placeholder="{{variable}}" /><br />
+            <input type="text" ng-model="app.init" placeholder="{{init}}" /><br />
+          </form>
+        </div>
+        <div class="row">
+        	<div class="col-lg-3">Scale Factor</div>
+            <div class="col-lg-6">
+        		<div class="slider sliderSimple"></div>
+            </div>
+            <div class="col-lg-3">
+            
+            </div>
+        </div>
     </div>
     <div class="col-lg-3">
     	<h3>Service</h3>

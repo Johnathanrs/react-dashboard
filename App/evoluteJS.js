@@ -155,3 +155,28 @@ evoluteApp.config(function($routeProvider) {
         // create a message to display in our view
     });
 	
+    evoluteApp.controller('appFormController', ['$scope', function($scope) {
+      $scope.master = {};
+	  
+	  $scope.conImage = "Container Image"
+	  $scope.variable = "Variables"
+	  $scope.init = "Init Command"
+	  
+	  $scope.appName = { id: null };
+		$scope.appNames = [
+			{ id: 0, name: 'App 1' }, 
+			{ id: 1, name: 'App 2' }, 
+			{ id: 2, name: 'App 3' }
+		];
+
+      $scope.update = function(app) {
+        $scope.master = angular.copy(app);
+      };
+
+      $scope.reset = function() {
+        $scope.app = angular.copy($scope.master);
+      };
+
+      $scope.reset();
+    }]);
+	
