@@ -18,7 +18,14 @@
         </div>
     </div>
 </div>
-<div class="row">
+<div class="row" ng-controller="containerController">
+  <tr ng-repeat="container in containers | orderBy: 'Size' ">
+    <td>{{container.Created}}</td>
+    <td>{{container.ID}}</td>
+    <td>{{container.Size}}</td>
+</tr>
+
+<!--
 	<div class="col-lg-1">
           <img class="img-responsive" alt="" src="images/container-placeholder.png">
           <p>Application name</p>
@@ -66,158 +73,9 @@
     <div class="col-lg-1">
           <img class="img-responsive" alt="" src="images/container-placeholder.png">
           <p>Application name</p>
-    </div>
+    </div>-->
 </div>
-<div class="row">
-	<div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-</div>
-<div class="row">
-	<div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-</div>
-<div class="row">
-	<div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-    <div class="col-lg-1">
-          <img class="img-responsive" alt="" src="images/container-placeholder.png">
-          <p>Application name</p>
-    </div>
-</div>
+
 
 <script src="assets/js/jquery-migrate-1.2.1.min.js"></script>
 	<script src="assets/js/bootstrap.min.js"></script>

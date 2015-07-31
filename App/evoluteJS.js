@@ -43,6 +43,7 @@ $(document).ready(function(e) {
 
 var evoluteApp = angular.module('evoluteApp', ['ngRoute']);
 	
+	//routes - provide navigation
 evoluteApp.config(function($routeProvider) {
         $routeProvider
 
@@ -115,9 +116,27 @@ evoluteApp.config(function($routeProvider) {
         // create a message to display in our view
     });
 	
-	evoluteApp.controller('containerController', function($scope) {
+	evoluteApp.controller('containerController', function($scope, $http) {
+      
+	  'use strict';
+  		//minifcation proof by explicitly including in inject array
+		
+			// $scope.data = 'the data'; //display this using {{data}} in the view
+			//dont need to inject scope with this
+			// this.data = 'the data';
+			var vm = this;
+			
+			$http.get('http://104.236.162.244:4243/containers/json?all=1')
+			.then(function(response) {
+				vm.containers = response.data;
+			},
+			function(reason) {
+				console.log(reason);
+			})
+			.catch(function(err) {
+				console.log(err);
+			});
 
-        // create a message to display in our view
     });
 	
 	evoluteApp.controller('imagesController', function($scope) {
