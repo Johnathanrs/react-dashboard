@@ -126,7 +126,8 @@ evoluteApp.config(function($routeProvider) {
 			// this.data = 'the data';
 			var vm = this;
 			
-			$http.get('http://104.236.162.244:4243/containers/json?all=1')
+			//$http.get('http://104.236.162.244:4243/containers/json?all=1')
+			$http.get('http://45.55.12.101:4243/containers/json?all=1')
 			.then(function(response) {
 				vm.containers = response.data;
 			},
