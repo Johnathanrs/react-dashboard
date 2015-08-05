@@ -18,13 +18,24 @@
         </div>
     </div>
 </div>
+<h3>list containers</h3>
 <div class="row" ng-controller="containerController">
-  <tr ng-repeat="container in containers | orderBy: 'Size' ">
-    <td>{{container.Created}}</td>
-    <td>{{container.ID}}</td>
-    <td>{{container.Size}}</td>
-</tr>
+  <tr ng-repeat="container in vm.containers">
+    <!--<td>{{container.Created}}</td>-->
 
+    <td>{{container.Id}}</td>
+    <!--<td>{{container.Size}}</td>-->
+</tr>
+    <div class="widget">
+        <strong ng-show="!vm.containers">Loading...</strong>
+        <ul>
+            <li ng-repeat="rest in vm.containers">
+                <!--<a ng-href="#/menu/{{rest.id}}">-->
+                <strong ng-bind="rest.Names"></strong> <span ng-bind="'(' + rest.Id + ')'"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
 <!--
 	<div class="col-lg-1">
           <img class="img-responsive" alt="" src="images/container-placeholder.png">

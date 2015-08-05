@@ -62,7 +62,8 @@ evoluteApp.config(function($routeProvider) {
             // route for the containers page
             .when('/containers', {
                 templateUrl : 'pages/container.html',
-                controller  : 'containerController'
+                controller  : 'containerController',
+				controllerAs: 'vm'
             })
 			
             // route for the images page
@@ -129,7 +130,9 @@ evoluteApp.config(function($routeProvider) {
 			//$http.get('http://104.236.162.244:4243/containers/json?all=1')
 			$http.get('http://45.55.12.101:4243/containers/json?all=1')
 			.then(function(response) {
+
 				vm.containers = response.data;
+					//console.log(vm.containers);
 			},
 			function(reason) {
 				console.log(reason);
@@ -137,8 +140,12 @@ evoluteApp.config(function($routeProvider) {
 			.catch(function(err) {
 				console.log(err);
 			});
-
+		console.log('this is variable vm');
+		console.log(vm);
+		console.log('this is element vm.containers');
+		console.log(vm.container);
     });
+
 	
 	evoluteApp.controller('imagesController', function($scope) {
 
