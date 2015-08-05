@@ -18,24 +18,38 @@
         </div>
     </div>
 </div>
-<h3>list containers</h3>
-<div class="row" ng-controller="containerController">
-  <tr ng-repeat="container in vm.containers">
+<h3>list containers row</h3>
+<!--<div class="row" ng-controller="containerController">-->
+    <div class="row">
+        <table>
+  <tr ng-repeat="rest in vm.containers">
     <!--<td>{{container.Created}}</td>-->
-
-    <td>{{container.Id}}</td>
+      <!--<div class="col-lg-1">-->
+    <td>
+        <img class="img-responsive" alt="" src="images/container-placeholder.png">
+    </td>
+      <td>
+        Name: {{rest.Names}} <br>
+        Id: {{rest.Id}} <br>
+        Image: {{rest.Image}} <br>
+        Command: {{rest.Command}} <br>
+        Status: {{rest.Status}}
+      </td>
     <!--<td>{{container.Size}}</td>-->
 </tr>
-    <div class="widget">
-        <strong ng-show="!vm.containers">Loading...</strong>
-        <ul>
-            <li ng-repeat="rest in vm.containers">
-                <!--<a ng-href="#/menu/{{rest.id}}">-->
-                <strong ng-bind="rest.Names"></strong> <span ng-bind="'(' + rest.Id + ')'"></span>
-                </a>
-            </li>
-        </ul>
-    </div>
+        </table>
+        <!--<h3>list containers widget</h3>-->
+    <!--<div class="widget">-->
+        <!--<strong ng-show="!vm.containers">Loading...</strong>-->
+        <!--<ul>-->
+            <!--<li ng-repeat="rest in vm.containers">-->
+                <!--&lt;!&ndash;<a ng-href="#/menu/{{rest.id}}">&ndash;&gt;-->
+                <!--<img class="img-responsive" alt="" src="images/container-placeholder.png">-->
+                <!--<strong ng-bind="rest.Names"></strong> <span ng-bind="'(' + rest.Id + ')'"></span>-->
+                <!--</a>-->
+            <!--</li>-->
+        <!--</ul>-->
+    <!--</div>-->
 <!--
 	<div class="col-lg-1">
           <img class="img-responsive" alt="" src="images/container-placeholder.png">

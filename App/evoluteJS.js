@@ -140,10 +140,7 @@ evoluteApp.config(function($routeProvider) {
 			.catch(function(err) {
 				console.log(err);
 			});
-		console.log('this is variable vm');
-		console.log(vm);
-		console.log('this is element vm.containers');
-		console.log(vm.container);
+
     });
 
 	
