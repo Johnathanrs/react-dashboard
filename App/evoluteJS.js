@@ -64,6 +64,7 @@ evoluteApp.config(function($routeProvider) {
                 templateUrl : 'pages/container.html',
                 controller  : 'containerController',
 				controllerAs: 'vm'
+
             })
 			
             // route for the images page
@@ -126,13 +127,13 @@ evoluteApp.config(function($routeProvider) {
 			//dont need to inject scope with this
 			// this.data = 'the data';
 			var vm = this;
-			
-			//$http.get('http://104.236.162.244:4243/containers/json?all=1')
-			$http.get('http://45.55.12.101:4243/containers/json?all=1')
+
+
+		$http.get('http://45.55.12.101:4243/containers/json?all=1')
 			.then(function(response) {
 
 				vm.containers = response.data;
-					//console.log(vm.containers);
+				//console.log(vm.containers);
 			},
 			function(reason) {
 				console.log(reason);
@@ -141,9 +142,60 @@ evoluteApp.config(function($routeProvider) {
 				console.log(err);
 			});
 
-    });
+	});
+//		var responses = [];
+//
+//		var completed_requests = 0;
+//			console.log(vm);
+//			//$http.get('http://104.236.162.244:4243/containers/json?all=1')
+//		var obj = {evo27:"45.55.30.133", evo40:"45.55.12.101"};
+//		//var obj = {evo27:"45.55.30.133"};
+//		for (var prop in obj) {
+//			console.log("o." + prop + " = " + obj[prop]);
+//
+//// Output:
+//// "o.a = 1"
+//// "o.b = 2"
+//// "o.c = 3"
+////			$http.get('http://45.55.12.101:4243/containers/json?all=1')
+//			$http.get("http://" + obj[prop] + ":4243/containers/json?all=1")
+//				.then(function (response) {
+//					console.log(response.data);
+//					responses.push(response.data);
+//					completed_requests++;
+//					console.log("complete requests are " + completed_requests);
+//					console.log("object length is" + obj[prop].length);
+//					console.log(obj);
+//					if (completed_requests == obj.length -1) {
+//						// All download done, process responses array
+//						//console.log('body:', responses.join());
+//						console.log('success');
+//					}
+//					console.log('body:', responses.join());
+//					//vm.containers = vm.containers + response.data;
+//					vm.containers = response.data;
+//
+//					//console.log(vm.containers);
+//					console.log(responses);
+//				},
+//				function (reason) {
+//					console.log(reason);
+//				})
+//				.catch(function (err) {
+//					console.log(err);
+//				});
 
-	
+		//}
+		//console.log(responses);
+		//FAILEDvar names = $http.get("http://45.55.30.133:4243/containers/json?all=1"),
+		//	naughty = $http.get("http://45.55.12.101:4243/containers/json?all=1"),
+		//	nice = $http.get("http://45.55.12.101:4243/containers/json?all=1");
+		//$q.all([names,naughty,nice]).then(function(arrayOfResults) {
+		//	console.log(names.data);
+		//});
+    //});
+
+
 	evoluteApp.controller('imagesController', function($scope) {
 
         // create a message to display in our view
