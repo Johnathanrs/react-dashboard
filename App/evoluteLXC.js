@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var ObjectId = require('mongodb').ObjectID;
 var config = require("./config");
 
 var db = mongoose.connection;
@@ -33,29 +34,87 @@ db.on('error', console.error);
     var lxc_info = mongoose.model('container_info', info_schema);
         var lxc_stats = mongoose.model('container_stats', stats_schema);
 
-        lxc_info.find(function(err, container) {
-        if (err) return console.error(err);
-        //console.dir(lxc_info);
-        console.log(container);
-        console.log('find function ran');
-        console.dir(container);
-    });
-        lxc_stats.find(function(err, container) {
-            if (err) return console.error(err);
-            //console.dir(lxc_info);
-            console.log(container);
-            console.log('find function ran');
-            console.dir(container);
-        });
-        //}).limit("1");
+        sort = {'_id': -1}
+        //collection.find({}, limit=10).sort(sort)
 
+
+    //   WORKSWORKS lxc_info.find(function(err, container) {
+    //    //lxc_info.find().limit(10),(function(err, container) {
+    //    if (err) return console.error(err);
+    //    //console.dir(lxc_info);
+    //    console.log(container);
+    //    console.log('find function ran');
+    //    //console.dir(container);
+    //                console.log('get timestamp');
+    //                console.log(new mongoose.Types.ObjectId().getTimestamp() );
+    //});
+    //    }, limit=10).sort(sort)
+    //    lxc_stats.find(function(err, container) {
+    //        if (err) return console.error(err);
+    //        //console.dir(lxc_info);
+    //        console.log(container);
+    //        console.log('find function ran');
+    //        console.dir(container);
+    //        console.log('get timestamp');
+    //        console.log(new mongoose.Types.ObjectId().getTimestamp() );
+    //    //});
+    //    //}).limit("1");
+    ////}).sort("1");
+    //    }).sort();
+
+
+        //lxc_info.findOne({ _id: '55ca67cd4a44de3a50f83d47'},function (err, doc){
+        //    // doc is a Document
+        //    console.log('finding id 55ca67cd4a44de3a50f83d47');
+        //    console.log(doc);
+        //});
+
+
+        //var filter = { type: { $in: ['education', 'engineering'] } };
+        //works var filter = { _id: '55ca67cd4a44de3a50f83d47' };
+        var filter = { DNSName: 'evo25.evolute.io' };
+        var fields = {  }; //all
+        //var options = { skip: 10, limit: 10, count: 5 };
+        var options = { limit: 0, sort: '_id.getTimestamp() '};
+        //looks good var options = { limit: 10, sort: '_id:-1'};
+        lxc_info.find(filter, fields, options, function(err, results) {
+            if (err) console.log(err);
+            else console.log(results);
+        });
         //Container.find({ host: /ubuntut01-12nmjobh.cloudapp.net/ }, callback);
         //Container.find({ Command: /\/bin\/bash/ }, callback);
         //
         //Container.find();
+        sort = {'_id': -1};
+        //MAY WORKlxc_info.find({}, callback).sort(sort)
 
-        //lxc_info.find({}, callback);
-        lxc_stats.find({}, callback);
+
+        // This function returns an ObjectId embedded with a given datetime
+// Accepts both Date object and string input
+
+        function objectIdWithTimestamp(timestamp) {
+            // Convert string date to Date object (otherwise assume timestamp is a date)
+            if (typeof(timestamp) == 'string') {
+                timestamp = new Date(timestamp);
+            }
+
+            // Convert date object to hex seconds since Unix epoch
+            var hexSeconds = Math.floor(timestamp/1000).toString(16);
+
+            // Create an ObjectId with that hex timestamp
+            var constructedObjectId = ObjectId(hexSeconds + "0000000000000000");
+
+            return constructedObjectId
+        }
+
+
+// Find all documents created after midnight on May 25th, 1980
+//        lxc_info.find({ _id: { $gt: objectIdWithTimestamp('2015/08/11') } }, callback).limit(1);
+//        lxc_info.find({}, callback);
+//var query = lxc_info.findOne({});
+        lxc_info.find({});
+        //query.where('DNSName', 'evo20.evolute.io');
+        //lxc_stats.find({}, callback);
 });
 
 //mongoose.connect(config.mongoUri);
