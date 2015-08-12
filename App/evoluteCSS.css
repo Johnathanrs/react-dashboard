@@ -112,6 +112,16 @@ nav{
 	margin:0 0 20px 0;
 	}
 	
+.container-item{
+	padding:1%;
+	border:1px solid #e3e3e3;
+	box-sizing:border-box;
+	}
+	
+.container-item img{
+	margin:0 auto 40px auto;
+	}
+	
 .container{
 	width:150px;
 	float:left;
@@ -149,3 +159,10 @@ nav{
 	background-image:url(images/container-placeholder.png);
 	}
  
+ .data-label{
+	 font-weight:700;
+	 }
+
+.displayed-data{
+	color:#6D6D6D;
+	}
