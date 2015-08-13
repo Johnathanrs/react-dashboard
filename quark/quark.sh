@@ -49,7 +49,7 @@ clean_up_errant_nodes()
     #Force node to left state
     if [ -n "$node_id" ] ; then
       echo $CONSUL_URL$CONSUL_FL$node_id
-      http $CONSUL_URL$CONSUL_FL$node_id
+      #http $CONSUL_URL$CONSUL_FL$node_id > /dev/null
     fi
   done
 }
@@ -64,11 +64,10 @@ COMMAND="0"
 case $1 in
   deploy)
     COMMAND="1";
-    
+    http POST $2  
     ;;
   destroy)
     COMMAND="2";
-    clean_up_errant_nodes
     ;;
   restart)
     ;;
@@ -121,7 +120,13 @@ case $1 in
     done < /tmp/ids
     ;;
   services)
-    ;;
+    case $2 in
+      list)
+        ;;
+      cleanup)
+        clean_up_errant_nodes
+        ;;
+    esac
 esac
 
 while getopts ":h" opt; do
