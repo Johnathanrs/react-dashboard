@@ -828,19 +828,19 @@ a#main-menu-toggle {
 input[placeholder],
 [placeholder],
 *[placeholder] {
-  color: white !important;
+  color: #363636; !important;
 }
 input:-moz-placeholder,
 textarea:-moz-placeholder {
-  color: white;
+  color: #363636;
 }
 input:-ms-input-placeholder,
 textarea:-ms-input-placeholder {
-  color: white;
+  color: #e3e3e3;
 }
 input::-webkit-input-placeholder,
 textarea::-webkit-input-placeholder {
-  color: white;
+  color: #e3e3e3;
 }
 .add-on,
 textarea,

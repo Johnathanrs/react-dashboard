@@ -14,16 +14,24 @@
 <div class="row bottom-buffer">
 	<div class="col-lg-3">
         <div ng-controller="appFormController">
-          <form novalidate class="application-form">
-            <select 
-                ng-model="appName.id" 
-                ng-options="appName.id as appName.name for appName in appNames"
-                placeholder="Application Name"
-                vd-advanced>
-            </select><br />
-            <input type="text" ng-model="app.conImage" placeholder="{{conImage}}" /><br />
-            <input type="text" ng-model="app.variable" placeholder="{{variable}}" /><br />
-            <input type="text" ng-model="app.init" placeholder="{{init}}" /><br />
+          <form novalidate class="application-form" method="post" action="http://evo4.evolute.io:8082/felicity.php">
+            <!--<select -->
+                <!--ng-model="appName.id" -->
+                <!--ng-options="appName.id as appName.name for appName in appNames"-->
+                <!--placeholder="Application Name"-->
+                <!--vd-advanced>-->
+            <!--</select><br />-->
+              <input type="text" name="name" placeholder="name" />
+              <input type="hidden" name="scale" placeholder=1 value="1"/><br />
+              <input type="hidden" name="cpu" placeholder=1 value="1"/>
+              <input type="hidden" name="mem" placeholder=1000 value="1000"/>
+              <input type="text" name="subappimage" placeholder="image" />
+              <input type="text" name="cmd" placeholder="/sbin/init.sh" />
+              <!--curl &#45;&#45;data 'subappimage=images.evolute.io:5000/evo-cassandra-seed&name=evoseedtest&scale=1&cpu=2&mem=1000&cmd=/sbin/init.sh' http://evo4.evolute.io:8082/felicity.php-->
+            <!--<input type="text" ng-model="app.conImage" placeholder="{{conImage}}" /><br />-->
+            <!--<input type="text" ng-model="app.variable" placeholder="{{variable}}" /><br />-->
+            <!--<input type="text" ng-model="app.init" placeholder="{{init}}" /><br />-->
+              <input type="submit" value="Start" />
           </form>
         </div>
         <div class="row">
