@@ -37,6 +37,7 @@ db.on('error', console.error);
         var lxc_stats = mongoose.model('container_stats', stats_schema);
 
         sort = {'_id': -1}
+
         //collection.find({}, limit=10).sort(sort)
 
 
