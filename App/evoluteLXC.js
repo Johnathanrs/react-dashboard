@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var ObjectId = require('mongodb').ObjectID;
+//var ObjectId = require('mongodb').ObjectID;
 var config = require("./config");
 
 var db = mongoose.connection;
@@ -31,6 +31,8 @@ db.on('error', console.error);
         //, var2: Number
         //, var3: Boolean
     });
+
+
     var lxc_info = mongoose.model('container_info', info_schema);
         var lxc_stats = mongoose.model('container_stats', stats_schema);
 
@@ -92,21 +94,21 @@ db.on('error', console.error);
         // This function returns an ObjectId embedded with a given datetime
 // Accepts both Date object and string input
 
-        function objectIdWithTimestamp(timestamp) {
-            // Convert string date to Date object (otherwise assume timestamp is a date)
-            if (typeof(timestamp) == 'string') {
-                timestamp = new Date(timestamp);
-            }
-
-            // Convert date object to hex seconds since Unix epoch
-            var hexSeconds = Math.floor(timestamp/1000).toString(16);
-
-            // Create an ObjectId with that hex timestamp
-            var constructedObjectId = ObjectId(hexSeconds + "0000000000000000");
-
-            return constructedObjectId
-        }
-
+        //function objectIdWithTimestamp(timestamp) {
+        //    // Convert string date to Date object (otherwise assume timestamp is a date)
+        //    if (typeof(timestamp) == 'string') {
+        //        timestamp = new Date(timestamp);
+        //    }
+        //
+        //    // Convert date object to hex seconds since Unix epoch
+        //    var hexSeconds = Math.floor(timestamp/1000).toString(16);
+        //
+        //    // Create an ObjectId with that hex timestamp
+        //    var constructedObjectId = ObjectId(hexSeconds + "0000000000000000");
+        //
+        //    return constructedObjectId
+        //}
+        //
 
 // Find all documents created after midnight on May 25th, 1980
 //        lxc_info.find({ _id: { $gt: objectIdWithTimestamp('2015/08/11') } }, callback).limit(1);
