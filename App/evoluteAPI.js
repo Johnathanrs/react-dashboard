@@ -1,5 +1,5 @@
 var xhr = new XMLHttpRequest();
-xhr.open("GET", "http://evo4.evolute.io:8082/felicity.php", true);
+xhr.open("GET", "http://felicity.evolute.io:8082/felicity.php", true);
 
 xhr.send();
 alert(xhr.status);
