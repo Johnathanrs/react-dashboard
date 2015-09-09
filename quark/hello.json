@@ -1,4 +1,0 @@
-{
-  "id": "hello-world3", 
-  "cmd":"while sleep 600; do echo -n; done"
-}
