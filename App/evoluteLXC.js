@@ -89,7 +89,6 @@ var stats_schema = new mongoose.Schema({
             failcnt: Number,
             limit: {type: Javascript}
             }],
-                    
             blkio_stats : [{
                 io_service_bytes_recursive : [
                         {
@@ -113,10 +112,10 @@ var stats_schema = new mongoose.Schema({
                 io_merged_recursive : { type : Array },
                 io_time_recursive : { type : Array },
                 sectors_recursive : { type : Array }
+        }],
         Host_DNS : { type : String },
         Host_IP : { type : String },
         LXC_Id : { type : String }
-        }]
 });
 
 var container_infos = mongoose.model('container_infos', info_schema);
