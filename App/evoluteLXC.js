@@ -53,7 +53,7 @@ var stats_schema = new mongoose.Schema({
             max_usage: {type:Number},
             stats: [{
                 active_anon: Number,
-                active_file: Number.
+                active_file: Number,
                 cache: Number,
                 hierarchical_memory_limit: {type:Javascript},
                 hierarchical_memsw_limit: {type:Javascript},
