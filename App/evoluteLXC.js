@@ -121,7 +121,7 @@ db.on('error', console.error);
 });
 
 //mongoose.connect(config.mongoUri);
-mongoose.connect('mongodb://104.236.153.225:27017/docker');
+mongoose.connect('mongodb://54.201.183.33:27017/docker');
 
 
 //var app = express();
