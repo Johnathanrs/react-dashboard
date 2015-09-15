@@ -122,3 +122,4 @@ var stats_schema = new mongoose.Schema({
 
 var container_infos = mongoose.model('container_infos', info_schema);
 var container_stats = mongoose.model('container_infos', stats_schema);
+console.log('added schema');
