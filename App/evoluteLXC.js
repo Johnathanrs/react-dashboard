@@ -5,7 +5,7 @@ var info_schema = new mongoose.Schema({
     LXCId: {type:String},
     DNSName: {type:String},
     IPAddress: {type: String},
-    ReadTime: {type: Date},
+    ReadTime: {type: Date}
     , Names: { type : Array , "assigned_name" : [] }
     , Image: { type: String }
     , Command: { type: String }
