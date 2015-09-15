@@ -113,7 +113,6 @@ var stats_schema = new mongoose.Schema({
                 io_merged_recursive : { type : Array },
                 io_time_recursive : { type : Array },
                 sectors_recursive : { type : Array }
-        },
         Host_DNS : { type : String },
         Host_IP : { type : String },
         LXC_Id : { type : String }
