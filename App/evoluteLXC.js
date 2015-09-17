@@ -1,3 +1,6 @@
+var express = require('express');
+var app = express();
+
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://54.201.183.33:27017/docker');
 var info_schema = new mongoose.Schema({
@@ -118,6 +121,15 @@ var stats_schema = new mongoose.Schema({
         LXC_Id : { type : String }
 });
 
-var container_infos = mongoose.model('container_infos', info_schema);
-var container_stats = mongoose.model('container_stats', stats_schema);
-console.log('added schema');
+var containerInfos = mongoose.model('container_infos', info_schema);
+var containerStats = mongoose.model('container_stats', stats_schema);
+
+app.get('/api/container_stats', function (req, res) {
+    containerStats.find(function(err, data){
+        res.json(data);
+    });
+});
+
+var server = app.listen(3000);
+
+console.log('added schema - serverJS');
