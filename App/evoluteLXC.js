@@ -20,30 +20,30 @@ var stats_schema = new mongoose.Schema({
         network: {type:Object},
         precpu_stats: [{
             cpu_usage: [{
-                total_usage:{type:Javascript},
-                percpu_usage:[{type:Javascript}],
-                usage_in_kernelmode: {type:Javascript},
-                usage_in_usermode: {type:Javascript},
-                system_cpu_usage: {type:Javascript},
+                total_usage:{type:String},
+                percpu_usage:[{type:String}],
+                usage_in_kernelmode: {type:String},
+                usage_in_usermode: {type:String},
+                system_cpu_usage: {type:String},
                 throttling_data: [{
-                    periods: {type:Integer},
-                    throttled_periods: {type:Integer},
-                    throttled_time: {type:Timestamp},
+                    periods: {type:Number},
+                    throttled_periods: {type:Number},
+                    throttled_time: {type:Date},
                 }]
            }],
             
         }],
         cpu_stats: [{
             cpu_usage: [{
-                total_usage:{type:Javascript},
-                percpu_usage:[{type:Javascript}],
-                usage_in_kernelmode: {type:Javascript},
-                usage_in_usermode: {type:Javascript},
-                system_cpu_usage: {type:Javascript},
+                total_usage:{type:String},
+                percpu_usage:[{type:String}],
+                usage_in_kernelmode: {type:String},
+                usage_in_usermode: {type:String},
+                system_cpu_usage: {type:String},
                 throttling_data: [{
-                    periods: {type:Integer},
-                    throttled_periods: {type:Integer},
-                    throttled_time: {type:Timestamp},
+                    periods: {type:Number},
+                    throttled_periods: {type:Number},
+                    throttled_time: {type:Date},
                 }]
            }],
             
@@ -55,13 +55,13 @@ var stats_schema = new mongoose.Schema({
                 active_anon: Number,
                 active_file: Number,
                 cache: Number,
-                hierarchical_memory_limit: {type:Javascript},
-                hierarchical_memsw_limit: {type:Javascript},
+                hierarchical_memory_limit: {type:String},
+                hierarchical_memsw_limit: {type:String},
                 inactive_anon: Number,
                 inactive_file: Number,
                 mapped_file: Number,
                 pgfault: Number,
-                pgmajfault: 1339,
+                pgmajfault: Number,
                 pgpgin: Number,
                 pgpgout: Number,
                 rss: Number,
@@ -87,7 +87,7 @@ var stats_schema = new mongoose.Schema({
                 unevictable: Number
             }],
             failcnt: Number,
-            limit: {type: Javascript}
+            limit: {type: String}
             }],
             blkio_stats : [{
                 io_service_bytes_recursive : [
@@ -119,5 +119,5 @@ var stats_schema = new mongoose.Schema({
 });
 
 var container_infos = mongoose.model('container_infos', info_schema);
-var container_stats = mongoose.model('container_infos', stats_schema);
+var container_stats = mongoose.model('container_stats', stats_schema);
 console.log('added schema');
