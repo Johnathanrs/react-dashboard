@@ -1,10 +1,11 @@
 var express = require('express');
 var app = express();
+app.use(express.static(__dirname + '/public'));
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://54.201.183.33:27017/docker');
 var info_schema = new mongoose.Schema({
-    _id: { type: mongoose.Schema.Types.ObjectId, ref: 'LXCId' },
+    // _id: { type: mongoose.Schema.Types.ObjectId, ref: 'LXCId' },
     LXCId: {type:String},
     DNSName: {type:String},
     IPAddress: {type: String},
@@ -18,7 +19,7 @@ var info_schema = new mongoose.Schema({
     , Status: { type: String }
 });
 var stats_schema = new mongoose.Schema({
-        _id: { type: mongoose.Schema.Types.ObjectId },
+        // _id: { type: mongoose.Schema.Types.ObjectId },
         read: {type:Date},
         network: {type:Object},
         precpu_stats: [{
@@ -124,12 +125,39 @@ var stats_schema = new mongoose.Schema({
 var containerInfos = mongoose.model('container_infos', info_schema);
 var containerStats = mongoose.model('container_stats', stats_schema);
 
-app.get('/api/container_stats', function (req, res) {
+app.get('/api/containerstats', function (req, res) {
     containerStats.find(function(err, data){
+        if (err) return handleError(err);
+        res.json(data);
+    }).limit(100);
+});
+
+app.get('/api/containerstats/:id', function (req, res) {
+    containerStats.findById(req.params.id, function(err, data){
+        if (err) return handleError(err);
+        res.json(data);
+    });
+});
+
+app.get('/api/containerstats/:limit', function (req, res) {
+    console.log(req.params.limit);
+    containerStats.find(function(err, data){
+        if (err) return handleError(err);
+        res.json(data);
+    }).limit(req.params.limit);
+});
+
+app.get('/api/containerstats/one', function (req, res) {
+    containerStats.findOne(function(err, data){
+        if (err) return handleError(err);
         res.json(data);
     });
 });
 
 var server = app.listen(3000);
+
+function handleError(err){
+    console.log(err);
+}
 
 console.log('added schema - serverJS');
