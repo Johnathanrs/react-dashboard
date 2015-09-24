@@ -265,7 +265,6 @@ $(document).ready(function(e) {
 /*****************************************/
 $(function () {
     $.getJSON('/api/containerstats/', function (records) {
-    	console.log(records);
         $('.chartContainer').highcharts({
             chart: {
             	type: 'area',
@@ -289,7 +288,7 @@ $(function () {
                 
             },
             title: {
-                text: 'Memory'
+                text: 'Overall Memory Usage'
             },
             subtitle: {
                 text: document.ontouchstart === undefined ?
@@ -367,5 +366,4 @@ $(function () {
         });
     });
 });
-
 
