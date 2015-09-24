@@ -266,9 +266,9 @@ $(document).ready(function(e) {
 //var record;
 $(function () {
     $.getJSON('http://54.201.66.145:3000/api/containerstats/', function (records) {
-    	for (record in records) {
+    	/*for (record in records) {
     		console.log(records[record].memory_stats[0].max_usage);
-    	}
+    	}*/
     	//record = records;
         $('.chartContainer').highcharts({
             chart: {
@@ -279,6 +279,7 @@ $(function () {
                     	load: function () {
 	                        // updating chart in each second
 	                        var series = this.series[0], counter=0;
+	                        console.log(series);
 	                        setInterval(function () {
 	                        	if(counter < series.data.length-1){
 	                        		counter++;
@@ -365,6 +366,7 @@ $(function () {
                         	y: Math.round(parseInt(records[record].memory_stats[0].usage || 0)/parseInt(records[record].memory_stats[0].max_usage || 1)*100)
                          })
                     }
+                    console.log(data);
                     return data;
                 }())
             }]
