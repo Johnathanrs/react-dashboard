@@ -263,8 +263,10 @@ $(document).ready(function(e) {
 /*****************************************/
 // Highchart Block
 /*****************************************/
+var record;
 $(function () {
     $.getJSON('/api/containerstats/', function (records) {
+    	record = records;
         $('.chartContainer').highcharts({
             chart: {
             	type: 'area',
