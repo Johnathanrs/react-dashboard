@@ -263,11 +263,13 @@ $(document).ready(function(e) {
 /*****************************************/
 // Highchart Block
 /*****************************************/
-var record;
+//var record;
 $(function () {
     $.getJSON('http://54.201.66.145:3000/api/containerstats/', function (records) {
-    	console.log(records);
-    	record = records;
+    	for (record in records) {
+    		console.log(records[record].memory_stats[0].usage);
+    	}
+    	//record = records;
         $('.chartContainer').highcharts({
             chart: {
             	type: 'area',
