@@ -371,7 +371,7 @@ $(function () {
                          })
                     }
                     console.log(data);
-                    return data;
+                    return data.splice(0,100);
                 }())
             }]
         });
