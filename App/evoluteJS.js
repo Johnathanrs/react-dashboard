@@ -263,6 +263,7 @@ $(document).ready(function(e) {
 /*****************************************/
 // Highchart Block
 /*****************************************/
+var isChartReady = false;
 //var record;
 $(function () {
     $.getJSON('http://54.201.66.145:3000/api/containerstats/', function (records) {
@@ -279,8 +280,9 @@ $(function () {
                     	load: function () {
 	                        // updating chart in each second
 	                        var series = this.series[0], counter=0;
-	                        console.log(series);
+	                        console.log(this);
 	                        setInterval(function () {
+	                           //if(isChartReady){
 	                        	if(counter < series.data.length-1){
 	                        		counter++;
 	                        	}else{
@@ -288,6 +290,7 @@ $(function () {
 	                        	}
 	                        	    var x = (new Date()).getTime() // Current time;
 	                            	series.addPoint([x, series.data[counter].y], true,true,true);
+	                           //}
 	                        }, 1000);
 	                    }
                 }
