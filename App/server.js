@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
-app.use(express.static(__dirname + '/public'));
+//app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname));
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://54.201.183.33:27017/docker');
@@ -129,7 +130,7 @@ app.get('/api/containerstats', function (req, res) {
     containerStats.find(function(err, data){
         if (err) return handleError(err);
         res.json(data);
-    });
+    }).limit(100);
 });
 
 app.get('/api/containerstats/:id', function (req, res) {
@@ -140,14 +141,15 @@ app.get('/api/containerstats/:id', function (req, res) {
 });
 
 app.get('/api/containerstats/:limit', function (req, res) {
-    containerStats.find().limit(req.params.limit).exec(function(err, data){
+    console.log(req.params.limit);
+    containerStats.find(function(err, data){
         if (err) return handleError(err);
         res.json(data);
-    });
+    }).limit(req.params.limit);
 });
 
 app.get('/api/containerstats/one', function (req, res) {
-    containerStats.findOne().exec(function(err, data){
+    containerStats.findOne(function(err, data){
         if (err) return handleError(err);
         res.json(data);
     });
