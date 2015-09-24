@@ -265,7 +265,7 @@ $(document).ready(function(e) {
 /*****************************************/
 var record;
 $(function () {
-    $.getJSON('/api/containerstats/', function (records) {
+    $.getJSON('http://54.201.66.145:3000/api/containerstats/', function (records) {
     	console.log(records);
     	record = records;
         $('.chartContainer').highcharts({
