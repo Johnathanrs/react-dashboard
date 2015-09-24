@@ -265,6 +265,7 @@ $(document).ready(function(e) {
 /*****************************************/
 $(function () {
     $.getJSON('/api/containerstats/', function (records) {
+    	console.log(records);
         $('.chartContainer').highcharts({
             chart: {
             	type: 'area',
