@@ -266,7 +266,7 @@ $(document).ready(function(e) {
 var isChartReady = false;
 //var record;
 $(function () {
-    $.getJSON('http://54.201.66.145:3000/api/containerstats/', function (records) {
+    $.getJSON('/api/first/10', function (records) {
     	/*for (record in records) {
     		console.log(records[record].memory_stats[0].max_usage);
     	}*/
