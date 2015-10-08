@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
-app.use(express.static(__dirname + '/public'));
+//app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname));
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://54.201.183.33:27017/docker');
