@@ -190,6 +190,14 @@ app.get('/api/value/:attr', function (req, res) {
     }
 });
 
+app.get('/api/containerinfos', function (req, res) {
+    containerInfos.find(function(err, data){
+        if (err) return handleError(err);
+        res.json(data);
+    });
+});
+
+
 var server = app.listen(3000);
 
 function handleError(err){
