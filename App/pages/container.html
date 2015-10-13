@@ -20,34 +20,17 @@
 </div>
 <h3>list containers row</h3>
 <!--<div class="row" ng-controller="containerController">-->
-    <div class="row">
-  <div class="col-lg-3 container-item" ng-repeat="container in vm.containers">
+<div class="row" ng-controller="containerController">
+  <div class="col-lg-3 container-item" ng-repeat="id in ids">
     <!--<td>{{container.Created}}</td>-->
       <!--<div class="col-lg-1">-->
-        <img class="img-responsive" alt="" src="images/container-placeholder.png">
       <div class="col-lg-10 col-lg-offset-1">
         <div class="col-lg-12 data-unit">
-        	<div class="data-label">Name:  </div><div class="displayed-data"> {{container.Names}}</div>
+        	<div class="data-label">ID:  </div><div class="displayed-data"> {{id.read}}</div>
         </div> <br>
         <div class="col-lg-12 data-unit">
-        	<div class="data-label">Id:  </div><div class="displayed-data"> {{container.Id}}</div>
-        </div> <br>
-        <div class="col-lg-12 data-unit">
-        	<div class="data-label">Image:  </div><div class="displayed-data"> {{container.Image}}</div>
-        </div> <br>
-        <div class="col-lg-12 data-unit">
-        	<div class="data-label">Command:  </div><div class="displayed-data"> {{container.Command}} </div>
-        </div><br>
-        <div class="col-lg-12 data-unit">
-        	<div class="data-label">Created:  </div><div class="displayed-data"> {{container.Created}} </div>
-        </div><br>
-        <div class="col-lg-12 data-unit">
-        	<div class="data-label">Ports:  </div> <div class="displayed-data">{{container.Ports}}</div>
-        </div><br>
-        <div class="col-lg-12 data-unit">
-        	<div class="data-label">Status:  </div><div class="displayed-data"> {{container.Status}}</div>
-        </div><br>
-        </div>
+        	<div class="data-label">Host_IP:  </div><div class="displayed-data"> {{id.Host_IP}}</div>
+        </div> 
       </div>
     <!--<td>{{container.Size}}</td>-->
 

@@ -86,13 +86,12 @@ evoluteApp.config(function($routeProvider) {
 			// $scope.data = 'the data'; //display this using {{data}} in the view
 			//dont need to inject scope with this
 			// this.data = 'the data';
-			var vm = this;
 
 
-		$http.get('http://45.55.12.101:4243/containers/json?all=1')
+		$http.get('/api/containerstats')
 			.then(function(response) {
 
-				vm.containers = response.data;
+				$scope.ids = response.data;
 				//console.log(vm.containers);
 			},
 			function(reason) {
@@ -101,7 +100,8 @@ evoluteApp.config(function($routeProvider) {
 			.catch(function(err) {
 				console.log(err);
 			});
-
+			
+			
 	});
 //		var responses = [];
 //
