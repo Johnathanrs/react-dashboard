@@ -115,6 +115,9 @@ nav{
 .container-item{
 	padding:1%;
 	box-sizing:border-box;
+	width:200px;
+	height:200px;
+	float:left;
 	}
 	
 .container-item img{
@@ -177,3 +180,36 @@ nav{
 	margin:0 0 10px 0;
 	}
 	
+.con-slider-img{
+	float:left;
+	margin:0 10px;
+	vertical-align:middle;
+	}
+	
+.con-sub-head{
+	padding:10px 0 0 0;
+	box-sizing:border-box;
+	}
+	
+#con-slide-small{
+	margin-top:2px;
+	}
+	
+.con-size-btn{
+	height:40px;
+	width:200px;
+	padding:10px 5px 0 5px;
+	margin:0 5px;
+	background-color:#eeeeee;
+	border-radius:10px;
+	color:#333333;
+	font:'open sans', sans serif;
+	text-align:center;
+	font-weight:700;
+	float:left;
+	}
+	
+.con-size-btn:hover{
+	cursor:pointer;
+	background-color:#E0E0E0;
+	}

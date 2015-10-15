@@ -222,7 +222,7 @@ evoluteApp.config(function($routeProvider) {
 /*****************************************/
 $(document).ready(function(e) {
 
-	// Need to convert to reusable methods - Future    
+	//NAVIGATION: Need to convert to reusable methods - Future    
 	$("nav").mouseenter(function() {
     	$(this).stop().animate({
         	width: "200px"
@@ -258,8 +258,8 @@ $(document).ready(function(e) {
 			top: '0'
 			}, 0 );
 	});
-
-});
+	
+	
 /*****************************************/
 // Highchart Block
 /*****************************************/
@@ -377,3 +377,5 @@ $(function () {
         });
     });
 });
+	
+
