@@ -225,7 +225,9 @@ $(document).ready(function(e) {
 	//NAVIGATION: Need to convert to reusable methods - Future    
 	$("nav").mouseenter(function() {
     	$(this).stop().animate({
-        	width: "200px"
+        	width: "200px",
+			height: "100%",
+			borderBottomRightRadius:"0"
     	}, 100 );
 		$('.header-icon img, .logo-icon img').stop().animate({
 			top: '-40px'
@@ -234,7 +236,9 @@ $(document).ready(function(e) {
 	
 	$(".logo-icon, .header-icon").mouseenter(function() {
     	$("nav").stop().animate({
-        	width: "200px"
+        	width: "200px",
+			height: "100%",
+			borderBottomRightRadius:"0"
     	}, 100 );
 		$('.header-icon img, .logo-icon img').stop().animate({
 			top: '-40px'
@@ -243,7 +247,9 @@ $(document).ready(function(e) {
 	
 	$("nav").mouseleave(function() {
     	$(this).stop().animate({
-        	width: "60px"
+        	width: "60px",
+			height: "60px",
+			borderBottomRightRadius:"10px"
     	}, 100 );
 		$('.header-icon img, .logo-icon img').stop().animate({
 			top: '0'
@@ -252,7 +258,9 @@ $(document).ready(function(e) {
 	
 	$("nav").click(function() {
     	$(this).stop().animate({
-        	width: "60px"
+        	width: "60px",
+			height: "60px",
+			borderBottomRightRadius:"10px"
     	}, 100 );
 		$('.header-icon img, .logo-icon img').stop().animate({
 			top: '0'
@@ -376,6 +384,7 @@ $(function () {
             }]
         });
     });
+});
 });
 	
 

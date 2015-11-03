@@ -10,7 +10,7 @@
           </div>
         </div>
     </div>
-    <div class="col-lg-6 col-lg-offset-2">
+    <div class="col-lg-6 col-lg-offset-1">
     	<h3>Container Performance</h3>
         <div class="box-content">
             <div class="chartContainer" style="height:190px;"></div>
@@ -19,10 +19,8 @@
     </div>
 </div>
 <div class="con-sub-head row">
-    <div class="col-lg-8">
-        <h3>list containers row</h3>
-    </div>
-    <div class="col-lg-4">
+    <div class="col-lg-12 container-item-options">
+    	<!--<div class="sizeChanger col-lg-1"></div>-->
         <div id="make-big" class="con-size-btn">
             	Large
             </div>
@@ -32,17 +30,30 @@
             <div id="make-small" class="con-size-btn">
             	Small
             </div>
+            <div class="col-lg-1">
+            <select>
+              <option value="SortBy" selected disabled>Sort By</option>
+              <option value="newest">Newest</option>
+              <option value="performance">Performance</option>
+              <option value="favorites">Favorites</option>
+            </select>
+        </div>
     </div>
 </div>
 <!--<div class="row" ng-controller="containerController">-->
-<div class="row col-lg-12" ng-controller="containerController">
+<div class="col-lg-12 container-item-holder" ng-controller="containerController">
+	<div class="container-popup">
+    	<img src="../images/charts-large-fpo.png">
+        <img src="../images/charts-large-fpo.png">
+    </div>
   <div class="container-item" ng-repeat="id in ids">
-      <div class="col-lg-10 col-lg-offset-1">
+      <div class="">
+      	<img src="../images/charts-large-fpo.png">
         <div class="col-lg-12 data-unit">
         	<div class="data-label">ID:  </div><div class="displayed-data"> {{id._id}}</div>
         </div> <br>
         <div class="col-lg-12 data-unit">
-        	<div class="data-label">Host_IP:  </div><div class="displayed-data"> {{id.Host_IP}}</div>
+        	<div class="data-label">Host_IP:  </div><br /><div class="displayed-data"> {{id.Host_IP}}</div>
         </div> 
       </div>
    
@@ -50,9 +61,10 @@
 </div>
 
 
-
+	<link rel="stylesheet" href="../jquery-ui-1.11.4.custom/jquery-ui.css">
+	<script src="../jquery-ui-1.11.4.custom/jquery-ui.min.js"></script>
 	<script src="assets/js/bootstrap.min.js"></script>
-    <script>
+<script>
 	$("#make-big").click(function() {
 		$('.container-item').animate({
         	height: "200px",
@@ -72,6 +84,28 @@
         	height: '50px',
 			width: '50px'
     	}, 100 );
+	});
+	
+	$(document).on('mouseenter', ".container-item", function(){
+		$('.container-popup').css('opacity', 1); 
+		});
+		
+	$(document).on('mouseleave', ".container-item", function(){
+		$('.container-popup').css('opacity', 0); 
+		});
+		
+	$(document).on('mousemove', function(e){
+    	if ( e.pageX < 800 ){
+			$('.container-popup').css({
+				left:  e.pageX + 20,
+				top:   e.pageY - 330
+			})
+	   }else{
+			$('.container-popup').css({
+				left:  e.pageX - 550,
+				top:   e.pageY -300
+			})
+		}
 	});
 	
 </script>
