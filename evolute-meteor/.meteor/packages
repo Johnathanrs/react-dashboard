@@ -7,29 +7,18 @@
 meteor-base             # Packages every Meteor app needs to have
 mobile-experience       # Packages for a great mobile UX
 mongo                   # The database Meteor supports right now
-blaze-html-templates    # Compile .html files into Meteor Blaze views
 session                 # Client-side reactive dictionary for your app
 jquery                  # Helpful client-side library
 tracker                 # Meteor's client-side reactive programming library
 
 standard-minifiers      # JS/CSS minifiers run for production mode
+es5-shim                # ECMAScript 5 compatibility for older browsers.
 
+autopublish             # Publish all data to the clients (for prototyping)
+insecure                # Allow all DB writes from clients (for prototyping)
 angular
-ejson
-angularui:angular-ui-router
-urigo:angular-blaze-template
-ndxbxrme:ng-coffeescript
-flemay:less-autoprefixer
-twbs:bootstrap
-angularui:angular-ui-bootstrap
-mquandalle:bower
-tmeasday:publish-counts
-angularutils:pagination@=0.9.0
-accounts-password
-accounts-ui
-accounts-twitter
-accounts-facebook
-accounts-google
-insecure
 msavin:mongol
-autopublish
+angularui:angular-ui-router
+aldeed:collection2
+sebastianilves:angular-chart-js
+momentjs:moment
