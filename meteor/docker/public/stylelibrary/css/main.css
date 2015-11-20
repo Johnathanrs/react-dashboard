@@ -1,9 +1,0 @@
-.containerPie .highcharts-button, .containerPie .highcharts-subtitle, .containerPie .highcharts-data-labels, .containerPie .highcharts-title {
-    display: none;
-}
-.containerPie .highcharts-data-labels.highcharts-series-0{
-	display: block;
-}
-.label-danger{
-	display: none;
-}
