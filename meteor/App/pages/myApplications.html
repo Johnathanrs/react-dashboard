@@ -1,0 +1,183 @@
+<div class="row">
+	<div class="col-lg-4 bottom-buffer">
+    	<div class="media">
+          <div class="media-left">
+              <img class="media-object" src="images/app-placeholder-1.png" alt="" style="width:200px;">
+          </div>
+          <div class="media-body">
+            <h3 class="media-heading">My Applications</h3>
+            Application Description, this is some information about his application.This is the group the application belongs to.
+          </div>
+        </div>
+    </div>
+</div>
+<div class="row bottom-buffer">
+	<div class="col-lg-3">
+        <div ng-controller="appFormController">
+          <form novalidate class="application-form" method="post" action="http://felicity.evolute.io:8082/felicity.php">
+            <!--<select -->
+                <!--ng-model="appName.id" -->
+                <!--ng-options="appName.id as appName.name for appName in appNames"-->
+                <!--placeholder="Application Name"-->
+                <!--vd-advanced>-->
+            <!--</select><br />-->
+              <input type="text" name="name" placeholder="name" />
+              <input type="text" name="subappimage" placeholder="image" />
+              <input type="text" name="cmd" placeholder="/sbin/init.sh" />
+              <input type="text" name="scale" placeholder="number of instances" /><br />
+              <input type="hidden" name="cpu" placeholder=1 value="1"/>
+              <input type="hidden" name="mem" placeholder=2000 value="2000"/>
+
+              <!--curl &#45;&#45;data 'subappimage=images.evolute.io:5000/evo-cassandra-seed&name=evoseedtest&scale=1&cpu=2&mem=1000&cmd=/sbin/init.sh' http://evo4.evolute.io:8082/felicity.php-->
+            <!--<input type="text" ng-model="app.conImage" placeholder="{{conImage}}" /><br />-->
+            <!--<input type="text" ng-model="app.variable" placeholder="{{variable}}" /><br />-->
+            <!--<input type="text" ng-model="app.init" placeholder="{{init}}" /><br />-->
+              <input type="submit" value="Start" />
+          </form>
+        </div>
+        <div class="row">
+        	<div class="col-lg-3">Scale Factor</div>
+            <div class="col-lg-6">
+        		<div class="slider sliderSimple"></div>
+            </div>
+            <div class="col-lg-3">
+            
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3">
+    	<h3>Service</h3>
+        <p>Display information about the service here</p>
+    </div>
+    <div class="col-lg-3">
+    	<h3>Check</h3>
+        <p>Checkname:sparkuptimecheck</p>
+        <div>
+        	<p>Status is up</p>
+        </div>
+        <p>Script is $workarea/sparku.sh</p>
+    </div>
+    <div class="col-lg-3">
+    	<h3>App Exec</h3>
+        <p>Display information about the App Execution here</p>
+    </div>
+</div>
+<div class="row">
+	<div class="col-lg-1">
+          <img class="img-responsive" alt="" src="images/app-placeholder-2.png">
+        <center> <p>nginx-1.9.3</p></center>
+    </div>
+    <div class="col-lg-1">
+          <img class="img-responsive" alt="" src="images/app-placeholder-1.png">
+        <center><p>nginx-1.8.0</p></center>
+    </div>
+    <div class="col-lg-1">
+          <img class="img-responsive" alt="" src="images/app-placeholder-2.png">
+        <center><p>httpd-2.2</p></center>
+    </div>
+    <div class="col-lg-1">
+          <img class="img-responsive" alt="" src="images/app-placeholder-3.png">
+        <center> <p>httpd-2.4</p></center>
+    </div>
+    <div class="col-lg-1">
+          <img class="img-responsive" alt="" src="images/app-placeholder-1.png">
+        <center><p>redis</p></center>
+    </div>
+    <div class="col-lg-1">
+          <img class="img-responsive" alt="" src="images/app-placeholder-1.png">
+        <center><p>mongo</p></center>
+    </div>
+    <div class="col-lg-1">
+          <img class="img-responsive" alt="" src="images/app-placeholder-3.png">
+        <center> <p>cassandra21</p></center>
+    </div>
+    <div class="col-lg-1">
+          <img class="img-responsive" alt="" src="images/app-placeholder-2.png">
+        <center> <p>hadoop-2.7.1</p></center>
+    </div>
+    <div class="col-lg-1">
+          <img class="img-responsive" alt="" src="images/app-placeholder-2.png">
+        <center> <p>hadoop-2.6.0</p></center>
+    </div>
+    <div class="col-lg-1">
+          <img class="img-responsive" alt="" src="images/app-placeholder-3.png">
+        <center> <p>java8-base</p></center>
+    </div>
+    <div class="col-lg-1">
+          <img class="img-responsive" alt="" src="images/app-placeholder-1.png">
+        <center><p>mysql</p></center>
+    </div>
+    <div class="col-lg-1">
+          <img class="img-responsive" alt="" src="images/app-placeholder-2.png">
+        <center> <p>splunk</p></center>
+    </div>
+</div>
+<div class="row">
+	<div class="col-lg-1">
+          <img class="img-responsive" alt="" src="images/app-placeholder-2.png">
+        <center><p>el7-bash</p></center>
+    </div>
+    <div class="col-lg-1">
+          <img class="img-responsive" alt="" src="images/app-placeholder-1.png">
+        <center><p>jboss</p></center>
+    </div>
+    <div class="col-lg-1">
+          <img class="img-responsive" alt="" src="images/app-placeholder-2.png">
+        <center><p>puppet-master</p></center>
+    </div>
+    <div class="col-lg-1">
+          <img class="img-responsive" alt="" src="images/app-placeholder-3.png">
+        <center> <p>mpi</p></center>
+    </div>
+    <div class="col-lg-1">
+          <img class="img-responsive" alt="" src="images/app-placeholder-1.png">
+        <center><p>rails-base</p></center>
+    </div>
+    <div class="col-lg-1">
+          <img class="img-responsive" alt="" src="images/app-placeholder-1.png">
+        <center><p>python-2.7</p></center>
+    </div>
+    <div class="col-lg-1">
+          <img class="img-responsive" alt="" src="images/app-placeholder-3.png">
+        <center><p>python-3.4</p></center>
+    </div>
+    <div class="col-lg-1">
+          <img class="img-responsive" alt="" src="images/app-placeholder-2.png">
+        <center> <p>python-2.7</p></center>
+    </div>
+    <div class="col-lg-1">
+          <img class="img-responsive" alt="" src="images/app-placeholder-2.png">
+        <center> <p>golang-1.4</p></center>
+    </div>
+    <div class="col-lg-1">
+          <img class="img-responsive" alt="" src="images/app-placeholder-3.png">
+        <center><p>golang-1.5</p></center>
+    </div>
+    <div class="col-lg-1">
+          <img class="img-responsive" alt="" src="images/app-placeholder-1.png">
+        <center> <p>taiga</p></center>
+    </div>
+    <div class="col-lg-1">
+          <img class="img-responsive" alt="" src="images/app-placeholder-2.png">
+          <center><p>tomcat</p></center>
+    </div>
+</div>
+
+
+<script src="assets/js/jquery-migrate-1.2.1.min.js"></script>
+	<script src="assets/js/bootstrap.min.js"></script>
+	
+		
+	
+	
+	<!-- page scripts -->
+	<script src="assets/js/jquery-ui-1.10.3.custom.min.js"></script>
+	<script src="assets/js/jquery.ui.touch-punch.min.js"></script>
+	<script src="assets/js/jquery.sparkline.min.js"></script>
+	
+	<!-- theme scripts -->
+	<script src="assets/js/custom.min.js"></script>
+	<script src="assets/js/core.min.js"></script>
+	
+	<!-- inline scripts related to this page -->
+	<script src="assets/js/pages/ui-sliders-progress.js"></script>

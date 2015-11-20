@@ -1,0 +1,11 @@
+<div>
+	<h3>Hit <strong>ctrl + m</strong> to view and update the database</h3>
+	<ul>
+		<li ng-repeat="container in containers" style="float: left">
+			<canvas chart-options="chart.options" chart-colours="chart.colours" class="chart chart-doughnut" chart-data="chart.data[$index]" chart-labels="chart.labels">
+			</canvas>
+			<a ui-sref="containerDetails({containerId: container._id})">{{container._id}}</a>
+			<button ng-click="remove(container)">x</button>
+		</li>
+	</ul>
+</div>

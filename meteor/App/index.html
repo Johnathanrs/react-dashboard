@@ -1,0 +1,83 @@
+<!doctype html>
+<html ng-app="evoluteApp">
+<head>
+<meta charset="utf-8">
+<title>Evolute</title>
+
+<!-- Jquery Link -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+<!-- Angular JS Link -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.1/angular-route.js"></script>
+
+<!-- Evolute JS -->
+<!--<script src="evoluteAPI.js"></script>-->
+<script src="evoluteJS.js"></script>
+    <!--script src="evoluteLXC.js"></script-->
+
+<!-- Animate.css -->
+<link rel="stylesheet" type="text/css" href="animate.css">
+
+<!-- bootstrap.css -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+<link href="assets/css/style.css" rel="stylesheet">
+<link href="assets/css/retina.min.css" rel="stylesheet">
+
+<!-- Evolute CSS -->
+<link rel="stylesheet" type="text/css" href="evoluteCSS.css">
+
+</head>
+
+<body>
+
+	<nav>
+        <div class="logo-icon">
+            <a href="#dashboard"><img alt="" src="images/Evolute-logo.png"></a>
+        </div>
+        
+        <h4 class="greeting">Welcome, Kriss</h4>
+        
+        <div class="header-icon">
+            <a href="#dashboard"><img alt="" src="images/dashboard-icon.png"></a>
+        </div>
+        <div class="header-icon">
+            <a href="#myApplications"><img alt="" src="images/apps-icon.png"></a>
+        </div>
+        <div class="header-icon">
+            <a href="#containers"><img alt="" src="images/containers-icon.png"></a>
+        </div>
+       <!--   <div class="header-icon">
+            <a href="#images"><img alt="" src="images/images-icon.png"></a>
+        </div>
+      <div class="header-icon">
+            <a href="#scheduler"><img alt="" src="images/scheduler-icon.png"></a>
+        </div>
+        <div class="header-icon">
+            <a href="#revisions"><img alt="" src="images/revisions-icon.png"></a>
+        </div>-->
+        <div class="header-icon">
+            <a href="#configuration"><img alt="" src="images/config-icon.png"></a>
+        </div>
+        <div class="header-icon">
+            <a href="#service"><img alt="" src="images/service-icon.png"></a>
+        </div>
+        <div class="header-icon">
+            <a href="#hostRing"><img alt="" src="images/hostRing-icon.png"></a>
+        </div>
+        <div class="header-icon">
+            <a href="#servicePerformance"><img alt="" src="images/serviceP-icon.png"></a>
+        </div>
+    </nav>
+   
+    
+    <div id="container">
+        <div ng-view>
+        
+        </div>
+    </div>
+    
+</body>
+</html>
