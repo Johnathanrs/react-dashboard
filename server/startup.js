@@ -368,7 +368,7 @@
 
 		let mockContainer = (i) => {
 			return {
-				dnsName: 'evo64.evolute.io',
+				dnsName: 'evo' + i + 1 + '.evolute.io',
 				lxcId: mockLxcId(i),
 				image: 'calico/node:v0.4.9',
 				command: '/sbin/my_init',
@@ -386,7 +386,6 @@
 		stats.forEach((stat) => {
 			ContainerStats.remove(stat._id);
 		});
-
 		if (Containers.find().count() === 0)
 			for (var i = 0; i < 3; i++)
 				Containers.insert(mockContainer(i));
