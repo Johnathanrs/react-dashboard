@@ -1,7 +1,11 @@
-Meteor.publish("activeContainers", function () {
-	return Containers.find({});
+Meteor.publish("activeContainers", () => {
+	return Containers.find({}, {
+		limit: 10
+	});
 });
 
-Meteor.publish("containerStats", function () {
-	return ContainerStats.find({});
+Meteor.publish("containerStats", () => {
+	return ContainerStats.find({}, {
+		limit: 200
+	});
 });

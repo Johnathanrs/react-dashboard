@@ -2,219 +2,85 @@ Containers = new Mongo.Collection('container_infos');
 ContainerStats = new Mongo.Collection('container_stats');
 
 ContainerSchema = new SimpleSchema({
-	dnsName: {
+	DNSName: {
 		type: String,
 		label: "DNS name",
 		max: 200
 	},
-	lxcId: {
+	LXCId: {
 		type: String,
 		label: "LXC ID",
 		max: 200
 	},
-	image: {
+	Image: {
 		type: String
 	},
-	command: {
+	Command: {
 		type: String
 	},
 	status: {
 		type: String
 	},
-	names: {
+	Names: {
 		type: [String]
 	},
-	labels: {
+	Labels: {
 		type: Object
 	},
-	ports: {
+	Ports: {
 		type: [Number]
 	},
-	ipAddress: {
+	IPAddress: {
 		type: String,
 		regEx: SimpleSchema.RegEx.IP,
 		label: "IP address"
 	},
-	copies: {
+	Copies: {
 		type: Number,
 		label: "Number of copies",
 		min: 0
 	},
-	readTime: {
+	ReadTime: {
 		type: Date,
 		optional: true
 	},
-	createdAt: {
-		type: Date
+	Status: {
+		type: String
 	}
 });
 
-
-//ContainerStatsChema = new SimpleSchema({
-//	read: {
-//		type: Date
-//	},
-//	network: {
-//		type: Object
-//	},
-//	preCpuStats: [{
-//		cpuUsage: [{
-//			totalUsage: {
-//				type: String
-//			},
-//			percpuUsage: [{
-//				type: String
-//			}],
-//			usageInKernelMode: {
-//				type: String
-//			},
-//			usageInUserMode: {
-//				type: String
-//			},
-//			systemCpuUsage: {
-//				type: String
-//			},
-//			throttlingData: [{
-//				periods: {
-//					type: Number
-//				},
-//				throttledPeriods: {
-//					type: Number
-//				},
-//				throttledTime: {
-//					type: Date
-//				},
-//                }]
-//           }],
-//        }],
-//	cpuStats: [{
-//		cpuUsage: [{
-//			totalUsage: {
-//				type: String
-//			},
-//			perCpuUsage: [{
-//				type: String
-//			}],
-//			usageInKernelMode: {
-//				type: String
-//			},
-//			usageInUserMode: {
-//				type: String
-//			},
-//			systemCpuUsage: {
-//				type: String
-//			},
-//			throttlingData: [{
-//				periods: {
-//					type: Number
-//				},
-//				throttledPeriods: {
-//					type: Number
-//				},
-//				throttledTime: {
-//					type: Date
-//				},
-//                }]
-//           }],
-//
-//        }],
-//	memoryStats: [{
-//		usage: {
-//			type: Number
-//		},
-//		maxUsage: {
-//			type: Number
-//		},
-//		stats: [{
-//			activeAnon: Number,
-//			activeFile: Number,
-//			cache: Number,
-//			hierarchicalMemoryLimit: {
-//				type: String
-//			},
-//			hierarchicalMemswLimit: {
-//				type: String
-//			},
-//			inactiveAnon: Number,
-//			inactiveFile: Number,
-//			mappedFile: Number,
-//			pgfault: Number,
-//			pgmajfault: Number,
-//			pgpgin: Number,
-//			pgpgout: Number,
-//			rss: Number,
-//			rss_huge: Number,
-//			swap: Number,
-//			totalActiveAnon: Number,
-//			totalActiveFiles: Number,
-//			totalCache: Number,
-//			totalInactiveAnon: Number,
-//			totalInactiveFiles: Number,
-//			totalCache: Number,
-//			totalInactiveFiles: Number,
-//			totalInactiveFiles: Number,
-//			totalMappedFiles: Number,
-//			totalPgfault: Number,
-//			totalPgmajfault: Number,
-//			totalPgpgin: Number,
-//			totalPgpgout: Number,
-//			totalRss: Number,
-//			totalRssHuge: Number,
-//			totalSwap: Number,
-//			totalUnevictable: Number,
-//			unevictable: Number
-//            }],
-//		failCount: Number,
-//		limit: {
-//			type: String
-//		}
-//            }],
-//	blkioStats: [{
-//		ioServiceBytesRecursive: [
-//			{
-//				major: Number,
-//				minor: Number,
-//				op: String,
-//				value: Number
-//                        }
-//                ],
-//		io_serviced_recursive: [
-//			{
-//				major: Number,
-//				minor: Number,
-//				op: String,
-//				value: Number
-//                        }
-//                ],
-//		ioQueueRecursive: {
-//			type: Array
-//		},
-//		ioServiceTimeRecursive: {
-//			type: Array
-//		},
-//		ioWaitTimeRecursive: {
-//			type: Array
-//		},
-//		ioMergedRecursive: {
-//			type: Array
-//		},
-//		io_time_recursive: {
-//			type: Array
-//		},
-//		sectors_recursive: {
-//			type: Array
-//		}
-//        }],
-//	hostDns: {
-//		type: String
-//	},
-//	hostIp: {
-//		type: String
-//	},
-//	lxdId: {
-//		type: String
-//	}
-//});
+ContainerStatsChema = new SimpleSchema({
+	"read": {
+		type: Date
+	},
+	"cpu_stats": {
+		type: {
+			"cpu_usage": {
+				"total_usage": Number,
+				"percpu_usage": [
+                Number
+            ]
+			},
+			"system_cpu_usage": Number
+		}
+	},
+	"memory_stats": {
+		type: {
+			"usage": Number,
+			"max_usage": Number,
+			"limit": Number
+		}
+	},
+	"Host_DNS": {
+		type: String
+	},
+	"Host_IP": {
+		type: String
+	},
+	"LXC_Id": {
+		type: String
+	}
+});
 
 Containers.attachSchema(ContainerSchema);
 //ContainerStats.attachSchema(ContainerStatsChema);
