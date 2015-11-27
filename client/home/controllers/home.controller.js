@@ -1,6 +1,29 @@
 angular.module('evolute').controller('HomeCtrl', ($scope, $meteor) => {
 
+	$scope.sortBy = 'DNSName';
 
+	$scope.players = [
+		{
+			name: 'Gene',
+			team: 'alpha'
+		},
+		{
+			name: 'George',
+			team: 'beta'
+		},
+		{
+			name: 'Steve',
+			team: 'gamma'
+		},
+		{
+			name: 'Paula',
+			team: 'beta'
+		},
+		{
+			name: 'Scruath',
+			team: 'gamma'
+		}
+];
 	$scope.remove = (container) => {
 		$scope.containers.remove(container);
 	};
@@ -16,18 +39,16 @@ angular.module('evolute').controller('HomeCtrl', ($scope, $meteor) => {
 
 	$scope.$meteorSubscribe('activeContainers').then((subscriptionHandle) => {
 
-		$scope.containers = $meteor.collection(Containers, false);
-
-		$scope.$meteorSubscribe('containerStats').then(() => {
-			$scope.containers.forEach((container, index) => {
-				$meteor.call('getMemoryAndCpuUsagePercentage', container.LXCId).then((stat) => {
-					if (!stat) return;
-					let data = $scope.chart.data[index] = [];
-					data.push(stat.memory);
-					data.push(100 - stat.memory);
-					data.push(stat.cpu);
-					data.push(100 - stat.cpu);
-				});
+		$scope.containers = $scope.$meteorCollection(Containers, false);
+		$scope.containers.forEach((container, index) => {
+			$scope.$meteorSubscribe('getMemoryAndCpuUsagePercentage', container.LXCId, 1).then(() => {
+				var stats = $scope.$meteorCollection(ContainerStats, false);
+				if (!stat) return;
+				let data = $scope.chart.data[index] = [];
+				data.push(stat.memory);
+				data.push(100 - stat.memory);
+				data.push(stat.cpu);
+				data.push(100 - stat.cpu);
 			});
 		});
 	});

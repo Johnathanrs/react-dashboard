@@ -10,16 +10,18 @@ angular.module("evolute").controller("ContainerDetailsCtrl", ($scope, $statePara
 			datasetStrokeWidth: 0.5
 		}
 	};
-	$scope.$meteorSubscribe('containerStats').then(() => {
+	$scope.$meteorSubscribe('getMemoryAndCpuUsagePercentages').then(() => {
 		$scope.chart.data[0] = [];
 		$scope.chart.data[1] = [];
 		$scope.chart.labels = [];
-		$meteor.call('getMemoryAndCpuUsagePercentages', $stateParams.containerId).then((stats) => {
-			stats.forEach((stat) => {
-				$scope.chart.data[0].push(stat.memory);
-				$scope.chart.data[1].push(stat.cpu);
-				$scope.chart.labels.push(stat.time);
-			});
+		var stats = $scope.$meteorCollection(() => {
+			$scope.chart.data[0].push(stat.memory);
+			$scope.chart.data[1].push(stat.cpu);
+			$scope.chart.labels.push(stat.time);
+		}, false);
+		stats.forEach((stat) => {
+			console.log(stat);
+
 		});
 	});
 
