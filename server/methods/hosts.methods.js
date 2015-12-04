@@ -17,13 +17,13 @@ Meteor.methods({
         var containers = Containers.find({}, {limit: 100}).fetch();        
         return _.groupBy(containers, (c)=> c.DNSName);
     },
-    getHostSummary: (DNSName)=>{
-        var containers = Containers.find({DNSName: DNSName}).fetch();
-        return {name: DNSName, totalContainers: containers.length, ipAddress: containers[0].IPAddress};       
+    getHostSummary: (hostName)=>{
+        var containers = Containers.find({DNSName: hostName}).fetch();
+        return {name: hostName, totalContainers: containers.length, ipAddress: containers[0].IPAddress, status: containers[0].Status};       
         
     },
     getHost: (DNSName)=>{
-        var containers = Containers.find({DNSName: DNSName}).fetch();
-        return {name: DNSName, totalContainers: containers.length, ipAddress: containers[0].IPAddress,status: containers[0].Status, containers: containers};               
+        var containers = Containers.find({DNSName: DNShostNameName}).fetch();
+        return {name: hostName, totalContainers: containers.length, ipAddress: containers[0].IPAddress, status: containers[0].Status, containers: containers};               
     }
 })
