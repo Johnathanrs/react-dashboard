@@ -1,6 +1,6 @@
 Meteor.publish("activeContainers", () => {
 	return Containers.find({}, {
-		limit: 100,
+		limit: 10,
 		sort: {
 			ReadTime: -1
 		}
@@ -9,7 +9,7 @@ Meteor.publish("activeContainers", () => {
 
 Meteor.publish("containerStats", () => {
 	return ContainerStats.find({}, {
-		limit: 200,
+		limit: 20,
 		sort: {
 			read: -1
 		}

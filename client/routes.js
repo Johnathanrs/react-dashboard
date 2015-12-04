@@ -1,12 +1,13 @@
- angular.module('evolute').config(function ($urlRouterProvider, $stateProvider, $locationProvider) {
+ angular.module('evolute')
+     .config(function ($urlRouterProvider, $stateProvider, $locationProvider) {
 
  	$locationProvider.html5Mode(true);
 
  	$stateProvider
- 		.state('home', {
- 			url: '/home',
- 			templateUrl: 'client/home/views/home.html',
- 			controller: 'HomeCtrl'
+ 		.state('containerList', {
+ 			url: '/containers',
+ 			templateUrl: 'client/containers/views/container-list.html',
+ 			controller: 'ContainerListCtrl'
  		})
  		.state('containerDetails', {
  			url: '/containers/:containerId',
@@ -14,5 +15,5 @@
  			controller: 'ContainerDetailsCtrl'
  		});
 
- 	$urlRouterProvider.otherwise("/home");
+ 	$urlRouterProvider.otherwise("/containers");
  });

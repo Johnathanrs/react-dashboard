@@ -1,4 +1,4 @@
-angular.module('evolute').controller('HomeCtrl', ($scope, $meteor) => {
+angular.module('evolute').controller('ContainerListCtrl', ($scope, $meteor) => {
 
 	$scope.sortBy = 'DNSName';
 
