@@ -1,52 +1,15 @@
-Containers = new Mongo.Collection('container_infos');
+Containers = new Mongo.Collection('containers');
 ContainerStats = new Mongo.Collection('container_stats');
 
 ContainerSchema = new SimpleSchema({
-	DNSName: {
-		type: String,
-		label: "DNS name",
-		max: 200
-	},
-	LXCId: {
-		type: String,
-		label: "LXC ID",
-		max: 200
-	},
-	Image: {
-		type: String
-	},
-	Command: {
-		type: String
-	},
-	status: {
-		type: String
-	},
-	Names: {
-		type: [String]
-	},
-	Labels: {
-		type: Object
-	},
-	Ports: {
-		type: [Number]
-	},
-	IPAddress: {
-		type: String,
-		regEx: SimpleSchema.RegEx.IP,
-		label: "IP address"
-	},
-	Copies: {
-		type: Number,
-		label: "Number of copies",
-		min: 0
-	},
-	ReadTime: {
-		type: Date,
-		optional: true
-	},
-	Status: {
-		type: String
-	}
+    "app" : {type: String },
+    "network" : {
+        type: {
+        "MacAddress" : {type: String },
+        "IPAddress" : {type: String }
+        }
+    },
+    "lxc_id" : {type: String }
 });
 
 ContainerStatsChema = new SimpleSchema({
