@@ -1,0 +1,18 @@
+<template name="ApplicationList">
+    <ul>
+        {{#each applications}}
+        <li>
+            {{> ApplicationSummaryItem}}
+        </li>
+        {{/each}}
+    </ul>
+</template>
+
+<template name="ApplicationSummaryItem">
+    <ul>
+        <li>ID: <strong>{{_id}}</strong></li>
+        <li>Image: <strong>{{app_info.image}}</strong></li>
+        <li>Command: <strong>{{app_info.Command}}</strong></li>
+        <li>App ID: <strong>{{app_id}}</strong></li>
+    </ul>
+</template>

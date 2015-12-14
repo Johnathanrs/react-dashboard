@@ -1,19 +1,21 @@
 Applications = new Mongo.Collection('applications')
 
-ApplicationSchema = new SimpleSchema({
-    "app_info" : {
-        type: {
-            "image" : {
-                type: String 
-            },
-            "Command" : {
-                type: String 
-            }
-        }
+ApplicationInfoSchema = new SimpleSchema({
+    "image": {
+        type: String
     },
-    "app_id" : {
-        type: String 
+    "Command": {
+        type: String
     }
 });
+ApplicationSchema = new SimpleSchema({
+    "app_info": {
+        type: ApplicationInfoSchema
+    },
+    "app_id": {
+        type: String
+    }
+});
+
 
 Applications.attachSchema(ApplicationSchema);
