@@ -1,7 +1,7 @@
 FlowRouter.route('/', {
     name: 'dashboard',
     action() {
-        BlazeLayout.render('HomeLayout');
+        BlazeLayout.render('MainLayout');
     }
 });
 
@@ -28,6 +28,15 @@ FlowRouter.route('/applications', {
     action() {
         BlazeLayout.render('MainLayout', {
             main: 'ApplicationList'
+        });
+    }
+});
+
+FlowRouter.route('/hosts', {
+    name: 'hosts',
+    action() {
+        BlazeLayout.render('MainLayout', {
+            main: 'HostList'
         });
     }
 });

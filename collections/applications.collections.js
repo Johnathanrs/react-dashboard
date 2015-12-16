@@ -13,6 +13,9 @@ Applications.allow({
 });
 
 ApplicationInfoSchema = new SimpleSchema({
+    "_id": {
+      type: Meteor.Collection.ObjectId  
+    },
     "image": {
         type: String
     },
