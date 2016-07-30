@@ -73,7 +73,7 @@ class ApplicationRow extends React.Component {
 
 
 
-class TryApp extends React.Component {
+class CreateApp extends React.Component {
     render() {
         
         return (
@@ -131,10 +131,11 @@ class ApplicationList extends React.Component {
 							</thead>
             <tbody>
 
-         <TryApp images={images}/>
+         <CreateApp images={images}/>
             <ApplicationRow />
             	</tbody>
             	</table>
+
         );
     }
 
