@@ -56,44 +56,20 @@ class FilterableApplicationBox extends React.Component {
 class ApplicationRow extends React.Component {
    render() {
     return (
-        <tbody>
-        <CreateApp images={images}/>
-        
-        
-        
-        {this.props.applications.map(
-             (applications) => <ApplicationItem  key={applications.key}
-                                    name={applications.name}
-                                    version={applications.version}
-                                    status={applications.status} 
-                                    health={applications.health}
-                                    service={applications.service}
-                                    uptime={applications.uptime} />
-             )}
-				
-        </tbody>
 
+        	<tr>
+									<td className="name"><span className="checkbox"><input type="checkbox"></input><label></label></span><a href="#">hadoop-nn</a></td>
+									<td className="uptime">12 hours 2 Min</td>
+									<td className="owner">Jason Richards</td>
+									<td className="deployment">Undeployed <a href="#" className="btn btn-blue">Deploy</a></td>
+									<td className="instances">12</td>
+									<td className="time">12 SEC</td>
+									<td className="errors"><img width="11" src="img/ico_flag.png" alt="" />1 </td>
+								</tr>
 );
    }
 }
-class ApplicationItem extends React.Component{
-    render(){
-        return (
-            
-                  	<tr>
-									<td className="name"><span className="checkbox"><input type="checkbox"></input><label></label></span><a href="#">{this.props.name}</a></td>
-									<td className="uptime">{this.props.uptime}</td>
-									<td className="owner">Jason Richards</td>
-									<td className="deployment">{this.props.status}<a href="#" className="btn btn-blue">Deploy</a></td>
-									<td className="instances">12</td>
-									<td className="time">{this.props.uptime}</td>
-									<td className="errors"><img width="11" src="img/ico_flag.png" alt="" />1 </td>
-								</tr>
-            
-        );
-    }
-    
-}
+
 
 
 
@@ -102,6 +78,8 @@ class CreateApp extends React.Component {
         
         return (
         
+
+            
         				<tr className="add-clone">
 									<td colSpan="7">
 										<form action="#">
@@ -151,10 +129,11 @@ class ApplicationList extends React.Component {
 									<th className="errors">ERRORS</th>
 								</tr>
 							</thead>
-            
+            <tbody>
 
+         <CreateApp images={images}/>
             <ApplicationRow applications={applications} />
-            	
+            	</tbody>
             	</table>
 
         );
