@@ -20,11 +20,11 @@ setInterval(function() {
   );
 }, 50);
 
-class FilterableApplicationBox extends React.Component {
+class FilterableApplicationListingBox extends React.Component {
   render() {
   return (
       
-			<div className="tab-content active" id="appls">
+			
 					
 				<div className="list-type-r row-list">
 					<div className="options">
@@ -45,7 +45,7 @@ class FilterableApplicationBox extends React.Component {
 					
 					</div>
 				</div>
-		</div>
+		
          
 	
    
@@ -227,6 +227,6 @@ console.log(applications)
 
 
 ReactDOM.render(
-  <FilterableApplicationBox />,
-  document.getElementById('FilterableApplicationBoxcontainer')
+  <FilterableApplicationListingBox />,
+  document.getElementById('FilterableApplicationListingBoxcontainer')
 );
