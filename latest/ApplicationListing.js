@@ -1,25 +1,5 @@
 
 
-var ExampleApplication = React.createClass({
-  render: function() {
-    var elapsed = Math.round(this.props.elapsed  / 100);
-    var seconds = elapsed / 10 + (elapsed % 10 ? '' : '.0' );
-    var message =
-      'React has been successfully running for ' + seconds + ' seconds.';
-
-    return <p>{message}</p>;
-  }
-});
-
-var start = new Date().getTime();
-
-setInterval(function() {
-  ReactDOM.render(
-    <ExampleApplication elapsed={new Date().getTime() - start} />,
-    document.getElementById('container')
-  );
-}, 50);
-
 class FilterableApplicationListingBox extends React.Component {
   render() {
   return (
@@ -199,14 +179,14 @@ var data = jQuery.ajax({
         }).responseText
 
 
-console.log("Getting images2.json")
-console.log(data)
+/* DEBUG console.log("Getting images2.json")*/
+/* DEBUG console.log(data)*/
 
 var parseddata= jQuery.parseJSON(data);
 
-console.log("Parsing images2.json")
-console.log(parseddata)
-console.log(parseddata.images)
+/* DEBUG console.log("Parsing images2.json")*/
+/* DEBUG console.log(parseddata)*/
+/* DEBUG console.log(parseddata.images)*/
 
 let images = parseddata.images
 
@@ -221,7 +201,7 @@ let applications= [
     {key: 7, name: "evo-rhel-secure", status: "Undeployed", service:"None", health: "Not Applicable", uptime: "Not Applicable"}
     ]
 
-console.log(applications)
+/* DEBUG console.log(applications)*/
 
 
 
