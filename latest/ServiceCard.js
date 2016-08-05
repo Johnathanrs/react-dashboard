@@ -251,7 +251,14 @@ let services = [
         {key: 3, name: "hadoop-dn", status: "Undeployed", health: "Not Applicable", uptime: "Not Applicable"},
         {key: 4, name: "hadoop-nn", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"} 
         ]
-    }
+    },
+     {key: 3, name: "WLG_DataLake", status: "Undeployed", owner:"Brittany Francisco", health: "Not Applicable", uptime: "Not Applicable", applications:[
+        {key: 1, name: "cassandra-seed", status: "Undeployed",  health: "Not Applicable", uptime: "Not Applicable"}, 
+        {key: 2, name: "cassandra-peer", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"},
+        {key: 3, name: "hadoop-dn", status: "Undeployed", health: "Not Applicable", uptime: "Not Applicable"},
+        {key: 4, name: "hadoop-nn", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"} 
+        ]
+    }        
 ]
 
 console.log(services)

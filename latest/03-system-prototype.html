@@ -10,8 +10,12 @@
 	<!--[if lt IE 9]>
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
+    <script src="js/d3/d3.js"></script>
 </head>
 <body>
+    <div id="svg"></div>
+<!--	<button id="save">Save as Image</button>-->
+	<div id="svgdataurl"></div>
 
 	<header id="header">
 		<div class="top">
@@ -69,13 +73,14 @@
 								<h3>CPU Utilization</h3>
 							</div>
 							<div class="body">
-								<section class="overall-over">
+								<section id="cpu" class="overall-over">
 									<article>
 										<div class="left">
 											<h4>1. Container_123 </h4>
 										</div>
 										<div class="right">
-											<img src="img/circle.png" alt="">
+                                                
+<!--											<img src="img/circle.png" alt="">-->
 										</div>
 										<div class="modal">
 											<img src="img/odal.png" alt="">
@@ -86,7 +91,7 @@
 											<h4>2. Container_123 </h4>
 										</div>
 										<div class="right">
-											<img src="img/circle.png" alt="">
+<!--											<img src="img/circle.png" alt="">-->
 										</div>
 										<div class="modal">
 											<img src="img/odal.png" alt="">
@@ -97,7 +102,7 @@
 											<h4>3. Container_123 </h4>
 										</div>
 										<div class="right">
-											<img src="img/circle.png" alt="">
+<!--											<img src="img/circle.png" alt="">-->
 										</div>
 										<div class="modal">
 											<img src="img/odal.png" alt="">
@@ -108,7 +113,7 @@
 											<h4>4. Container_123 </h4>
 										</div>
 										<div class="right">
-											<img src="img/circle.png" alt="">
+<!--											<img src="img/circle.png" alt="">-->
 										</div>
 										<div class="modal">
 											<img src="img/odal.png" alt="">
@@ -119,7 +124,7 @@
 											<h4>5. Container_123 </h4>
 										</div>
 										<div class="right">
-											<img src="img/circle.png" alt="">
+<!--											<img src="img/circle.png" alt="">-->
 										</div>
 										<div class="modal">
 											<img src="img/odal.png" alt="">
@@ -464,9 +469,10 @@
 	<script src="http://code.jquery.com/jquery-1.12.2.min.js"></script>
 	<script>window.jQuery || document.write("<script src='js/jquery-1.12.2.min.js'>\x3C/script>")</script>
 	<script src="js/plugins.js"></script>
-	<script src="js/d3/d3.js"></script>
+	
 
-    	<script src="js/systemCard.js"></script>
+    	<script src="js/memoryCard.js"></script>
+    <script src="js/cpuCard.js"></script>
     
     
 </body>
