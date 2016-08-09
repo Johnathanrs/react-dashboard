@@ -50,12 +50,12 @@ class ServiceCardRow extends React.Component {
        
         <div className="list-type-r cols-list active">
             {this.props.services.map(
-                (services) => <ServiceCardItem key={services.key}
-                                                  name={services.name}
-                                                  applications={services.applications}
-                                                  uptime={services.uptime}
-                                                  owner={services.owner}
-                                                  status={services.status}/>
+                (services) => <ServiceCardItem key={services._id}
+                                                  name={services.svcName}
+                                                  applications={services.svcApplications}
+                                                  uptime={services.svcUptime}
+                                                  owner={services.svcOwner}
+                                                  status={services.svcStatus}/>
             )}
             
           <div className="to-clone hide">
@@ -108,7 +108,7 @@ class ServiceCardRow extends React.Component {
                         </div>
                      </div>
                      <div className="gate-apl">
-                        <h3>MDL_Gateway Applications</h3>
+                        <h3>MDL_Gateway Applications TO CLONE HIDE</h3>
                         <div className="inside">
                            <section className="add-aplication">
                            </section>
@@ -187,6 +187,7 @@ class ServiceCardItem extends React.Component {
                      <div className="inside active">
                          
                         <section className="add-aplication">
+            
                                                                       {this.props.applications.map(
                                 (SvcApplications) => <ServiceCardItemApplication key={SvcApplications.key}
                                                   name={SvcApplications.name}
@@ -237,39 +238,66 @@ class ServiceCardItemApplication extends React.Component {
     }
 }
   
-let services = [
+let services2 = [
     {key: 1, name: "CVX_DataLake", status: "Undeployed", owner:"Jason Bourne", health: "Not Applicable", uptime: "Not Applicable", applications:[
         {key: 1, name: "cassandra-seed", status: "Undeployed",  health: "Not Applicable", uptime: "Not Applicable"}, 
         {key: 2, name: "cassandra-peer", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"},
         {key: 3, name: "hadoop-dn", status: "Undeployed", health: "Not Applicable", uptime: "Not Applicable"},
         {key: 4, name: "hadoop-nn", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"} 
         ]
-    },
-        {key: 2, name: "AAPL_DataLake", status: "Deployed", owner:"Steve Wozniak", health: "Healthy", uptime: "2 Days 12 Hours", applications:[
-        {key: 1, name: "cassandra-seed", status: "Undeployed",  health: "Not Applicable", uptime: "Not Applicable"}, 
-        {key: 2, name: "cassandra-peer", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"},
-        {key: 3, name: "hadoop-dn", status: "Undeployed", health: "Not Applicable", uptime: "Not Applicable"},
-        {key: 4, name: "hadoop-nn", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"} 
-        ]
-    },
-     {key: 3, name: "WLG_DataLake", status: "Undeployed", owner:"Brittany Francisco", health: "Not Applicable", uptime: "Not Applicable", applications:[
-        {key: 1, name: "cassandra-seed", status: "Undeployed",  health: "Not Applicable", uptime: "Not Applicable"}, 
-        {key: 2, name: "cassandra-peer", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"},
-        {key: 3, name: "hadoop-dn", status: "Undeployed", health: "Not Applicable", uptime: "Not Applicable"},
-        {key: 4, name: "hadoop-nn", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"} 
-        ]
+//    },
+//        {key: 2, name: "AAPL_DataLake", status: "Deployed", owner:"Steve Wozniak", health: "Healthy", uptime: "2 Days 12 Hours", applications:[
+//        {key: 1, name: "cassandra-seed", status: "Undeployed",  health: "Not Applicable", uptime: "Not Applicable"}, 
+//        {key: 2, name: "cassandra-peer", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"},
+//        {key: 3, name: "hadoop-dn", status: "Undeployed", health: "Not Applicable", uptime: "Not Applicable"},
+//        {key: 4, name: "hadoop-nn", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"} 
+//        ]
+//    },
+//     {key: 3, name: "WLG_DataLake", status: "Undeployed", owner:"Brittany Francisco", health: "Not Applicable", uptime: "Not Applicable", applications:[
+//        {key: 1, name: "cassandra-seed", status: "Undeployed",  health: "Not Applicable", uptime: "Not Applicable"}, 
+//        {key: 2, name: "cassandra-peer", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"},
+//        {key: 3, name: "hadoop-dn", status: "Undeployed", health: "Not Applicable", uptime: "Not Applicable"},
+//        {key: 4, name: "hadoop-nn", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"} 
+//        ]
     }        
 ]
 
-console.log(services)
 
-let dbservices = [
-    {key: 1, name: "CVX_DataLake", applications:[ {app_id: 1}, {app_id:2} ]},
-     ]
-    
+
+
+
+var url = "http://127.0.0.1:3000/api/service_infos"
+var data = jQuery.ajax({
+            url: url, 
+            async: false,
+            dataType: 'json'
+        }).responseText
+
+
+console.log("Getting services_info");
+console.log(data);
+
+var services = jQuery.parseJSON(data);
+
+console.log("Parsing: " + url);
+console.log(services);
+console.log(services[0]);
+console.log(services[0].svcApplications);
+
+//console.log("Trying new applications parse");
+//var applications_try = jQuery.parseJSON(data);
+
+//console.log(applications_try);
+
+//console.log("Parsing: local data");
+//console.log(services2);
+//console.log(services2[0].applications);
+
+
+//let services = parseddata.images
+//console.log(services)
+
 ReactDOM.render(
   <FilterableServiceCardBox />,
   document.getElementById('FilterableServiceCardBoxcontainer')
 );
-
-

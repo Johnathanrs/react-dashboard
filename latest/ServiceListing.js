@@ -47,12 +47,12 @@ class ServiceListingRow extends React.Component {
                         <table>
                             
                             {this.props.services.map(
-                                (services) => <ServiceListingItem key={services.key}
-                                                  name={services.name}
-                                                  applications={services.applications}
-                                                  uptime={services.uptime}
-                                                  owner={services.owner}
-                                                  status={services.status}/>
+                                (services) => <ServiceListingItem key={services._id}
+                                                  name={services.svcName}
+                                                  applications={services.svcApplications}
+                                                  uptime={services.svcUptime}
+                                                  owner={services.svcOwner}
+                                                  status={services.svcStatus}/>
                             )}
 
                         </table>
@@ -315,7 +315,7 @@ class ServiceListingItemApplication extends React.Component {
 
 
 
-let services = [
+let services2 = [
     {key: 1, name: "CVX_DataLake", status: "Undeployed", owner:"Jason Bourne", health: "Not Applicable", uptime: "Not Applicable", applications:[
         {key: 1, name: "cassandra-seed", status: "Undeployed",  health: "Not Applicable", uptime: "Not Applicable"}, 
         {key: 2, name: "cassandra-peer", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"},
@@ -332,11 +332,21 @@ let services = [
     }
 ]
 
-console.log(services)
+var url = "http://127.0.0.1:3000/api/service_infos"
+var data = jQuery.ajax({
+            url: url, 
+            async: false,
+            dataType: 'json'
+        }).responseText
 
-let dbservices = [
-    {key: 1, name: "CVX_DataLake", applications:[ {app_id: 1}, {app_id:2} ]},
-     ]
+
+console.log("Getting services_info");
+console.log(data);
+
+var services = jQuery.parseJSON(data);
+
+
+
 
 ReactDOM.render(
   <FilterableServiceListingBox />,
