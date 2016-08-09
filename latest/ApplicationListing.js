@@ -42,13 +42,13 @@ class ApplicationRow extends React.Component {
         
         
         {this.props.applications.map(
-             (applications) => <ApplicationItem  key={applications.key}
-                                    name={applications.name}
+             (applications) => <ApplicationItem  key={applications._id}
+                                    name={applications.appName}
                                     version={applications.version}
-                                    status={applications.status} 
-                                    health={applications.health}
-                                    service={applications.service}
-                                    uptime={applications.uptime} />
+                                    status={applications.appStatus} 
+                                    health={applications.appHealth}
+//                                    service={applications.service}
+                                    uptime={applications.appUptime} />
              )}
 				
         </tbody>
@@ -133,7 +133,7 @@ class ApplicationList extends React.Component {
 							</thead>
             
 
-            <ApplicationRow applications={applications} />
+            <ApplicationRow applications={apps} />
             	
             	</table>
 
@@ -191,7 +191,8 @@ var parseddata= jQuery.parseJSON(data);
 let images = parseddata.images
 
 
-let applications= [
+
+let applications2= [
     {key: 1, name: "cassandra-seed", status: "Undeployed", service:"None", health: "Not Applicable", uptime: "Not Applicable"},
     {key: 2, name: "cassandra-peer", status: "Deployed", service:"None", health: "Healthy", uptime: "12 hours 2 Min"},
     {key: 3, name: "hadoop-nn", status: "Undeployed", service:"None", health: "Not Applicable", uptime: "Not Applicable"},
@@ -201,7 +202,20 @@ let applications= [
     {key: 7, name: "evo-rhel-secure", status: "Undeployed", service:"None", health: "Not Applicable", uptime: "Not Applicable"}
     ]
 
-/* DEBUG console.log(applications)*/
+/* DEBUG console.log(applications) */
+
+
+var AppsURL = "http://127.0.0.1:3000/api/app_infos"
+var AppsData = jQuery.ajax({
+            url: AppsURL, 
+            async: false,
+            dataType: 'json'
+        }).responseText
+
+console.log("Getting app_info");
+console.log(AppsData);
+
+var apps = jQuery.parseJSON(AppsData);
 
 
 
