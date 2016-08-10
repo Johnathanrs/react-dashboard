@@ -183,7 +183,7 @@ class ServiceCardItem extends React.Component {
                 
                 
                                   <div className="gate-apl">
-                     <h3 className="active">MDL_Gateway Applications</h3>
+                     <h3 className="active">{this.props.name} Applications</h3>
                      <div className="inside active">
                          
                         <section className="add-aplication">

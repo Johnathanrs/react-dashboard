@@ -34,19 +34,10 @@ class FilterableApplicationListingBox extends React.Component {
 };
 
 class ApplicationRow extends React.Component {
-      constructor() {
-    super();
-
-    this.state = {
-      showApplications: false,
-      apps: []
-    };
-  }
-    
    render() {
     return (
         <tbody>
-        <CreateApp addApp={this._addApp.bind(this)} images={images}/>
+        <CreateApp images={images}/>
         
         
         
@@ -64,54 +55,6 @@ class ApplicationRow extends React.Component {
 
 );
    }
-      _addApp(applicationName, applicationExec) {
-          console.log("_addApp executed");   console.log("Application Name: " + applicationName);
-    console.log("Application Value: " + applicationExec);
-    let app = {
-    //id created server side     id: mongoose.Types.ObjectId(),
-        appName: applicationName,
-    appStatus: 'Deployed',
-    appHealth: 'Healthy',
-    appUptime: '12 hours 2 Min',
-    appExec: applicationExec
-        
-        
-    };
-    console.log("Parsing app object to send via REST")
-    console.log("appName: " + app.appName)
-    console.log("appExec: " + app.appExec)
-    console.log("appStatus: " + app.appStatus)
-    console.log("appHealth: " + app.appHealth)
-    console.log("appUptime: " + app.appUptime)
-    
-    var myString = JSON.stringify(app)
-    console.log(app)
-    
-    $.ajax({
-  type: "POST",
-  url: "http://127.0.0.1:3000/api/app_infos",
-  data: app,
-  dataType: 'json'
-});
-    
-    this.setState({
-      //needtofixapps: this.state.applications.concat([apps])
-         
-    });
-  }
-    
-  _fetchApplications() {
-    $.ajax({
-      method: 'GET',
-      url: "http://127.0.0.1:3000/api/app_infos",
-      success: (apps) => { this.setState({apps})
-
-      }
-    }).responseText;
-  }
-    componentWillMount() {
-      this._fetchApplications();
-    }
 }
 class ApplicationItem extends React.Component{
     render(){
@@ -141,7 +84,7 @@ class CreateApp extends React.Component {
         
         				<tr className="add-clone">
 									<td colSpan="7">
-										<form onSubmit={this._handleSubmit.bind(this)}>
+										<form action="#">
 											<div className="cols">
 												<div className="item">
 													
@@ -151,10 +94,10 @@ class CreateApp extends React.Component {
 													
 												</div>
 												<div className="item">
-													<input type="text" placeholder="Enter name here..." ref={(input) => this._appName = input} />
+													<input type="text" placeholder="Enter name here..."></input>
 												</div>
 												<div className="item">
-													<input type="text" placeholder="Enter app exec..." ref={(input) => this._appExec = input} />
+													<input type="text" placeholder="Enter app init..."></input>
 												</div>
 												<div className="item">
 													<button type="submit" className="btn btn-blue">Create</button>
@@ -169,28 +112,6 @@ class CreateApp extends React.Component {
         
         );
     }
-_getInstanceCount() {
-    this.setState({ 
-      characters: this._body.value.length.notdoneyet
-    });
-  }
-    
-_handleSubmit(event) {
-    event.preventDefault();
-
-    
-    if ((!this._appName.value) || (!this._appExec.value)) {
-        alert('Please enter your appName and appExec.');
-                 return
-  }
-        
-    console.log("Application Name: " + this._appName.value)
-    console.log("Application Value: " + this._appExec.value)
-    this.props.addApp(this._appName.value, this._appExec.value);
-    
-    this._appName.value = '';
-    this._appExec.value = '';
-  }
 
 }
 
