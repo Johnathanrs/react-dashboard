@@ -34,7 +34,6 @@ class FilterableApplicationListingBox extends React.Component {
 };
 
 class ApplicationRow extends React.Component {
-    
       constructor() {
     super();
 
@@ -43,24 +42,28 @@ class ApplicationRow extends React.Component {
       apps: []
     };
   }
-    componentWillMount() {
-        this._fetchApplications();
-    }
     
    render() {
-       const applications_row = this._getApplications();
     return (
         <tbody>
-        <CreateApp addApp={this._addApp.bind(this)} images={images}/>        
+        <CreateApp addApp={this._addApp.bind(this)} images={images}/>
         
-        {applications_row}
+        
+        
+        {this.props.applications.map(
+             (applications) => <ApplicationItem  key={applications._id}
+                                    name={applications.appName}
+                                    version={applications.version}
+                                    status={applications.appStatus} 
+                                    health={applications.appHealth}
+                                    uptime={applications.appUptime} />
+             )}
 				
         </tbody>
 
 );
    }
       _addApp(applicationName, applicationExec) {
-           const applications_row = this._getApplications();
           console.log("_addApp executed");   console.log("Application Name: " + applicationName);
     console.log("Application Value: " + applicationExec);
     let app = {
@@ -89,44 +92,25 @@ class ApplicationRow extends React.Component {
   dataType: 'json'
 });
     
-//    this.setState(
-//      //needtofixapps: this.state.applications.concat([apps])
-//         
-//    );
-          this._fetchApplications();
+    this.setState({
+      //needtofixapps: this.state.applications.concat([apps])
+         
+    });
   }
     
   _fetchApplications() {
     $.ajax({
       method: 'GET',
       url: "http://127.0.0.1:3000/api/app_infos",
-      success: (apps) => {this.setState({apps})}
-    });
-  }
+      success: (apps) => { this.setState({apps})
 
-_getApplications(){
-    return this.state.apps.map((applications) => {
-        return (<ApplicationItem  key={applications._id}
-                                    name={applications.appName}
-                                    version={applications.version}
-                                    status={applications.appStatus} 
-                                    health={applications.appHealth}
-                                    uptime={applications.appUptime} />);
-                });
-    
-}
-                               
-componentWillMount() {
+      }
+    }).responseText;
+  }
+    componentWillMount() {
       this._fetchApplications();
     }
-componentDidMount(){
-    this._timer = setInterval(() => this._fetchApplications(), 5000);
-    }
-    componentWillUnmount() {
-        clearInterval(this._timer)
-    }
 }
-
 class ApplicationItem extends React.Component{
     render(){
         return (
@@ -226,7 +210,7 @@ class ApplicationList extends React.Component {
 							</thead>
             
 
-            <ApplicationRow />
+            <ApplicationRow applications={apps} />
             	
             	</table>
 
@@ -292,17 +276,17 @@ let applications2= [
 
 
 
-//var AppsURL = "http://127.0.0.1:3000/api/app_infos"
-//var AppsData = jQuery.ajax({
-//            url: AppsURL, 
-//            async: false,
-//            dataType: 'json'
-//        }).responseText
-//
-//console.log("Getting app_info");
-//console.log(AppsData);
-//
-//var apps = jQuery.parseJSON(AppsData);
+var AppsURL = "http://127.0.0.1:3000/api/app_infos"
+var AppsData = jQuery.ajax({
+            url: AppsURL, 
+            async: false,
+            dataType: 'json'
+        }).responseText
+
+console.log("Getting app_info");
+console.log(AppsData);
+
+var apps = jQuery.parseJSON(AppsData);
 
 
 

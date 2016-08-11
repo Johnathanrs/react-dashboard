@@ -13,7 +13,7 @@ app.use(function (req, res, next) {
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-//mongoose.connect('mongodb://evo54.evolute.io:27017/docker');
+
 mongoose.connect('mongodb://localhost:27017/evolute');
 var info_schema = new mongoose.Schema({
     _id: {
@@ -273,14 +273,13 @@ var apps_schema = new mongoose.Schema({
     }
 });
 
+function generate_id() {
+    var id = new mongoose.Types.ObjectId();
+console.log("new id generated" + id)
+    return id;
+}
 
-//    {key: 1, name: "CVX_DataLake", status: "Undeployed", owner:"Jason Bourne", health: "Not Applicable", uptime: "Not Applicable", applications:[
-//        {key: 1, name: "cassandra-seed", status: "Undeployed",  health: "Not Applicable", uptime: "Not Applicable"}, 
-//        {key: 2, name: "cassandra-peer", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"},
-//        {key: 3, name: "hadoop-dn", status: "Undeployed", health: "Not Applicable", uptime: "Not Applicable"},
-//        {key: 4, name: "hadoop-nn", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"} 
-//        ]
-//    },
+
 
 
 var containerInfos = mongoose.model('container_infos', info_schema);
@@ -288,13 +287,7 @@ var containerStats = mongoose.model('container_stats', stats_schema);
 var serviceInfos = mongoose.model('service_infos', services_schema);
 var appInfos = mongoose.model('app_infos', apps_schema);
 
-//DEBUGconsole.log(serviceInfos.base.models.service_infos);
 
-//app.get('/api/container_stats', function (req, res) {
-//    containerStats.find(function(err, data){
-//        res.json(data);
-//    });
-//});
 
 app.get('/api/container_infos', function (req, res) {
     containerInfos.findOne(function (err, data) {
@@ -311,11 +304,15 @@ app.get('/api/service_infos', function (req, res) {
 app.get('/api/app_infos', function (req, res) {
     appInfos.find(function (err, data) {
         res.json(data);
-//        console.log(data)
     });
 });
 
 app.use('/api/app_infos', function (req, res) {
+    
+    console.log("generating id: ")
+var newid = generate_id();
+console.log("logging new id: " + newid)
+    
   res.setHeader('Content-Type', 'text/plain')
   res.write('you posted:\n')
   res.end(JSON.stringify(req.body, null, 2))
@@ -326,7 +323,7 @@ app.use('/api/app_infos', function (req, res) {
   
   
   var newApp = new appInfos({
-    _id: id,
+    _id: newid,
     appName: req.body.appName,
     appStatus: req.body.appStatus,
     appHealth: req.body.appHealth,
@@ -339,71 +336,50 @@ app.use('/api/app_infos', function (req, res) {
 
 })
 
-//app.post('/api/app_infos', function (req, res) {
-// //   id = mongoose.Types.ObjectId(),
-//    
-//    
-////CVX_DataLake.save(function (err, CVX_DataLake) {
-////    if (err) return console.error(err);
-////});
-//    console.log("API app_infos POST received")
-//    console.log(req.body);      // your JSON
-//    
-////    console.log(req)
-////    console.log(res)
-//    res.end()
-//   });
 
-//console.log(containerInfos)
 var server = app.listen(3000);
 
-var id = mongoose.Types.ObjectId();
-var cassandra_peer = new appInfos({
-    _id: id,
-    appName: 'cassandra-peer',
-    appStatus: 'Deployed',
-    appHealth: 'Healthy',
-    appUptime: '12 hours 2 Min'
-});
 
-var CVX_DataLake = new serviceInfos({
-    _id: id,
-    svcName: 'CVX_DataLake',
-    svcStatus: 'Undeployed',
-    svcOwner: 'Jason Bourne',
-    svcHealth: 'Healthy',
-    svcUptime: 'Not Applicable',
-    svcApplications: [
-        {
-            key: 1,
-            name: "cassandra-seed",
-            status: "Undeployed",
-            health: "Not Applicable",
-            uptime: "Not Applicable"
-        },
-        {
-            key: 2,
-            name: "cassandra-peer",
-            status: "Deployed",
-            health: "Healthy",
-            uptime: "12 hours 2 Min"
-        },
-        {
-            key: 3,
-            name: "hadoop-dn",
-            status: "Undeployed",
-            health: "Not Applicable",
-            uptime: "Not Applicable"
-        },
-        {
-            key: 4,
-            name: "hadoop-nn",
-            status: "Deployed",
-            health: "Healthy",
-            uptime: "12 hours 2 Min"
-        }
-        ]
-});
+
+//
+//var CVX_DataLake = new serviceInfos({
+//    _id: id,
+//    svcName: 'CVX_DataLake',
+//    svcStatus: 'Undeployed',
+//    svcOwner: 'Jason Bourne',
+//    svcHealth: 'Healthy',
+//    svcUptime: 'Not Applicable',
+//    svcApplications: [
+//        {
+//            key: 1,
+//            name: "cassandra-seed",
+//            status: "Undeployed",
+//            health: "Not Applicable",
+//            uptime: "Not Applicable"
+//        },
+//        {
+//            key: 2,
+//            name: "cassandra-peer",
+//            status: "Deployed",
+//            health: "Healthy",
+//            uptime: "12 hours 2 Min"
+//        },
+//        {
+//            key: 3,
+//            name: "hadoop-dn",
+//            status: "Undeployed",
+//            health: "Not Applicable",
+//            uptime: "Not Applicable"
+//        },
+//        {
+//            key: 4,
+//            name: "hadoop-nn",
+//            status: "Deployed",
+//            health: "Healthy",
+//            uptime: "12 hours 2 Min"
+//        }
+//        ]
+//});
 
 console.log("Opening up connection to MongoDB")
 var db = mongoose.connection;
@@ -412,23 +388,3 @@ db.once('open', function () {
     // we're connected!
 });
 
-
-
-//console.log(cassandra_peer.appName); 
-
-//console.log(CVX_DataLake.svcName); 
-////console.log(CVX_DataLake.svcApplications); // 'CVX_Datalake Applications'
-//console.log(CVX_DataLake.svcOwner); // 'Jason Bourne'
-
-
-
-//cassandra_peer.save(function (err, cassandra_peer) {
-//CVX_DataLake.save(function (err, CVX_DataLake) {
-//    if (err) return console.error(err);
-//});
-
-
-//let services = serviceInfos.find(function (err, service) {
-//    if (err) return console.error(err);
-//    console.log(service)
-//})

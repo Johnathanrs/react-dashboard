@@ -10,24 +10,99 @@ class FilterableApplicationCardBox extends React.Component {
 };
 
 class ApplicationCardRow extends React.Component {
+constructor() {
+    super();
+
+    this.state = {
+      showApplications: false,
+      apps: []
+    };
+  }
+componentWillMount() {
+        this._fetchApplications();
+    }
+      
    render() {
+       const applications_row = this._getApplications();
     return (
 <section className="add-aplication">
       
               <CreateAppCard />
-                            {this.props.applications.map(
-             (applications) => <ApplicationCardItem  key={applications._id}
-                                    name={applications.appName}
-                                    version={applications.version}
-                                    status={applications.appStatus} 
-                                    health={applications.appHealth}
-                                    service={applications.service}
-                                    uptime={applications.appUptime} />
-             )}
+        
+         {applications_row}
+                           
 						
                         </section>
 );
    }
+    
+      _addApp(applicationName, applicationExec) {
+           const applications_row = this._getApplications();
+          console.log("_addApp executed");   console.log("Application Name: " + applicationName);
+    console.log("Application Value: " + applicationExec);
+    let app = {
+        appName: applicationName,
+    appStatus: 'Deployed',
+    appHealth: 'Healthy',
+    appUptime: '12 hours 2 Min',
+    appExec: applicationExec
+        
+        
+    };
+    console.log("Parsing app object to send via REST")
+    console.log("appName: " + app.appName)
+    console.log("appExec: " + app.appExec)
+    console.log("appStatus: " + app.appStatus)
+    console.log("appHealth: " + app.appHealth)
+    console.log("appUptime: " + app.appUptime)
+    
+    var myString = JSON.stringify(app)
+    console.log(app)
+    
+    $.ajax({
+  type: "POST",
+  url: "http://127.0.0.1:3000/api/app_infos",
+  data: app,
+  dataType: 'json'
+});
+    
+//    this.setState(
+//      //needtofixapps: this.state.applications.concat([apps])
+//         
+//    );
+          this._fetchApplications();
+  }
+    
+      _fetchApplications() {
+    $.ajax({
+      method: 'GET',
+      url: "http://127.0.0.1:3000/api/app_infos",
+      success: (apps) => {this.setState({apps})}
+    });
+  }
+
+_getApplications(){
+    return this.state.apps.map((applications) => {
+        return (<ApplicationCardItem  key={applications._id}
+                                    name={applications.appName}
+                                    version={applications.version}
+                                    status={applications.appStatus} 
+                                    health={applications.appHealth}
+                                    uptime={applications.appUptime} />);
+                });
+    
+}
+                               
+componentWillMount() {
+      this._fetchApplications();
+    }
+componentDidMount(){
+    this._timer = setInterval(() => this._fetchApplications(), 5000);
+    }
+    componentWillUnmount() {
+        clearInterval(this._timer)
+    }                               
+
 }
 
 class ApplicationCardItem extends React.Component{
@@ -86,7 +161,7 @@ class ApplicationCardList extends React.Component {
             				<div className="list-type-r cols-list active">
             				
 
-						<ApplicationCardRow applications={apps} />
+						<ApplicationCardRow />
 					
 					
             </div>
@@ -110,18 +185,18 @@ let applications2= [
 
 /* DEBUG console.log(applications) */
 
-
-var AppsURL = "http://127.0.0.1:3000/api/app_infos"
-var AppsData = jQuery.ajax({
-            url: AppsURL, 
-            async: false,
-            dataType: 'json'
-        }).responseText
-
-console.log("Getting app_info");
-console.log(AppsData);
-
-var apps = jQuery.parseJSON(AppsData);
+//
+//var AppsURL = "http://127.0.0.1:3000/api/app_infos"
+//var AppsData = jQuery.ajax({
+//            url: AppsURL, 
+//            async: false,
+//            dataType: 'json'
+//        }).responseText
+//
+//console.log("Getting app_info");
+//console.log(AppsData);
+//
+//var apps = jQuery.parseJSON(AppsData);
 
 
 ReactDOM.render(

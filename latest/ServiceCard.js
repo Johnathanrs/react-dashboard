@@ -45,18 +45,26 @@ class ServiceCardList extends React.Component {
 
 
 class ServiceCardRow extends React.Component {
+    constructor() {
+    super();
+
+    this.state = {
+      showServices: false,
+      services: []
+    };
+  }
+    componentWillMount() {
+        this._fetchServices();
+    }
+    
    render() {
+       const services_row = this._getServices();
     return (
        
         <div className="list-type-r cols-list active">
-            {this.props.services.map(
-                (services) => <ServiceCardItem key={services._id}
-                                                  name={services.svcName}
-                                                  applications={services.svcApplications}
-                                                  uptime={services.svcUptime}
-                                                  owner={services.svcOwner}
-                                                  status={services.svcStatus}/>
-            )}
+        
+        {services_row}
+           
             
           <div className="to-clone hide">
                      <div className="service-card">
@@ -123,6 +131,73 @@ class ServiceCardRow extends React.Component {
   
         );
    }
+
+   _addSvc(serviceName) {
+           const services_row = this._getServices();
+          console.log("_addSvc executed");   console.log("Service Name: " + serviceName);
+    
+    let svc = {
+    svcName: svcName,
+    svcStatus: 'Deployed',
+    svcHealth: 'Healthy',
+    svcUptime: '12 hours 2 Min'
+        
+        
+    };
+    console.log("Parsing svc object to send via REST")
+    console.log("svcName: " + svc.svcName)
+    console.log("svcStatus: " + svc.svcStatus)
+    console.log("svcHealth: " + svc.svcHealth)
+    console.log("svcUptime: " + svc.svcUptime)
+    
+    var myString = JSON.stringify(svc)
+    console.log(svc)
+    
+    $.ajax({
+  type: "POST",
+  url: "http://127.0.0.1:3000/api/service_infos",
+  data: svc,
+  dataType: 'json'
+});
+    
+//    this.setState(
+//      //needtofixapps: this.state.applications.concat([apps])
+//         
+//    );
+          this._fetchServices();
+  }
+
+
+      _fetchServices() {
+    $.ajax({
+      method: 'GET',
+      url: "http://127.0.0.1:3000/api/service_infos",
+      success: (services) => {this.setState({services})}
+    });
+  }
+
+_getServices(){
+    return this.state.services.map((services) => {
+        return (<ServiceCardItem  key={services._id}
+                                        name={services.svcName}
+                                        applications={services.svcApplications}
+                                        uptime={services.svcUptime}
+                                        owner={services.svcOwner}
+                                        status={services.svcStatus} />);
+                });
+ 
+}
+                         
+componentWillMount() {
+      this._fetchServices();
+    }
+componentDidMount(){
+    this._timer = setInterval(() => this._fetchServices(), 5000);
+    }
+    componentWillUnmount() {
+        clearInterval(this._timer)
+    }        
+
 }
 
 class ServiceCardItem extends React.Component {
@@ -264,25 +339,25 @@ let services2 = [
 
 
 
-
-
-var url = "http://127.0.0.1:3000/api/service_infos"
-var data = jQuery.ajax({
-            url: url, 
-            async: false,
-            dataType: 'json'
-        }).responseText
-
-
-console.log("Getting services_info");
-console.log(data);
-
-var services = jQuery.parseJSON(data);
-
-console.log("Parsing: " + url);
-console.log(services);
-console.log(services[0]);
-console.log(services[0].svcApplications);
+//
+//
+//var url = "http://127.0.0.1:3000/api/service_infos"
+//var data = jQuery.ajax({
+//            url: url, 
+//            async: false,
+//            dataType: 'json'
+//        }).responseText
+//
+//
+//console.log("Getting services_info");
+//console.log(data);
+//
+//var services = jQuery.parseJSON(data);
+//
+//console.log("Parsing: " + url);
+//console.log(services);
+//console.log(services[0]);
+//console.log(services[0].svcApplications);
 
 //console.log("Trying new applications parse");
 //var applications_try = jQuery.parseJSON(data);
