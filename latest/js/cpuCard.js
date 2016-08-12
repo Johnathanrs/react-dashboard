@@ -138,3 +138,4 @@ var p = Math.PI * 2;
   d3.select("#svgdataurl").html(img);
     d3.select("#cpu").selectAll('.right').html(img)
     d3.select("#svg").remove()
+    d3.select("#svgdataurl").remove()

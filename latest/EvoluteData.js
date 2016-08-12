@@ -290,10 +290,47 @@ var appInfos = mongoose.model('app_infos', apps_schema);
 
 
 app.get('/api/container_infos', function (req, res) {
-    containerInfos.findOne(function (err, data) {
+//    WORKS containerInfos.findOne(function (err, data) {
+    containerInfos.find(function (err, data) {
+    
+        res.json(data);
+    })
+//        .sort({'lxc_id': 1, 'date': -1})
+    .limit(50);
+});
+
+
+//FAIL   .group({'_id': "$lxc_id", lastDate: { $last: "$date"} })
+
+app.get('/api/container_infos/test', function (req, res) {
+//    console.log(containerInfos)
+    containerInfos.aggregate([
+        { "$limit": 200 },
+        { $sort: {'lxc_id': 1, 'date': -1}},
+        { $group: {'_id': "$lxc_id", 'host': "$dns_name", lastDate: { $last: "$ReadTime"} }}
+       
+//        { $populate: {'lxc_id'} }
+        
+        
+    ], function (err, result) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        console.log(result);
+//FAIL        containerInfos.populate(result, {path: "lxc_id"}, err);
+        res.json(result);
+    });
+    
+//                             );
+});
+
+app.get('/api/container_stats', function (req, res) {
+    containerStats.findOne(function (err, data) {
         res.json(data);
     });
 });
+
 
 app.get('/api/service_infos', function (req, res) {
     serviceInfos.find(function (err, data) {

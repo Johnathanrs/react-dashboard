@@ -1,67 +1,67 @@
 var ExampleApplication = React.createClass({
-  render: function() {
-    var elapsed = Math.round(this.props.elapsed  / 100);
-    var seconds = elapsed / 10 + (elapsed % 10 ? '' : '.0' );
-    var message =
-      'React has been successfully running for ' + seconds + ' seconds.';
+    render: function() {
+        var elapsed = Math.round(this.props.elapsed / 100);
+        var seconds = elapsed / 10 + (elapsed % 10 ? '' : '.0');
+        var message =
+            'React has been successfully running for ' + seconds + ' seconds.';
 
-    return <p>{message}</p>;
-  }
+        return <p>{message}</p>;
+    }
 });
 
 var start = new Date().getTime();
 
 setInterval(function() {
-  ReactDOM.render(
-    <ExampleApplication elapsed={new Date().getTime() - start} />,
-    document.getElementById('container')
-  );
+    ReactDOM.render(
+        <ExampleApplication elapsed={new Date().getTime() - start} />,
+        document.getElementById('container')
+    );
 }, 50);
 
 class FilterableServiceCardBox extends React.Component {
-  render() {
-  return (
-							
-				<ServiceCardList />
-                            
-   
-  )
-  }
+    render() {
+        return (
+
+            <ServiceCardList />
+
+
+        )
+    }
 };
 
-      
+
 class ServiceCardList extends React.Component {
-  render() {
-  return (
-
-    
+    render() {
+        return (
 
 
-      <ServiceCardRow services={services}/>
-      
-  )
-  }
+
+
+            <ServiceCardRow />
+
+        )
+    }
 };
 
 
 class ServiceCardRow extends React.Component {
     constructor() {
-    super();
+        super();
 
-    this.state = {
-      showServices: false,
-      services: []
-    };
-  }
+        this.state = {
+            showServices: false,
+            services: []
+        };
+    }
     componentWillMount() {
         this._fetchServices();
     }
-    
-   render() {
-       const services_row = this._getServices();
-    return (
-       
-        <div className="list-type-r cols-list active">
+
+    render() {
+        const services_row = this._getServices();
+        return (
+
+            <div className="list-type-r cols-list active">
         
         {services_row}
            
@@ -123,80 +123,84 @@ class ServiceCardRow extends React.Component {
                         </div>
                      </div>
                   </div>
-             </div> 
-            
-        
+             </div>
 
 
-  
+
+
         );
-   }
+    }
 
-   _addSvc(serviceName) {
-           const services_row = this._getServices();
-          console.log("_addSvc executed");   console.log("Service Name: " + serviceName);
-    
-    let svc = {
-    svcName: svcName,
-    svcStatus: 'Deployed',
-    svcHealth: 'Healthy',
-    svcUptime: '12 hours 2 Min'
-        
-        
-    };
-    console.log("Parsing svc object to send via REST")
-    console.log("svcName: " + svc.svcName)
-    console.log("svcStatus: " + svc.svcStatus)
-    console.log("svcHealth: " + svc.svcHealth)
-    console.log("svcUptime: " + svc.svcUptime)
-    
-    var myString = JSON.stringify(svc)
-    console.log(svc)
-    
-    $.ajax({
-  type: "POST",
-  url: "http://127.0.0.1:3000/api/service_infos",
-  data: svc,
-  dataType: 'json'
-});
-    
-//    this.setState(
-//      //needtofixapps: this.state.applications.concat([apps])
-//         
-//    );
-          this._fetchServices();
-  }
+    _addSvc(serviceName) {
+        const services_row = this._getServices();
+        console.log("_addSvc executed");
+        console.log("Service Name: " + serviceName);
+
+        let svc = {
+            svcName: svcName,
+            svcStatus: 'Deployed',
+            svcHealth: 'Healthy',
+            svcUptime: '12 hours 2 Min'
 
 
-      _fetchServices() {
-    $.ajax({
-      method: 'GET',
-      url: "http://127.0.0.1:3000/api/service_infos",
-      success: (services) => {this.setState({services})}
-    });
-  }
+        };
+        console.log("Parsing svc object to send via REST")
+        console.log("svcName: " + svc.svcName)
+        console.log("svcStatus: " + svc.svcStatus)
+        console.log("svcHealth: " + svc.svcHealth)
+        console.log("svcUptime: " + svc.svcUptime)
 
-_getServices(){
-    return this.state.services.map((services) => {
-        return (<ServiceCardItem  key={services._id}
+        var myString = JSON.stringify(svc)
+        console.log(svc)
+
+        $.ajax({
+            type: "POST",
+            url: "http://127.0.0.1:3000/api/service_infos",
+            data: svc,
+            dataType: 'json'
+        });
+
+        //    this.setState(
+        //      //needtofixapps: this.state.applications.concat([apps])
+        //         
+        //    );
+        this._fetchServices();
+    }
+
+
+    _fetchServices() {
+        $.ajax({
+            method: 'GET',
+            url: "http://127.0.0.1:3000/api/service_infos",
+            success: (services) => {
+                this.setState({
+                    services
+                })
+            }
+        });
+    }
+
+    _getServices() {
+        return this.state.services.map((services) => {
+            return (<ServiceCardItem  key={services._id}
                                         name={services.svcName}
                                         applications={services.svcApplications}
                                         uptime={services.svcUptime}
                                         owner={services.svcOwner}
                                         status={services.svcStatus} />);
-                });
- 
-}
-                         
-componentWillMount() {
-      this._fetchServices();
+        });
+
     }
-componentDidMount(){
-    this._timer = setInterval(() => this._fetchServices(), 5000);
+
+    componentWillMount() {
+        this._fetchServices();
+    }
+    componentDidMount() {
+        this._timer = setInterval(() => this._fetchServices(), 5000);
     }
     componentWillUnmount() {
         clearInterval(this._timer)
-    }        
+    }
 
 }
 
@@ -204,8 +208,8 @@ class ServiceCardItem extends React.Component {
     render() {
         return (
 
-            
-          <div className="holder">
+
+            <div className="holder">
                   <div className="service-card">
                      <div className="left-side">
                         <div className="avatar">
@@ -276,18 +280,18 @@ class ServiceCardItem extends React.Component {
                                      </div>
                   </div>
                 </div>
-             
-            );
+
+        );
     }
 }
 
 class ServiceCardItemApplication extends React.Component {
     render() {
         return (
-            
-            
 
-                           <article>
+
+
+            <article>
                               <div className="head">
                                  <img src="img/1.png" alt="" />
                                  <h4><a href="#">{this.props.name}</a></h4>
@@ -312,30 +316,54 @@ class ServiceCardItemApplication extends React.Component {
         );
     }
 }
-  
-let services2 = [
-    {key: 1, name: "CVX_DataLake", status: "Undeployed", owner:"Jason Bourne", health: "Not Applicable", uptime: "Not Applicable", applications:[
-        {key: 1, name: "cassandra-seed", status: "Undeployed",  health: "Not Applicable", uptime: "Not Applicable"}, 
-        {key: 2, name: "cassandra-peer", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"},
-        {key: 3, name: "hadoop-dn", status: "Undeployed", health: "Not Applicable", uptime: "Not Applicable"},
-        {key: 4, name: "hadoop-nn", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"} 
-        ]
-//    },
-//        {key: 2, name: "AAPL_DataLake", status: "Deployed", owner:"Steve Wozniak", health: "Healthy", uptime: "2 Days 12 Hours", applications:[
-//        {key: 1, name: "cassandra-seed", status: "Undeployed",  health: "Not Applicable", uptime: "Not Applicable"}, 
-//        {key: 2, name: "cassandra-peer", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"},
-//        {key: 3, name: "hadoop-dn", status: "Undeployed", health: "Not Applicable", uptime: "Not Applicable"},
-//        {key: 4, name: "hadoop-nn", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"} 
-//        ]
-//    },
-//     {key: 3, name: "WLG_DataLake", status: "Undeployed", owner:"Brittany Francisco", health: "Not Applicable", uptime: "Not Applicable", applications:[
-//        {key: 1, name: "cassandra-seed", status: "Undeployed",  health: "Not Applicable", uptime: "Not Applicable"}, 
-//        {key: 2, name: "cassandra-peer", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"},
-//        {key: 3, name: "hadoop-dn", status: "Undeployed", health: "Not Applicable", uptime: "Not Applicable"},
-//        {key: 4, name: "hadoop-nn", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"} 
-//        ]
-    }        
-]
+
+let services2 = [{
+    key: 1,
+    name: "CVX_DataLake",
+    status: "Undeployed",
+    owner: "Jason Bourne",
+    health: "Not Applicable",
+    uptime: "Not Applicable",
+    applications: [{
+            key: 1,
+            name: "cassandra-seed",
+            status: "Undeployed",
+            health: "Not Applicable",
+            uptime: "Not Applicable"
+        }, {
+            key: 2,
+            name: "cassandra-peer",
+            status: "Deployed",
+            health: "Healthy",
+            uptime: "12 hours 2 Min"
+        }, {
+            key: 3,
+            name: "hadoop-dn",
+            status: "Undeployed",
+            health: "Not Applicable",
+            uptime: "Not Applicable"
+        }, {
+            key: 4,
+            name: "hadoop-nn",
+            status: "Deployed",
+            health: "Healthy",
+            uptime: "12 hours 2 Min"
+        }]
+        //    },
+        //        {key: 2, name: "AAPL_DataLake", status: "Deployed", owner:"Steve Wozniak", health: "Healthy", uptime: "2 Days 12 Hours", applications:[
+        //        {key: 1, name: "cassandra-seed", status: "Undeployed",  health: "Not Applicable", uptime: "Not Applicable"}, 
+        //        {key: 2, name: "cassandra-peer", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"},
+        //        {key: 3, name: "hadoop-dn", status: "Undeployed", health: "Not Applicable", uptime: "Not Applicable"},
+        //        {key: 4, name: "hadoop-nn", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"} 
+        //        ]
+        //    },
+        //     {key: 3, name: "WLG_DataLake", status: "Undeployed", owner:"Brittany Francisco", health: "Not Applicable", uptime: "Not Applicable", applications:[
+        //        {key: 1, name: "cassandra-seed", status: "Undeployed",  health: "Not Applicable", uptime: "Not Applicable"}, 
+        //        {key: 2, name: "cassandra-peer", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"},
+        //        {key: 3, name: "hadoop-dn", status: "Undeployed", health: "Not Applicable", uptime: "Not Applicable"},
+        //        {key: 4, name: "hadoop-nn", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"} 
+        //        ]
+}]
 
 
 
@@ -373,6 +401,6 @@ let services2 = [
 //console.log(services)
 
 ReactDOM.render(
-  <FilterableServiceCardBox />,
-  document.getElementById('FilterableServiceCardBoxcontainer')
+    <FilterableServiceCardBox />,
+    document.getElementById('FilterableServiceCardBoxcontainer')
 );

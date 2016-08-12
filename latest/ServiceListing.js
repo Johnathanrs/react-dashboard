@@ -1,21 +1,19 @@
-
-
 class FilterableServiceListingBox extends React.Component {
-  render() {
-  return (
-							
-				<ServiceListingList />
-                            
-   
-  )
-  }
+    render() {
+        return (
+
+            <ServiceListingList />
+
+
+        )
+    }
 };
 
-      
+
 class ServiceListingList extends React.Component {
-  render() {
-  return (
-        <div className="list-type-r row-list">
+    render() {
+        return (
+            <div className="list-type-r row-list">
                   <div className="table services">
                      <table>
                         <thead>
@@ -34,28 +32,28 @@ class ServiceListingList extends React.Component {
                   </div>
                </div>
 
-      
-  )
-  }
+
+        )
+    }
 };
-  
+
 
 class ServiceListingRow extends React.Component {
-        constructor() {
-    super();
+    constructor() {
+        super();
 
-    this.state = {
-      showServices: false,
-      services: []
-    };
-  }
+        this.state = {
+            showServices: false,
+            services: []
+        };
+    }
     componentWillMount() {
         this._fetchServices();
     }
-   render() {
-       const services_row = this._getServices();
-    return (
-        <div className="scroll-bar">
+    render() {
+        const services_row = this._getServices();
+        return (
+            <div className="scroll-bar">
                         <table>
         
                             {services_row}
@@ -120,75 +118,80 @@ class ServiceListingRow extends React.Component {
         </table>
 							</div>
                      </div>
-        
+
         );
-   }
+    }
 
-   _addSvc(serviceName) {
-           const services_row = this._getServices();
-          console.log("_addSvc executed");   console.log("Service Name: " + serviceName);
-    
-    let svc = {
-    svcName: svcName,
-    svcStatus: 'Deployed',
-    svcHealth: 'Healthy',
-    svcUptime: '12 hours 2 Min'
-        
-        
-    };
-    console.log("Parsing svc object to send via REST")
-    console.log("svcName: " + svc.svcName)
-    console.log("svcStatus: " + svc.svcStatus)
-    console.log("svcHealth: " + svc.svcHealth)
-    console.log("svcUptime: " + svc.svcUptime)
-    
-    var myString = JSON.stringify(svc)
-    console.log(svc)
-    
-    $.ajax({
-  type: "POST",
-  url: "http://127.0.0.1:3000/api/service_infos",
-  data: svc,
-  dataType: 'json'
-});
-    
-//    this.setState(
-//      //needtofixapps: this.state.applications.concat([apps])
-//         
-//    );
-          this._fetchServices();
-  }
+    _addSvc(serviceName) {
+        const services_row = this._getServices();
+        console.log("_addSvc executed");
+        console.log("Service Name: " + serviceName);
+
+        let svc = {
+            svcName: svcName,
+            svcStatus: 'Deployed',
+            svcHealth: 'Healthy',
+            svcUptime: '12 hours 2 Min'
 
 
-      _fetchServices() {
-    $.ajax({
-      method: 'GET',
-      url: "http://127.0.0.1:3000/api/service_infos",
-      success: (services) => {this.setState({services})}
-    });
-  }
+        };
+        console.log("Parsing svc object to send via REST")
+        console.log("svcName: " + svc.svcName)
+        console.log("svcStatus: " + svc.svcStatus)
+        console.log("svcHealth: " + svc.svcHealth)
+        console.log("svcUptime: " + svc.svcUptime)
 
-_getServices(){
-    return this.state.services.map((services) => {
-        return (<ServiceListingItem  key={services._id}
+        var myString = JSON.stringify(svc)
+        console.log(svc)
+
+        $.ajax({
+            type: "POST",
+            url: "http://127.0.0.1:3000/api/service_infos",
+            data: svc,
+            dataType: 'json'
+        });
+
+        //    this.setState(
+        //      //needtofixapps: this.state.applications.concat([apps])
+        //         
+        //    );
+        this._fetchServices();
+    }
+
+
+    _fetchServices() {
+        $.ajax({
+            method: 'GET',
+            url: "http://127.0.0.1:3000/api/service_infos",
+            success: (services) => {
+                this.setState({
+                    services
+                })
+            }
+        });
+    }
+
+    _getServices() {
+        return this.state.services.map((services) => {
+            return (<ServiceListingItem  key={services._id}
                                         name={services.svcName}
                                         applications={services.svcApplications}
                                         uptime={services.svcUptime}
                                         owner={services.svcOwner}
                                         status={services.svcStatus} />);
-                });
- 
-}
-                         
-componentWillMount() {
-      this._fetchServices();
+        });
+
     }
-componentDidMount(){
-    this._timer = setInterval(() => this._fetchServices(), 5000);
+
+    componentWillMount() {
+        this._fetchServices();
+    }
+    componentDidMount() {
+        this._timer = setInterval(() => this._fetchServices(), 5000);
     }
     componentWillUnmount() {
         clearInterval(this._timer)
-    }        
+    }
 
 
 }
@@ -196,113 +199,9 @@ componentDidMount(){
 class ServiceListingItem extends React.Component {
     render() {
         return (
-        
-
-                                       <tbody>
-{/*
-                              <tr className="active">
-                                 <td className="name down"><span className="arrow"></span>MDL_Gateway</td>
-                                 <td className="uptime">12 hours 2 Min</td>
-                                 <td className="owner">Jason Richards</td>
-                                 <td className="deployment">Undeployed</td>
-                                 <td className="instances">12</td>
-                                 <td className="time">12 SEC</td>
-                                 <td className="errors"><img width="11" src="img/ico_flag.png" alt="" />0</td>
-                              </tr>
 
 
-                              <tr className="details active">
-                                 <td colSpan="7">
-                                    <div className="service-card">
-                                       <div className="graph">
-                                          <img src="img/3.png" alt="" />
-                                       </div>
-                                       <div className="stats">
-                                          <ul>
-                                             <li className="orange">
-                                                <strong>2</strong>
-                                                <img src="img/ico_se_1.png" alt="" />
-                                                <span className="text">Database</span>
-                                             </li>
-                                             <li className="purple">
-                                                <strong>10</strong>
-                                                <img src="img/ico_se_2.png" alt="" />
-                                                <span className="text">Web Engine</span>
-                                             </li>
-                                             <li className="blue">
-                                                <strong>12</strong>
-                                                <img src="img/ico_se_3.png" alt="" />
-                                                <span className="text">Applications</span>
-                                             </li>
-                                          </ul>
-                                          <table>
-                                             <thead>
-                                                <tr>
-                                                   <th className="th-name">NAME</th>
-                                                   <th className="th-uptime">UPTIME</th>
-                                                   <th className="th-instances">INSTANCES</th>
-                                                   <th className="th-time">RESPONSE TIME</th>
-                                                   <th className="th-type">TYPE</th>
-                                                </tr>
-                                             </thead>
-                                             <tbody>
-                                                <tr>
-                                                   <td className="th-name"><img src="img/ico_se_1.png" alt="" /><a href="#">Application…123</a></td>
-                                                   <td className="th-uptime">12 hours 2 Min</td>
-                                                   <td className="th-instances">1</td>
-                                                   <td className="th-time">12 SEC</td>
-                                                   <td className="th-type">Database</td>
-                                                </tr>
-                                                <tr>
-                                                   <td className="th-name"><img src="img/ico_se_1.png" alt="" /><a href="#">Application…123</a></td>
-                                                   <td className="th-uptime">12 hours 2 Min</td>
-                                                   <td className="th-instances">2</td>
-                                                   <td className="th-time">12 SEC</td>
-                                                   <td className="th-type">Database</td>
-                                                </tr>
-                                                <tr>
-                                                   <td className="th-name"><img src="img/ico_se_3.png" alt="" /><a href="#">Application…123</a></td>
-                                                   <td className="th-uptime">12 hours 2 Min</td>
-                                                   <td className="th-instances">1</td>
-                                                   <td className="th-time">12 SEC</td>
-                                                   <td className="th-type">Application</td>
-                                                </tr>
-                                                <tr>
-                                                   <td className="th-name"><img src="img/ico_se_3.png" alt="" /><a href="#">Application…123</a></td>
-                                                   <td className="th-uptime">12 hours 2 Min</td>
-                                                   <td className="th-instances">2</td>
-                                                   <td className="th-time">12 SEC</td>
-                                                   <td className="th-type">Application</td>
-                                                </tr>
-                                                <tr>
-                                                   <td className="th-name"><img src="img/ico_se_3.png" alt="" /><a href="#">Application…123</a></td>
-                                                   <td className="th-uptime">12 hours 2 Min</td>
-                                                   <td className="th-instances">1</td>
-                                                   <td className="th-time">12 SEC</td>
-                                                   <td className="th-type">Application</td>
-                                                </tr>
-                                                <tr>
-                                                   <td className="th-name"><img src="img/ico_se_3.png" alt="" /><a href="#">Application…123</a></td>
-                                                   <td className="th-uptime">12 hours 2 Min</td>
-                                                   <td className="th-instances">2</td>
-                                                   <td className="th-time">12 SEC</td>
-                                                   <td className="th-type">Application</td>
-                                                </tr>
-                                                <tr>
-                                                   <td className="th-name"><img src="img/ico_se_3.png" alt="" /><a href="#">Application…123</a></td>
-                                                   <td className="th-uptime">12 hours 2 Min</td>
-                                                   <td className="th-instances">1</td>
-                                                   <td className="th-time">12 SEC</td>
-                                                   <td className="th-type">Application</td>
-                                                </tr>
-                                             </tbody>
-                                          </table>
-                                       </div>
-                                    </div>
-                                 </td>
-                              </tr>
-*/}
-                
+            <tbody>
                 
                 
                               <tr>
@@ -364,19 +263,19 @@ class ServiceListingItem extends React.Component {
                                  </td>
                               </tr>
                            </tbody>
-            
+
         );
-        
+
     }
-    
+
 }
 
 
 class ServiceListingItemApplication extends React.Component {
     render() {
-        {/*DEBUG console.log(this.props.application_list[0].name) */}
+        { /*DEBUG console.log(this.props.application_list[0].name) */ }
         return (
-                                                            <tr>
+            <tr>
                                                    <td className="th-name"><img src="img/ico_se_1.png" alt="" /><a href="#">{this.props.name}</a></td>
                                                     {/*WORKS<td className="th-name"><img src="img/ico_se_1.png" alt="" /><a href="#">{this.props.applications[0].name}</a></td>*/}
                                                    <td className="th-uptime">{this.props.uptime}</td>
@@ -384,48 +283,95 @@ class ServiceListingItemApplication extends React.Component {
                                                    <td className="th-time">12 SEC</td>
                                                    <td className="th-type">Database</td>
                                                 </tr>
-            );
-        }
+        );
+    }
 }
 
 
 
-let services2 = [
-    {key: 1, name: "CVX_DataLake", status: "Undeployed", owner:"Jason Bourne", health: "Not Applicable", uptime: "Not Applicable", applications:[
-        {key: 1, name: "cassandra-seed", status: "Undeployed",  health: "Not Applicable", uptime: "Not Applicable"}, 
-        {key: 2, name: "cassandra-peer", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"},
-        {key: 3, name: "hadoop-dn", status: "Undeployed", health: "Not Applicable", uptime: "Not Applicable"},
-        {key: 4, name: "hadoop-nn", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"} 
-        ]
-    },
-        {key: 2, name: "AAPL_DataLake", status: "Deployed", owner:"Steve Wozniak", health: "Healthy", uptime: "2 Days 12 Hours", applications:[
-        {key: 1, name: "cassandra-seed", status: "Undeployed",  health: "Not Applicable", uptime: "Not Applicable"}, 
-        {key: 2, name: "cassandra-peer", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"},
-        {key: 3, name: "hadoop-dn", status: "Undeployed", health: "Not Applicable", uptime: "Not Applicable"},
-        {key: 4, name: "hadoop-nn", status: "Deployed", health: "Healthy", uptime: "12 hours 2 Min"} 
-        ]
-    }
-]
-//
-//var url = "http://127.0.0.1:3000/api/service_infos"
-//var data = jQuery.ajax({
-//            url: url, 
-//            async: false,
-//            dataType: 'json'
-//        }).responseText
-//
-//
-//console.log("Getting services_info");
-//console.log(data);
-//
-//var services = jQuery.parseJSON(data);
+let services2 = [{
+        key: 1,
+        name: "CVX_DataLake",
+        status: "Undeployed",
+        owner: "Jason Bourne",
+        health: "Not Applicable",
+        uptime: "Not Applicable",
+        applications: [{
+            key: 1,
+            name: "cassandra-seed",
+            status: "Undeployed",
+            health: "Not Applicable",
+            uptime: "Not Applicable"
+        }, {
+            key: 2,
+            name: "cassandra-peer",
+            status: "Deployed",
+            health: "Healthy",
+            uptime: "12 hours 2 Min"
+        }, {
+            key: 3,
+            name: "hadoop-dn",
+            status: "Undeployed",
+            health: "Not Applicable",
+            uptime: "Not Applicable"
+        }, {
+            key: 4,
+            name: "hadoop-nn",
+            status: "Deployed",
+            health: "Healthy",
+            uptime: "12 hours 2 Min"
+        }]
+    }, {
+        key: 2,
+        name: "AAPL_DataLake",
+        status: "Deployed",
+        owner: "Steve Wozniak",
+        health: "Healthy",
+        uptime: "2 Days 12 Hours",
+        applications: [{
+            key: 1,
+            name: "cassandra-seed",
+            status: "Undeployed",
+            health: "Not Applicable",
+            uptime: "Not Applicable"
+        }, {
+            key: 2,
+            name: "cassandra-peer",
+            status: "Deployed",
+            health: "Healthy",
+            uptime: "12 hours 2 Min"
+        }, {
+            key: 3,
+            name: "hadoop-dn",
+            status: "Undeployed",
+            health: "Not Applicable",
+            uptime: "Not Applicable"
+        }, {
+            key: 4,
+            name: "hadoop-nn",
+            status: "Deployed",
+            health: "Healthy",
+            uptime: "12 hours 2 Min"
+        }]
+    }]
+    //
+    //var url = "http://127.0.0.1:3000/api/service_infos"
+    //var data = jQuery.ajax({
+    //            url: url, 
+    //            async: false,
+    //            dataType: 'json'
+    //        }).responseText
+    //
+    //
+    //console.log("Getting services_info");
+    //console.log(data);
+    //
+    //var services = jQuery.parseJSON(data);
 
 
 
 
 ReactDOM.render(
-  <FilterableServiceListingBox />,
-  document.getElementById('FilterableServiceListingBoxcontainer')
+    <FilterableServiceListingBox />,
+    document.getElementById('FilterableServiceListingBoxcontainer')
 );
-
-

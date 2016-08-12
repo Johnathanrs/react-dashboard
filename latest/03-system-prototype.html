@@ -7,10 +7,46 @@
 	<link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,600' rel='stylesheet' type='text/css'>
 	<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" media="all" href="css/style.css">
+        <script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
 	<!--[if lt IE 9]>
 		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
+     <script>
+         $(document).ready(function(){
+             $("form").submit(function(){
+                 alert("Submitted");
+             });
+         });
+      </script>
+   </head>
+   <body>
+      <h1>Basic Example with External JSX</h1>
+      <div id="container">
+         <p>
+            If you can see this, React is <strong>not</strong> working right. This is probably because you&apos;re viewing
+            this on your file system instead of a web server.<br>
+            Try navigating to the React root
+         <pre>
+          cd /path/to/react
+        </pre>
+         and running
+         <pre>
+          python -m SimpleHTTPServer
+        </pre>
+         and going to <a href="http://localhost:8000/examples/basic-jsx-external/">http://localhost:8000/examples/basic-jsx-external/</a>.
+         </p>
+      </div>
+      <h4>Example Details</h4>
+      <p>This is written with JSX in a separate file and transformed in the browser.
+      <p>
+         Learn more about React at
+         <a href="https://facebook.github.io/react" target="_blank">facebook.github.io/react</a>.
+      </p>
+      <script src="../build/react.js"></script>
+      <script src="../build/react-dom.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.min.js"></script>
     <script src="js/d3/d3.js"></script>
+    <script type="text/babel" src="ContainerListing.js"></script>
 </head>
 <body>
     <div id="svg"></div>
@@ -25,7 +61,7 @@
 				<ul class="menu">
 					<li><a href="02-dashboard.html">Dashboard</a></li>
 					<li class="current"><a href="03-system.html">System</a></li>
-					<li><a href="01-application.html">Application</a></li>
+					<li><a href="01-application-prototype.html">Application</a></li>
 				</ul>
 				<div class="user">
 					<a href="#"><img src="img/1.png" alt=""><span class="name">Tiffany Bradley</span></a>
@@ -391,6 +427,11 @@
 					</section>
 				</div>
 			</div>
+              <div id="FilterableContainerListingBoxcontainer">
+            <!-- This element's contents will be replaced with your component. -->
+         </div>
+<!--
+            
 			<div class="table loading-more">
 				<table>
 					<thead>
@@ -460,6 +501,7 @@
 					<a href="#" class="btn btn-blue more">Show more</a>
 				</div>
 			</div>
+-->
 
 		</div>
 	</div>
@@ -469,7 +511,7 @@
 	<script src="http://code.jquery.com/jquery-1.12.2.min.js"></script>
 	<script>window.jQuery || document.write("<script src='js/jquery-1.12.2.min.js'>\x3C/script>")</script>
 	<script src="js/plugins.js"></script>
-	
+	<script src="js/main.js"></script>
 
     	<script src="js/memoryCard.js"></script>
     <script src="js/cpuCard.js"></script>
