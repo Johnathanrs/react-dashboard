@@ -155,7 +155,7 @@ class ServiceCardRow extends React.Component {
 
         $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:3000/api/service_infos",
+            url: "http://127.0.0.1:3000/api/service_infos/apps",
             data: svc,
             dataType: 'json'
         });
@@ -171,7 +171,7 @@ class ServiceCardRow extends React.Component {
     _fetchServices() {
         $.ajax({
             method: 'GET',
-            url: "http://127.0.0.1:3000/api/service_infos",
+            url: "http://127.0.0.1:3000/api/service_infos/apps",
             success: (services) => {
                 this.setState({
                     services
@@ -183,11 +183,11 @@ class ServiceCardRow extends React.Component {
     _getServices() {
         return this.state.services.map((services) => {
             return (<ServiceCardItem  key={services._id}
-                                        name={services.svcName}
-                                        applications={services.svcApplications}
-                                        uptime={services.svcUptime}
-                                        owner={services.svcOwner}
-                                        status={services.svcStatus} />);
+                                        name={services.service_info[0].svcName}
+                                        applications={services.apps}
+                                        uptime={services.service_info[0].svcUptime}
+                                        owner={services.service_info[0].svcOwner}
+                                        status={services.service_info[0].svcStatus} />);
         });
 
     }
@@ -206,6 +206,10 @@ class ServiceCardRow extends React.Component {
 
 class ServiceCardItem extends React.Component {
     render() {
+        console.log(this.props.applications);
+        console.log("merging array of this.props.applications")
+        var merged = [].concat.apply([], this.props.applications);
+        console.log(merged)
         return (
 
 
@@ -267,12 +271,12 @@ class ServiceCardItem extends React.Component {
                          
                         <section className="add-aplication">
             
-                                                                      {this.props.applications.map(
-                                (SvcApplications) => <ServiceCardItemApplication key={SvcApplications.key}
-                                                  name={SvcApplications.name}
-                                                  uptime={SvcApplications.uptime}
-                                                  health={SvcApplications.health}
-                                                  status={SvcApplications.status}/>
+                                                                      {merged.map(
+                                (SvcApplications) => <ServiceCardItemApplication key={SvcApplications._id}
+                                                  name={SvcApplications.appName}
+                                                  uptime={SvcApplications.appUptime}
+                                                  health={SvcApplications.appHealth}
+                                                  status={SvcApplications.appStatus}/>
                             )}
                              </section>
 
@@ -369,7 +373,7 @@ let services2 = [{
 
 //
 //
-//var url = "http://127.0.0.1:3000/api/service_infos"
+//var url = "http://127.0.0.1:3000/api/service_infos/apps"
 //var data = jQuery.ajax({
 //            url: url, 
 //            async: false,

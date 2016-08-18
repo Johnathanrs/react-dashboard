@@ -48,6 +48,7 @@ class ApplicationRow extends React.Component {
     render() {
         const applications_row = this._getApplications();
         return (
+
             <tbody>
         <CreateApp addApp={this._addApp.bind(this)} images={images}/>        
         
@@ -95,7 +96,55 @@ class ApplicationRow extends React.Component {
         this._fetchApplications();
     }
 
+ _deployApp(applicationName, applicationInstances, applicationImage) {
+       
+        console.log("_deployApp executed");
+        console.log("Application Name: " + applicationName);
+     console.log("Application Instances: " + applicationInstances);
+        console.log("Application Image: " + applicationImage);
+        
+//     var applicationName = "test";
+     var applicationImage = "images.evolute.io:5000/evo-cassandra-seed";
+//     var applicationInstances = 1;
+     var applicationCPU = 2;
+     var applicationMemory = 1024;
+     
+        let appRun = {
+            appName: applicationName,
+           appImage: applicationImage,
+            appInstances: applicationInstances,
+            appCPU: applicationCPU,
+            appMemory: applicationMemory
+        };
+     
+        console.log("Parsing app object to send via REST")
+        console.log("appName: " + appRun.appName)
+        console.log("appImage: " + appRun.appImage)
+        console.log("appInstances: " + appRun.appInstances)
+        console.log("appCPU: " + appRun.appCPU)
+        console.log("appMemory: " + appRun.appMemory)
+
+        var myString = JSON.stringify(appRun)
+        console.log("logging appRun:")
+        console.log(appRun)
+
+        $.ajax({
+            type: "POST",
+            url: "http://127.0.0.1:3000/api/container2?name=" + appRun.appName + "&scale=" +  appRun.appInstances + "&cpu=" + appRun.appCPU + "&mem=" + appRun.appMemory + "&cmd=/sbin/init.sh" + "&image=" + appRun.appImage,
+            data: appRun,
+            dataType: 'json'
+        });
+
+        //    this.setState(
+        //      //needtofixapps: this.state.applications.concat([apps])
+        //         
+        //    );
+    
+    }
+
+
     _fetchApplications() {
+             console.log("_fetchApplications executed")
         $.ajax({
             method: 'GET',
             url: "http://127.0.0.1:3000/api/app_infos",
@@ -108,8 +157,10 @@ class ApplicationRow extends React.Component {
     }
 
     _getApplications() {
+        console.log("_getApplications executed")
         return this.state.apps.map((applications) => {
-            return (<ApplicationItem  key={applications._id}
+            return (<ApplicationItem  deployApp={this._deployApp.bind(this)} 
+                                    key={applications._id}
                                     name={applications.appName}
                                     version={applications.version}
                                     status={applications.appStatus} 
@@ -133,20 +184,47 @@ class ApplicationRow extends React.Component {
 class ApplicationItem extends React.Component {
     render() {
         return (
-
-            <tr>
+                              	<tr>
 									<td className="name"><span className="checkbox"><input type="checkbox"></input><label></label></span><a href="#">{this.props.name}</a></td>
 									<td className="uptime">{this.props.uptime}</td>
 									<td className="owner">Jason Richards</td>
-									<td className="deployment">{this.props.status}<a href="#" className="btn btn-blue">Deploy</a></td>
-									<td className="instances">12</td>
+									<td className="deployment">{this.props.status}<a href="#" className="btn btn-blue" onClick={this._handleDeploy.bind(this)}>Deploy</a></td>
+									<td className="instances" ref="instances">12</td>
 									<td className="time">{this.props.uptime}</td>
 									<td className="errors"><img width="11" src="img/ico_flag.png" alt="" />1 </td>
 								</tr>
 
+      
+
         );
     }
+        _handleDeploy(event) {
+        event.preventDefault();
 
+            console.log("_handleDeploy executed");
+            console.log("logging references")
+            console.log("logging instances " + this.refs.instances.innerHTML)
+            console.log("logging app name " + this.props.name)
+
+//        this._appImage.value = 'badentry';
+            
+            if ((!this.refs.instances.innerHTML) || (!this.props.name)){
+            alert('Could not determine name OR number of instances could not be determined');
+            return
+        }
+//
+//        console.log("Application Name: " + this._appName.value)
+//        console.log("Application Instances: " + this._appInstances.value)
+//        console.log("Application Image: " + this._appImage.value)
+            
+//        this.props.deployApp(this._appName.value, this._appInstances.value, this._appImage.value);
+
+                    this.props.deployApp(this.props.name,this.refs.instances.innerHTML,'/sbin/init.sh');
+
+//        this._appName.value = '';
+//        this._appInstances.value = '';
+//        this._appImage.value = '';
+    }
 }
 
 

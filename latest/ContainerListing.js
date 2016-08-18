@@ -32,7 +32,8 @@ class ContainerListingRow extends React.Component {
 
         this.state = {
             showContainers: false,
-            containers: []
+            containers: [],
+            container_stats: []
         };
     }
     componentWillMount() {
@@ -84,7 +85,7 @@ class ContainerListingRow extends React.Component {
     _fetchContainers() {
         $.ajax({
             method: 'GET',
-            url: "http://127.0.0.1:3000/api/container_infos",
+            url: "http://localhost:3000/api/container_infos/current",
             success: (containers) => {
                 this.setState({
                     containers
@@ -92,16 +93,45 @@ class ContainerListingRow extends React.Component {
             }
         });
     }
-
-    _getContainers() {
+    
+        _fetchContainerStats() {
+        $.ajax({
+            method: 'GET',
+            url: "http://localhost:3000/api/container_stats/current",
+            success: (container_stats) => {
+                this.setState({
+                    container_stats
+                })
+            }
+        });
+    }
+    
+         _getContainers() {
         return this.state.containers.map((containers) => {
             return (<ContainerItem  key={containers._id}
                                     name={containers.Names}
                                     status={containers.Status} 
-                                    uptime={containers.Status} />);
+                                    uptime={containers.Status}
+                                    host={containers.dns_name}/>);
         });
 
     }
+
+    _getContainerStats() {
+        return this.state.container_stats.map((container_stats) => {
+            return (<ContainerItem  key={container_stats._id}
+                                    name={container_stats.Names}
+                                    status={container_stats.Status} 
+                                    cpustats={container_stats.cpu_stats}
+                                    memorystats={container_stats.memory_stats}
+                                    diskstats={container_stats.blkio_stats}
+                                    networkstats={container_stats.network}
+                                    host={containers.dns_name}/>);
+        });
+
+    }
+    
+   
 }
 
 
@@ -113,7 +143,7 @@ class ContainerItem extends React.Component {
             <tbody>
 						<tr>
 							<td className="name"><a href="#">{this.props.name}</a></td>
-							<td>HOST_123</td>
+							<td>{this.props.host}</td>
 							<td>HOST_RING_123</td>
 							<td>Jason Richards</td>
 							<td>CPU_123</td>
@@ -128,7 +158,7 @@ class ContainerItem extends React.Component {
 
 }
 
-var LXCURL = "http://127.0.0.1:3000/api/container_infos"
+var LXCURL = "http://127.0.0.1:3000/api/container_infos/current"
 var ContainersData = jQuery.ajax({
     url: LXCURL,
     async: false,

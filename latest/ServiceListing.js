@@ -146,7 +146,7 @@ class ServiceListingRow extends React.Component {
 
         $.ajax({
             type: "POST",
-            url: "http://127.0.0.1:3000/api/service_infos",
+            url: "http://127.0.0.1:3000/api/service_infos/apps",
             data: svc,
             dataType: 'json'
         });
@@ -162,7 +162,8 @@ class ServiceListingRow extends React.Component {
     _fetchServices() {
         $.ajax({
             method: 'GET',
-            url: "http://127.0.0.1:3000/api/service_infos",
+//            url: "http://127.0.0.1:3000/api/service_infos",
+            url: "http://127.0.0.1:3000/api/service_infos/apps",
             success: (services) => {
                 this.setState({
                     services
@@ -172,13 +173,15 @@ class ServiceListingRow extends React.Component {
     }
 
     _getServices() {
+        console.log(this.state.services)
         return this.state.services.map((services) => {
             return (<ServiceListingItem  key={services._id}
-                                        name={services.svcName}
-                                        applications={services.svcApplications}
-                                        uptime={services.svcUptime}
-                                        owner={services.svcOwner}
-                                        status={services.svcStatus} />);
+                                        name={services.service_info[0].svcName}
+//                                      applications={services.svcApplications}
+                                        applications={services.apps}
+                                        uptime={services.service_info[0].svcUptime}
+                                        owner={services.service_info[0].svcOwner}
+                                        status={services.service_info[0].svcStatus} />);
         });
 
     }
@@ -198,6 +201,22 @@ class ServiceListingRow extends React.Component {
 
 class ServiceListingItem extends React.Component {
     render() {
+        
+        console.log(this.props.applications);
+//FAILED        var myString = JSON.stringify(this.props.applications)
+//        console.log("parsing this.props.applications");
+//        console.log(myString);
+//        console.log("removing top array");
+//        var newString = myString.slice(0,-1)
+//        console.log(newString)
+//        var newString2 = newString.slice(1)
+//        console.log(newString2);
+//        var jsonnewString2 = JSON.parse(newString2);
+//        console.log(jsonnewString2);
+        console.log("merging array of this.props.applications")
+        var merged = [].concat.apply([], this.props.applications);
+        
+        console.log(merged)
         return (
 
 
@@ -248,12 +267,12 @@ class ServiceListingItem extends React.Component {
                                                 </tr>
                                              </thead>
                                              <tbody>
-                                                      {this.props.applications.map(
-                                (SvcApplications) => <ServiceListingItemApplication key={SvcApplications.key}
-                                                  name={SvcApplications.name}
-                                                  uptime={SvcApplications.uptime}
-                                                  health={SvcApplications.health}
-                                                  status={SvcApplications.status}/>
+                                                      {merged.map(
+                                (SvcApplications) => <ServiceListingItemApplication key={SvcApplications._id}
+                                                  name={SvcApplications.appName}
+                                                  uptime={SvcApplications.appUptime}
+                                                  health={SvcApplications.appHealth}
+                                                  status={SvcApplications.appStatus}/>
                             )}
                                           {/*      <ServiceListingItemApplication SvcApplications={this.props.applications}/>*/}
                                              </tbody>
@@ -354,21 +373,27 @@ let services2 = [{
             uptime: "12 hours 2 Min"
         }]
     }]
-    //
-    //var url = "http://127.0.0.1:3000/api/service_infos"
-    //var data = jQuery.ajax({
-    //            url: url, 
-    //            async: false,
-    //            dataType: 'json'
-    //        }).responseText
-    //
-    //
-    //console.log("Getting services_info");
-    //console.log(data);
-    //
-    //var services = jQuery.parseJSON(data);
+    
+    var url = "http://127.0.0.1:3000/api/service_infos/apps"
+    var data = jQuery.ajax({
+                url: url, 
+                async: false,
+                dataType: 'json'
+            }).responseText
+    
+    
+    console.log("Getting services_info");
+    console.log(data);
+    
+console.log("Parsing services_info root");
+    var services = jQuery.parseJSON(data);
+    console.log(services);
 
+console.log("Parsing services_info root -> service_info");
+    console.log(services[0].service_info);
 
+console.log("Parsing services_info root -> service_info -> svcName");
+    console.log(services[0].service_info[0].svcName);
 
 
 ReactDOM.render(
