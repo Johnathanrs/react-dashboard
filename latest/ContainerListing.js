@@ -85,7 +85,7 @@ class ContainerListingRow extends React.Component {
     _fetchContainers() {
         $.ajax({
             method: 'GET',
-            url: "http://localhost:3000/api/container_infos/current",
+            url: "http://localhost:3000/api/container_stats/current",
             success: (containers) => {
                 this.setState({
                     containers
@@ -94,17 +94,7 @@ class ContainerListingRow extends React.Component {
         });
     }
     
-        _fetchContainerStats() {
-        $.ajax({
-            method: 'GET',
-            url: "http://localhost:3000/api/container_stats/current",
-            success: (container_stats) => {
-                this.setState({
-                    container_stats
-                })
-            }
-        });
-    }
+
     
          _getContainers() {
         return this.state.containers.map((containers) => {
@@ -112,21 +102,11 @@ class ContainerListingRow extends React.Component {
                                     name={containers.Names}
                                     status={containers.Status} 
                                     uptime={containers.Status}
-                                    host={containers.dns_name}/>);
-        });
-
-    }
-
-    _getContainerStats() {
-        return this.state.container_stats.map((container_stats) => {
-            return (<ContainerItem  key={container_stats._id}
-                                    name={container_stats.Names}
-                                    status={container_stats.Status} 
-                                    cpustats={container_stats.cpu_stats}
-                                    memorystats={container_stats.memory_stats}
-                                    diskstats={container_stats.blkio_stats}
-                                    networkstats={container_stats.network}
-                                    host={containers.dns_name}/>);
+                                    host={containers.host_dns}
+                                    cpustats={containers.cpu_stats}
+                                    memorystats={containers.memory_stats}
+                                    diskstats={containers.blkio_stats}
+                                    networkstats={containers.network}/>);
         });
 
     }
@@ -138,6 +118,53 @@ class ContainerListingRow extends React.Component {
 
 class ContainerItem extends React.Component {
     render() {
+        console.log("CONTAINER: " + this.props.name)
+        var cpu_stats = this.props.cpustats
+        console.log("logging cpu_stats ")
+        console.log(cpu_stats)
+        console.log("logging cpu_stats cpu_usage")
+         console.log(cpu_stats[0].cpu_usage)
+        console.log("logging cpu_stats cpu_usage total_usage ")
+        console.log(cpu_stats[0].cpu_usage[0].total_usage)
+        console.log("logging cpu_stats system_cpu_usage ")
+        console.log(cpu_stats[0].system_cpu_usage)
+        console.log("logging CONTAINER UTILIZATION")
+        
+//MAYBEWORKS        var cpu_util = (cpu_stats[0].cpu_usage[0].total_usage/cpu_stats[0].system_cpu_usage)*100 +"%"
+        var cpu_util = Math.round((cpu_stats[0].cpu_usage[0].total_usage/cpu_stats[0].system_cpu_usage)* 100 * 100) / 100
+        console.log(cpu_util)
+        
+        console.log("logging network_stats")
+        console.log(this.props.networkstats)
+        console.log("logging network_stats tx_bytes")
+        console.log(this.props.networkstats.tx_bytes)
+        var net_tx_bytes = this.props.networkstats.tx_bytes
+        console.log("logging network_stats rx_bytes")
+        var net_rx_bytes = this.props.networkstats.rx_bytes
+        console.log(this.props.networkstats.rx_bytes)
+        console.log("memory stats")
+        console.log(this.props.memorystats)
+         console.log("memory stats usage")
+        console.log(this.props.memorystats[0].usage)
+        var mem_usage = this.props.memorystats[0].usage
+        console.log("memory stats limit")
+        console.log(this.props.memorystats[0].limit)
+        var mem_limit = this.props.memorystats[0].limit
+        console.log("memory stats stats")
+        console.log(this.props.memorystats[0].stats)
+        var mem_util = Math.round((mem_usage/mem_limit)* 100 * 100) / 100
+        console.log ("memory utilization = " + (mem_util) + "%")
+        console.log("logging disk_stats")
+        console.log(this.props.diskstats[0].io_service_bytes_recursive)
+        var io_service_bytes_recursive = this.props.diskstats[0].io_service_bytes_recursive
+        
+        $.each(io_service_bytes_recursive, function(i, v) {
+    if ((v.major == 253) && (v.op == "Read")) {
+        console.log("Found disk " + v.major + " " + v.minor + " with " + v.op + " operations at " + v.value);
+        return;
+    }
+});
+        
         return (
 
             <tbody>
@@ -146,9 +173,9 @@ class ContainerItem extends React.Component {
 							<td>{this.props.host}</td>
 							<td>HOST_RING_123</td>
 							<td>Jason Richards</td>
-							<td>CPU_123</td>
-							<td>NETWORK_123</td>
-							<td>56,12 GB</td>
+							<td>{cpu_util}%</td>
+							<td>{net_tx_bytes}b / {net_rx_bytes}b</td>
+							<td>{mem_util}%</td>
 							<td>145</td>
 						</tr>
 					</tbody>

@@ -140,6 +140,7 @@ class ApplicationRow extends React.Component {
         //         
         //    );
     
+     
     }
 
 
@@ -189,7 +190,7 @@ class ApplicationItem extends React.Component {
 									<td className="uptime">{this.props.uptime}</td>
 									<td className="owner">Jason Richards</td>
 									<td className="deployment">{this.props.status}<a href="#" className="btn btn-blue" onClick={this._handleDeploy.bind(this)}>Deploy</a></td>
-									<td className="instances" ref="instances">12</td>
+									<td className="instances" ref="instances">1</td>
 									<td className="time">{this.props.uptime}</td>
 									<td className="errors"><img width="11" src="img/ico_flag.png" alt="" />1 </td>
 								</tr>
