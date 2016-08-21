@@ -388,6 +388,18 @@ app.get('/api/container_stats/current', function (req, res) {
 
 });
 
+app.get('/api/container_stats/current/top5/cpu', function (req, res) {
+   currentContainerStats.aggregate(
+     {$project: {_id: 0, Names: 1, ratio: { $divide: [ "$cpu_stats.cpu_usage.total_usage", "$cpu_stats.system_cpu_usage"] } } },
+     { $project: { Names: 1, percent: { $multiply: [ "$ratio", 100] } } },
+     { $sort: {percent: -1}},
+     { $limit: 5}, function(err, data){
+	     res.json(data);
+
+     });
+
+});
+
 app.get('/api/container_stats/test', function (req, res) {
     containerStats.aggregate([
 //        { "$limit": 10000 },

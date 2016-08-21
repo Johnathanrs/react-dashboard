@@ -1331,11 +1331,12 @@ img {
 	margin-bottom: -3px;
 }
 
-.overall-over .left {
+.overall-over .left, .overall-over .left1, .overall-over .left2, .overall-over .left3, .overall-over .left4, .overall-over .left5{
 	float: left;
 	width: 130px;
 	min-height: 1px;
 }
+
 
 .overall-over.v2 .left {
 	float: left;
