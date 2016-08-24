@@ -173,7 +173,7 @@ class ServiceListingRow extends React.Component {
     }
 
     _getServices() {
-        console.log(this.state.services)
+        /*DEBUGconsole.log(this.state.services)*/
         return this.state.services.map((services) => {
             return (<ServiceListingItem  key={services._id}
                                         name={services.service_info[0].svcName}
@@ -202,7 +202,7 @@ class ServiceListingRow extends React.Component {
 class ServiceListingItem extends React.Component {
     render() {
         
-        console.log(this.props.applications);
+        /*DEBUGconsole.log(this.props.applications);*/
 //FAILED        var myString = JSON.stringify(this.props.applications)
 //        console.log("parsing this.props.applications");
 //        console.log(myString);

@@ -26,7 +26,7 @@ function dataViz(incomingData){
     
 
     
-d3.select("#cpu").select('.left1 h4').html(incomingData[0].Names)
+d3.select("#cpu").select('.left1 h4').html(incomingData[0].Names.toString().substring(0,16))
 
 var canvas = d3.select("#cpu").select(".right1").append("svg")
 .attr("width", 40)
@@ -75,7 +75,7 @@ var canvas = d3.select("#cpu").select(".right1").append("svg")
 
 
 
-d3.select("#cpu").select('.left2 h4').html(incomingData[1].Names)
+d3.select("#cpu").select('.left2 h4').html(incomingData[1].Names.toString().substring(0,16))
 var canvas2 = d3.select("#cpu").select(".right2").append("svg")
 .attr("width", 40)
 .attr("height", 40);
@@ -122,7 +122,7 @@ var canvas2 = d3.select("#cpu").select(".right2").append("svg")
         .attr("letter-spacing","1.40971704")
         
         
-d3.select("#cpu").select('.left3 h4').html(incomingData[2].Names)        
+d3.select("#cpu").select('.left3 h4').html(incomingData[2].Names.toString().substring(0,16))        
 var canvas3 = d3.select("#cpu").select(".right3").append("svg")
 .attr("width", 40)
 .attr("height", 40);
@@ -171,7 +171,7 @@ var canvas3 = d3.select("#cpu").select(".right3").append("svg")
         
         
         
-d3.select("#cpu").select('.left4 h4').html(incomingData[3].Names)
+d3.select("#cpu").select('.left4 h4').html(incomingData[3].Names.toString().substring(0,16))
 var canvas4 = d3.select("#cpu").select(".right4").append("svg")
 .attr("width", 40)
 .attr("height", 40);
@@ -218,7 +218,7 @@ var canvas4 = d3.select("#cpu").select(".right4").append("svg")
         .attr("letter-spacing","1.40971704")
    
     
-d3.select("#cpu").select('.left5 h4').html(incomingData[4].Names)        
+d3.select("#cpu").select('.left5 h4').html(incomingData[4].Names.toString().substring(0,16))        
 var canvas5 = d3.select("#cpu").select(".right5").append("svg")
 .attr("width", 40)
 .attr("height", 40);

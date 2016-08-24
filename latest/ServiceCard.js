@@ -207,9 +207,9 @@ class ServiceCardRow extends React.Component {
 class ServiceCardItem extends React.Component {
     render() {
         console.log(this.props.applications);
-        console.log("merging array of this.props.applications")
+        /*DEBUGconsole.log("merging array of this.props.applications")*/
         var merged = [].concat.apply([], this.props.applications);
-        console.log(merged)
+       /*DEBUG console.log(merged)*/
         return (
 
 

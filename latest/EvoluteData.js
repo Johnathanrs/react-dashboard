@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var request = require('request');
 
 
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
@@ -98,10 +98,10 @@ var stats_schema = new mongoose.Schema({
                 throttled_time: {
                     type: Date
                 },
-                }]
-           }],
-
+            }]
         }],
+
+    }],
     cpu_stats: [{
         cpu_usage: [{
             total_usage: {
@@ -129,10 +129,10 @@ var stats_schema = new mongoose.Schema({
                 throttled_time: {
                     type: Date
                 },
-                }]
-           }],
-
+            }]
         }],
+
+    }],
     memory_stats: [{
         usage: {
             type: Number
@@ -178,29 +178,25 @@ var stats_schema = new mongoose.Schema({
             total_swap: 0,
             total_unevictable: Number,
             unevictable: Number
-            }],
+        }],
         failcnt: Number,
         limit: {
             type: String
         }
-            }],
+    }],
     blkio_stats: [{
-        io_service_bytes_recursive: [
-            {
-                major: Number,
-                minor: Number,
-                op: String,
-                value: Number
-                        }
-                ],
-        io_serviced_recursive: [
-            {
-                major: Number,
-                minor: Number,
-                op: String,
-                value: Number
-                        }
-                ],
+        io_service_bytes_recursive: [{
+            major: Number,
+            minor: Number,
+            op: String,
+            value: Number
+        }],
+        io_serviced_recursive: [{
+            major: Number,
+            minor: Number,
+            op: String,
+            value: Number
+        }],
         io_queue_recursive: {
             type: Array
         },
@@ -219,7 +215,7 @@ var stats_schema = new mongoose.Schema({
         sectors_recursive: {
             type: Array
         }
-        }],
+    }],
     Host_DNS: {
         type: String
     },
@@ -258,7 +254,7 @@ var services_schema = new mongoose.Schema({
     svcApplications: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'appInfos'
-               }],
+    }],
 
 });
 
@@ -301,9 +297,9 @@ var appInfos = mongoose.model('app_infos', apps_schema);
 
 
 
-app.get('/api/container_infos', function (req, res) {
+app.get('/api/container_infos', function(req, res) {
     //    WORKS containerInfos.findOne(function (err, data) {
-    containerInfos.find(function (err, data) {
+    containerInfos.find(function(err, data) {
 
             res.json(data);
         })
@@ -311,9 +307,9 @@ app.get('/api/container_infos', function (req, res) {
         .limit(50);
 });
 
-app.get('/api/container_infos/current', function (req, res) {
+app.get('/api/container_infos/current', function(req, res) {
 
-    currentContainerInfos.find(function (err, data) {
+    currentContainerInfos.find(function(err, data) {
 
         res.json(data);
     })
@@ -323,19 +319,16 @@ app.get('/api/container_infos/current', function (req, res) {
 
 //FAIL   .group({'_id': "$lxc_id", lastDate: { $last: "$date"} })
 
-app.get('/api/container_infos/test', function (req, res) {
+app.get('/api/container_infos/test', function(req, res) {
     //    console.log(containerInfos)
-    containerInfos.aggregate([
-        {
+    containerInfos.aggregate([{
             "$limit": 200
-        },
-        {
+        }, {
             $sort: {
                 'lxc_id': 1,
                 'date': -1
             }
-        },
-        {
+        }, {
             $group: {
                 '_id': "$lxc_id",
                 lastDate: {
@@ -345,10 +338,10 @@ app.get('/api/container_infos/test', function (req, res) {
         }
         //fail on host third entry{ $group: {'_id': "$lxc_id", 'host': "$dns_name", lastDate: { $last: "$ReadTime"} }}
 
-//        { $populate: {'lxc_id'} }
+        //        { $populate: {'lxc_id'} }
 
 
-    ], function (err, result) {
+    ], function(err, result) {
         if (err) {
             console.log(err);
             return;
@@ -372,15 +365,15 @@ app.get('/api/container_infos/test', function (req, res) {
 
 
 
-app.get('/api/container_stats', function (req, res) {
-    containerStats.findOne(function (err, data) {
+app.get('/api/container_stats', function(req, res) {
+    containerStats.findOne(function(err, data) {
         res.json(data);
     });
 });
 
-app.get('/api/container_stats/current', function (req, res) {
+app.get('/api/container_stats/current', function(req, res) {
     console.log(currentContainerStats)
-    currentContainerStats.find(function (err, data) {
+    currentContainerStats.find(function(err, data) {
         console.log("Logging current container stats data")
         console.log(data)
         res.json(data);
@@ -388,28 +381,135 @@ app.get('/api/container_stats/current', function (req, res) {
 
 });
 
-app.get('/api/container_stats/current/top5/cpu', function (req, res) {
-   currentContainerStats.aggregate(
-     {$project: {_id: 0, Names: 1, ratio: { $divide: [ "$cpu_stats.cpu_usage.total_usage", "$cpu_stats.system_cpu_usage"] } } },
-     { $project: { Names: 1, percent: { $multiply: [ "$ratio", 100] } } },
-     { $sort: {percent: -1}},
-     { $limit: 5}, function(err, data){
-	     res.json(data);
+app.get('/api/container_stats/current/top5/cpu', function(req, res) {
+    currentContainerStats.aggregate({
+        $project: {
+            _id: 0,
+            Names: 1,
+            ratio: {
+                $divide: ["$cpu_stats.cpu_usage.total_usage", "$cpu_stats.system_cpu_usage"]
+            }
+        }
+    }, {
+        $project: {
+            Names: 1,
+            percent: {
+                $multiply: ["$ratio", 100]
+            }
+        }
+    }, {
+        $sort: {
+            percent: -1
+        }
+    }, {
+        $limit: 5
+    }, function(err, data) {
+        res.json(data);
 
-     });
+    });
 
 });
 
-app.get('/api/container_stats/test', function (req, res) {
+
+app.get('/api/container_stats/current/top5/disk', function(req, res) {
+    console.log(currentContainerStats)
+        //    currentContainerStats.find(function (err, data) {
+    currentContainerStats.aggregate([
+        //        { "$limit": 10000 },
+        {
+            "$project": {
+                lxc_id: 1,
+                blkio_stats: 1
+            }
+        }
+    ], function(err, result) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        console.log("Logging current container stats data")
+        console.log(result);
+        console.log("parsing data on /api/container_stats/current/top5/disk ")
+            //        console.log(result[0])
+            //        //FAIL        containerInfos.populate(result, {path: "lxc_id"}, err);
+            //        WORKS WELL res.json(result);
+        var resultString = (JSON.stringify(result))
+        console.log(resultString)
+        var resultJSON = JSON.parse(resultString)
+        console.log(resultJSON)
+            //        console.log("first result of result JSON")
+            //        console.log(resultJSON[0].blkio_stats)
+        var containerToDiskIO = {};
+
+        resultJSON.forEach(function(diskItem, index, arr) {
+            console.log("logging disk item")
+            console.log(diskItem);
+            console.log("disk item blkio_stats")
+            console.log(diskItem.blkio_stats)
+            console.log("disk item blkio_stats io_service_bytes_recursive")
+            console.log(diskItem.blkio_stats.io_service_bytes_recursive)
+                //            
+                ////             FAIL$.each(diskItem, function(i, v) {
+            diskItem.blkio_stats.io_service_bytes_recursive.forEach(function(diskIOItem, index, arr) {
+                if ((diskIOItem.major == 253) && (diskIOItem.op == "Read") && (diskIOItem.minor > 0)) {
+                    console.log("Found Read on " + diskItem.lxc_id + " disk " + diskIOItem.major + " " + diskIOItem.minor + " with " + diskIOItem.op + " operations at " + diskIOItem.value);
+
+                    var keyname = diskItem.lxc_id
+                    containerToDiskIO[keyname] = diskIOItem.value
+
+                    return;
+                }
+                //                     if ((v.major == 253) && (v.op == "Write") && (v.minor > 0)) {
+                //        console.log("Found Read on " + diskItem._id + " disk " + v.major + " " + v.minor + " with " + v.op + " operations at " + v.value);
+                //            
+                //                var keyname = diskItem._id
+                //        containerToDiskIO[keyname] = v.value
+                //           return;
+                //    }
+
+            });
+            //        console.log(test)
+        });
+        console.log("containerToDiskIO")
+        console.log(containerToDiskIO)
+        var containerToDiskIOitems = Object.keys(containerToDiskIO).map(function(key) {
+            return [key, containerToDiskIO[key]];
+        });
+        console.log("containerToDiskIOitems")
+        console.log(containerToDiskIOitems)
+
+
+        containerToDiskIOitems.sort(function(first, second) {
+            return second[1] - first[1];
+        });
+        console.log("containerToDiskIOitems sorted")
+        console.log(containerToDiskIOitems)
+        console.log("containerToDiskIOitems top 5")
+        console.log(containerToDiskIOitems.slice(0, 5));
+        res.json(containerToDiskIOitems.slice(0, 5));
+    });
+
+
+
+    //        console.log(data)
+    //            console.log("parsing json of returned body /api/container_stats/current/top5/disk")
+    //            console.log(parsedbody[0].Status)
+    //        var parsedData = JSON.parse(data)
+
+    //        res.json(data);
+
+});
+
+app.get('/api/container_stats/test', function(req, res) {
     containerStats.aggregate([
-//        { "$limit": 10000 },
+        //        { "$limit": 10000 },
         {
             "$project": {
                 LXC_Id: 1,
                 read: 1
             }
         },
-//        { $sort: {'lxc_id': 1, 'date': 1}},
+        //        { $sort: {'lxc_id': 1, 'date': 1}},
         {
             $group: {
                 '_id': "$LXC_Id",
@@ -418,21 +518,21 @@ app.get('/api/container_stats/test', function (req, res) {
                 }
             }
         },
-//             {
-//   "$lookup":
-//     {
-//       from: 'container_stats',
-//       localField: '_id',
-//       foreignField: 'LXC_Id',
-//       as: 'current_stats'
-//     }
-//}
+        //             {
+        //   "$lookup":
+        //     {
+        //       from: 'container_stats',
+        //       localField: '_id',
+        //       foreignField: 'LXC_Id',
+        //       as: 'current_stats'
+        //     }
+        //}
         //fail on host third entry{ $group: {'_id': "$lxc_id", 'host': "$dns_name", lastDate: { $last: "$ReadTime"} }}
 
-//        { $populate: {'lxc_id'} }
+        //        { $populate: {'lxc_id'} }
 
 
-    ], function (err, result) {
+    ], function(err, result) {
         if (err) {
             console.log(err);
             return;
@@ -445,99 +545,204 @@ app.get('/api/container_stats/test', function (req, res) {
 });
 
 
-app.get('/api/service_infos/', function (req, res) {
-    serviceInfos.find(function (err, data) {
+app.get('/api/service_infos/', function(req, res) {
+    serviceInfos.find(function(err, data) {
         res.json(data);
     });
 });
 
-app.get('/api/app_infos', function (req, res) {
-    appInfos.find(function (err, data) {
+app.get('/api/app_infos', function(req, res) {
+    appInfos.find(function(err, data) {
         res.json(data);
     });
 });
 
 
-app.get('/api/container', function (req, res) {
-
-    request('http://www.google.com', function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-            //    console.log(body) // Show the HTML for the Google homepage.
-            console.log("logging response")
-            console.log(response)
-                //    res.json(data);
-            res.send(body);
-        }
-    });
-});
-
-app.use('/api/container2', function (req, res) {
-    console.log("someone hit /api/container2");
-    console.log("user sent name: " + req.query.name + " to /api/container2")
-    
-    console.log("logging request to /api/container2 ")
-            console.log(req)
- request({
-     method: 'GET',
-     url: 'http://felicity.evolute.io',
-     qs: {
-         name: req.query.name,
-         scale: req.query.scale,
-         cpu: req.query.cpu,
-         mem: req.query.mem,
-         cmd: req.query.cmd,
-         image: req.query.image
-     }
- },function (error, response, body) {
-     if (error) {
-         console.log("Made it to error")
-         res.json(502, {error: "bad_gateway", reason: err.code});
-         return;
-         }
-        if (!error && response.statusCode == 200) {
-            //    console.log(body) // Show the HTML for the Google homepage.
+//app.get('/api/container', function (req, res) {
+//
+//    request('http://www.google.com', function (error, response, body) {
+//        if (!error && response.statusCode == 200) {
+//            //    console.log(body) // Show the HTML for the Google homepage.
 //            console.log("logging response")
 //            console.log(response)
-                //    res.json(data);
+//                //    res.json(data);
+//            res.send(body);
+//        }
+//    });
+//});
+
+app.use('/api/container', function(req, res) {
+    console.log("someone hit /api/container");
+    console.log("user sent name: " + req.query.name + " to /api/container")
+
+    console.log("logging request to /api/container ")
+    console.log(req)
+    request({
+        method: 'GET',
+        url: 'http://felicity.evolute.io',
+        qs: {
+            name: req.query.name,
+            scale: req.query.scale,
+            cpu: req.query.cpu,
+            mem: req.query.mem,
+            cmd: req.query.cmd,
+            image: req.query.image
+        }
+    }, function(error, response, body) {
+        if (error) {
+            console.log("Made it to error")
+            res.json(502, {
+                error: "bad_gateway",
+                reason: err.code
+            });
+            return;
+        }
+        if (!error && response.statusCode == 200) {
+            //    console.log(body) // Show the HTML for the Google homepage.
+            //            console.log("logging response")
+            //            console.log(response)
+            //    res.json(data);
             res.send(body);
         } else {
             console.log("something else happened brother")
-             console.log(response)
+            console.log(response)
             console.log(body)
-             res.send(body);
+            res.send(body);
         }
-     
+
     });
 
 });
 
-app.get('/api/service_infos/apps', function (req, res) {
+
+
+app.get('/api/health/container/:lxc_id', function(req, res) {
+    console.log("someone hit /api/health/container");
+    console.log("health on container name: " + req.params.lxc_id + " to /api/health/container")
+
+    //    var lxc_id_norm = req.params.lxc_id.substring(0, 12);
+    console.log("container name to 12 characters: " + req.params.lxc_id);
+    //    console.log("logging request to /api/health/container ")
+    //            console.log(req)
+    request({
+        method: 'GET',
+        url: 'http://consul-api.evolute.io:8500/v1/health/node/' + req.params.lxc_id,
+        //     qs: {
+        //         name: req.query.name,
+        //         scale: req.query.scale,
+        //         cpu: req.query.cpu,
+        //         mem: req.query.mem,
+        //         cmd: req.query.cmd,
+        //         image: req.query.image
+        //     }
+    }, function(error, response, body) {
+        if (error) {
+            console.log("Made it to /api/health/container error")
+            res.json(502, {
+                error: "bad_gateway",
+                reason: err.code
+            });
+            return;
+        }
+        if (!error && response.statusCode == 200) {
+            //    console.log(body) // Show the HTML for the Google homepage.
+            console.log("logging response")
+                //            console.log(response)
+                //    res.json(data);
+            var parsedbody = JSON.parse(body);
+            console.log("parsing json of returned body")
+            console.log(parsedbody)
+            console.log("parsing json of returned body status")
+            console.log(parsedbody[0].Status)
+            res.send(body);
+            //            res.send(parsedbody[0].Status);
+        } else {
+            console.log("something else happened when querying /api/health/container brother")
+            console.log(response)
+            console.log(body)
+            res.send(body);
+        }
+
+    });
+
+});
+
+
+app.use('/api/health/application/:app_id', function(req, res) {
+    console.log("someone hit /api/health/application/");
+    console.log("health on container name: " + req.params.app_id + " to /api/health/application/")
+
+    //    var lxc_id_norm = req.params.lxc_id.substring(0, 12);
+    //    console.log("container name to 12 characters: " + lxc_id_norm);
+    //    console.log("logging request to /api/health/container ")
+    //            console.log(req)
+    request({
+        method: 'GET',
+        url: 'http://consul-api.evolute.io:8500/v1/health/checks/' + req.params.app_id,
+        //     qs: {
+        //         name: req.query.name,
+        //         scale: req.query.scale,
+        //         cpu: req.query.cpu,
+        //         mem: req.query.mem,
+        //         cmd: req.query.cmd,
+        //         image: req.query.image
+        //     }
+    }, function(error, response, body) {
+        if (error) {
+            console.log("Made it to /api/health/container error")
+            res.json(502, {
+                error: "bad_gateway",
+                reason: err.code
+            });
+            return;
+        }
+        if (!error && response.statusCode == 200) {
+            //    console.log(body) // Show the HTML for the Google homepage.
+            console.log("logging response")
+                //            console.log(response)
+                //    res.json(data);
+                //            var parsedbody = JSON.parse(body);
+                //            console.log("parsing json of returned body")
+                //            console.log(parsedbody)
+                //            console.log("parsing json of returned body status")
+                //            console.log(parsedbody[0].Status)
+            res.send(body);
+            //            res.send(parsedbody[0].Status);
+        } else {
+            console.log("something else happened when querying /api/health/container brother")
+            console.log(response)
+            console.log(body)
+            res.send(body);
+        }
+
+    });
+
+});
+
+
+
+app.get('/api/service_infos/apps', function(req, res) {
     //    console.log(containerInfos)
     serviceInfos.aggregate([
         //{ $project : { title : 1 , author : 1 } }
         {
             "$limit": 200
-        },
-        {
+        }, {
             "$skip": 2
-        },
-        {
+        }, {
             "$project": {
                 svcApplications: 1
             }
-        },
-        {
+        }, {
             "$unwind": '$svcApplications'
-        },
-        {
+        }, {
             "$lookup": {
                 from: 'app_infos',
                 localField: 'svcApplications',
                 foreignField: '_id',
                 as: 'app_info'
             }
-},
-        {
+        }, {
             "$group": {
                 _id: '$_id',
                 apps: {
@@ -546,29 +751,28 @@ app.get('/api/service_infos/apps', function (req, res) {
                 ////                _id: '$appid',
                 ////                count: {$sum: 1}
             }
-        },
-        {
+        }, {
             "$lookup": {
                 from: 'service_infos',
                 localField: '_id',
                 foreignField: '_id',
                 as: 'service_info'
             }
-},
-//        { "$project": 
-//         { 
-//             apps: 1,
-//             service_info: 1,
-////             _id: 0
-//         }
-//        },
-//        { $sort: {'lxc_id': 1, 'date': -1}},
-//        { $group: {'_id': "$lxc_id", lastDate: { $last: "$ReadTime"} }}
+        },
+        //        { "$project": 
+        //         { 
+        //             apps: 1,
+        //             service_info: 1,
+        ////             _id: 0
+        //         }
+        //        },
+        //        { $sort: {'lxc_id': 1, 'date': -1}},
+        //        { $group: {'_id': "$lxc_id", lastDate: { $last: "$ReadTime"} }}
 
 
 
 
-    ], function (err, result) {
+    ], function(err, result) {
         if (err) {
             console.log(err);
             return;
@@ -582,7 +786,7 @@ app.get('/api/service_infos/apps', function (req, res) {
 });
 
 
-app.use('/api/app_infos', function (req, res) {
+app.use('/api/app_infos', function(req, res) {
 
     console.log("generating id: ")
     var newid = generate_id();
@@ -605,7 +809,7 @@ app.use('/api/app_infos', function (req, res) {
         appUptime: req.body.appUptime
     });
     console.log(newApp.appName);
-    newApp.save(function (err, newApp) {
+    newApp.save(function(err, newApp) {
         if (err) return console.error(err);
     });
 
@@ -665,14 +869,11 @@ var CVX_DataLake3 = new serviceInfos({
     svcOwner: 'Jason Bourne',
     svcHealth: 'Healthy',
     svcUptime: 'Not Applicable',
-    svcApplications: [
-        {
-            _id: "57ab85581eebeadb93454d2a"
-        },
-        {
-            _id: "57ad0305ed85bfb3a1c75779"
-        }
-        ]
+    svcApplications: [{
+        _id: "57ab85581eebeadb93454d2a"
+    }, {
+        _id: "57ad0305ed85bfb3a1c75779"
+    }]
 });
 
 console.log(CVX_DataLake3);
@@ -698,14 +899,14 @@ console.log(CVX_DataLake3);
 // Mongoose turns a cursor to an array by default in the callback method
 console.log("starting nested query")
 var appids = []
-serviceInfos.find().limit(50).exec(function (err, results) {
+serviceInfos.find().limit(50).exec(function(err, results) {
     console.log("inside nested query")
         // Just get array of _id values
-    var ids = results.map(function (el) {
+    var ids = results.map(function(el) {
         return el._id
     });
     console.log("found the following service ids: " + ids);
-    var appids = results.map(function (el) {
+    var appids = results.map(function(el) {
             return el.svcApplications
         })
         //    var appids = "57ab85581eebeadb93454d2a";
@@ -713,12 +914,12 @@ serviceInfos.find().limit(50).exec(function (err, results) {
         // Not sure if you really mean both collections have the same primary key
         // I'm presuming two different fields being "id" as opposed to "_id"
     console.log("maintained variable appids: " + appids)
-    appids.forEach(function (doc) {
+    appids.forEach(function(doc) {
         appInfos.find({
             "_id": {
                 "$in": doc
             }
-        }, function (err, items) {
+        }, function(err, items) {
             console.log("found the following applications: " + items)
                 // matching results are here
         })
@@ -732,6 +933,6 @@ serviceInfos.find().limit(50).exec(function (err, results) {
 console.log("Opening up connection to MongoDB")
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function () {
+db.once('open', function() {
     // we're connected!
 });

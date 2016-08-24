@@ -1,3 +1,4 @@
+
 class FilterableContainerListingBox extends React.Component {
     render() {
         return (
@@ -115,10 +116,14 @@ class ContainerListingRow extends React.Component {
 }
 
 
-
+var containerToDiskIO = {};
 class ContainerItem extends React.Component {
     render() {
         console.log("CONTAINER: " + this.props.name)
+        var newname=this.props.name
+//        var newname2=newname.substring(0,2)
+        console.log("NEW CONTAINER NAME: ")
+        console.log(newname.toString().substring(0,16))
         var cpu_stats = this.props.cpustats
         console.log("logging cpu_stats ")
         console.log(cpu_stats)
@@ -154,17 +159,62 @@ class ContainerItem extends React.Component {
         console.log(this.props.memorystats[0].stats)
         var mem_util = Math.round((mem_usage/mem_limit)* 100 * 100) / 100
         console.log ("memory utilization = " + (mem_util) + "%")
-        console.log("logging disk_stats")
-        console.log(this.props.diskstats[0].io_service_bytes_recursive)
-        var io_service_bytes_recursive = this.props.diskstats[0].io_service_bytes_recursive
+//        console.log("logging disk_stats")
+//        console.log(this.props.diskstats[0].io_service_bytes_recursive)
+//        var io_service_bytes_recursive = this.props.diskstats[0].io_service_bytes_recursive
         
-        $.each(io_service_bytes_recursive, function(i, v) {
-    if ((v.major == 253) && (v.op == "Read")) {
-        console.log("Found disk " + v.major + " " + v.minor + " with " + v.op + " operations at " + v.value);
-        return;
-    }
-});
-        
+//            
+//        $.each(io_service_bytes_recursive, function(i, v) {
+//    if ((v.major == 253) && (v.op == "Read") && (v.minor > 0)) {
+//        console.log("Found Read on " + newname + " disk " + v.major + " " + v.minor + " with " + v.op + " operations at " + v.value);
+////        FAILcontainerToDiskIO.(newname) = v.value
+//        
+////        containerToDiskIO.push({
+////    key:   newname,
+////    value: v.value
+////});
+//        
+////        containerToDiskIO[newname] = v.value;
+////        containerToDiskIO.push({newname: v.value})
+//        
+//        var keyname = newname
+//        containerToDiskIO[keyname] = v.value
+//        
+//        
+////        console.log(containerToDiskIO)
+////        name_norm= this.props.name.substring(0, 12);
+////        console.log("Shortened name is: " + name_norm)
+////        
+//        return;
+//        
+//        
+//    }
+//                if ((v.major == 253) && (v.op == "Write") && (v.minor > 0)) {
+//        console.log("Found Write on  " + newname + " disk " + v.major + " " + v.minor + " with " + v.op + " operations at " + v.value);
+//        
+////        name_norm= this.props.name.substring(0, 12);
+////        console.log("Shortened name is: " + name_norm)
+////        
+//        return;
+//        
+//        
+//    }
+//});
+//            console.log("containerToDiskIO")
+//       console.log(containerToDiskIO) 
+//       var containerToDiskIOitems = Object.keys(containerToDiskIO).map(function(key) {
+//    return [key, containerToDiskIO[key]];
+//           });
+//            console.log("containerToDiskIOitems")
+//            console.log(containerToDiskIOitems)
+//            
+//            
+//            containerToDiskIOitems.sort(function(first, second) {
+//    return second[1] - first[1];
+//});
+//            console.log("containerToDiskIOitems sorted")
+//            console.log(containerToDiskIOitems)
+//       console.log(containerToDiskIOitems.slice(0, 5));
         return (
 
             <tbody>
