@@ -720,6 +720,51 @@ app.use('/api/health/application/:app_id', function(req, res) {
 });
 
 
+app.use('/api/application/:app_id/count', function(req, res) {
+    console.log("someone hit /api/application/:app_id/count");
+    
+    
+    var match = '/.*' + req.params.app_id + '.*/',
+//    query={$project: {_id: 0,Names: 1,lxc_id: 1},"Names": match}
+    query={ $match:  {"Names": match} }
+   
+   console.log("logging query")
+   console.log(query)
+currentContainerStats.aggregate([query
+//    {
+//     $project: {
+//            _id: 0,
+//            Names: 1,
+//            lxc_id: 1
+//    }
+//        },
+////    WORKS{ $match:  {"Names": /.*evo-cassandra-seed.*/}}
+//    { $match:  {"Names": /.*(req.params.app_id).*/}}
+//    
+////    {
+////        $match:
+////                {"Names": '/.*evo-cassandra-seed.*/'}
+////        {"Names": '/.*' + req.params.app_id + '.*/'}
+//        
+////        {"Names": new RegExp('^'+req.params.app_id+'$', "i")}
+////    }
+    
+ ], function(err, result) {
+        if (err) {
+            console.log("error detected")
+            console.log(err);
+            return;
+        }
+        console.log("no errors, logging results")
+        console.log(result);
+//    console.log('/.*' + req.params.app_id + '.*/')
+//    console.log(new RegExp('^'+req.params.app_id+'$', "i"))
+
+        res.json(result);
+    });
+    
+});
+
 
 app.get('/api/service_infos/apps', function(req, res) {
     //    console.log(containerInfos)

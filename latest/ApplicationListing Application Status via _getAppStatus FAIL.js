@@ -38,7 +38,8 @@ class ApplicationRow extends React.Component {
 
         this.state = {
             showApplications: false,
-            apps: []
+            apps: [],
+            appStatus: [],
         };
     }
     componentWillMount() {
@@ -143,6 +144,35 @@ class ApplicationRow extends React.Component {
      
     }
 
+ _getAppStatus(applicationName) {
+       
+        console.log("_getAppStatus executed");
+        console.log("Application Name: " + applicationName);
+   
+        
+
+//     
+//        console.log("Parsing app object to send via REST")
+//        console.log("newAppStatus: " + appStatus.appName)
+//
+//
+//        var myString = JSON.stringify(appStatus)
+//        console.log("logging appStatus:")
+//        console.log(appStatus)
+
+        $.ajax({
+            type: "GET",
+            url: "http://127.0.0.1:3000/api/health/application/" + applicationName, 
+                      success: (appStatus) => {
+                this.setState({
+                    appStatus
+                })
+            }  
+        });
+
+     
+    }
+
 
     _fetchApplications() {
              console.log("_fetchApplications executed")
@@ -161,6 +191,7 @@ class ApplicationRow extends React.Component {
         console.log("_getApplications executed")
         return this.state.apps.map((applications) => {
             return (<ApplicationItem  deployApp={this._deployApp.bind(this)} 
+                                   getAppStatus={this._getAppStatus.bind(this)}
                                     key={applications._id}
                                     name={applications.appName}
                                     version={applications.version}
@@ -183,14 +214,6 @@ class ApplicationRow extends React.Component {
 }
 
 class ApplicationItem extends React.Component {
-        constructor() {
-        super();
-
-        this.state = {
-             appCount: [{ id: 1, name:"evo-cassandra-seed", count: 4}]
-            
-        };
-    }
     render() {
         return (
                               	<tr>
@@ -200,7 +223,7 @@ class ApplicationItem extends React.Component {
 									<td className="deployment">{this.props.status}<a href="#" className="btn btn-blue" onClick={this._handleDeploy.bind(this)}>Deploy</a></td>
 									<td className="instances" ref="instances">1</td>
 									<td className="time">{this.props.uptime}</td>
-									<td className="errors"><img width="11" src="img/ico_flag.png" alt="" />{this._getInstanceCount()} </td>
+									<td className="errors"><img width="11" src="img/ico_flag.png" alt="" /><a href="#" onClick={this._handleAppStatus.bind(this)}> Test</a></td>
 								</tr>
 
       
@@ -235,23 +258,23 @@ class ApplicationItem extends React.Component {
 //        this._appImage.value = '';
     }
 
-_getInstanceCount(appId){
-    var count = 3;
-    var name = appId
-    
-//        this.setState(
-//        appCount: [{ id: 1, name:"evo-cassandra-seed", count: 4}]
-//    )
-//    return this.appId.count;
-    console.log("logging state appCount")
-    console.log(this.state.appCount)
-    console.log("logging state appCountname ")
-    console.log(this.state.appCount[0].name)
-    console.log("logging state appCountname ")
-    console.log(this.state.appCount[0].count)
-    return this.state.appCount[0].count;
-}
+        _handleAppStatus(event) {
+        event.preventDefault();
 
+            console.log("_handleAppStatus executed");
+      
+            console.log("logging app name " + this.props.name)
+
+
+            
+            if (!this.props.name){
+            alert('Could not determine name to retrieve app status for');
+            return
+        }
+
+                    this.props.getAppStatus(this.props.name);
+
+    }
 }
 
 
@@ -459,7 +482,15 @@ let applications2 = [{
 //var apps = jQuery.parseJSON(AppsData);
 
 
+var AppStatusURL = "http://127.0.0.1:3000/api/health/application/evo-cassandra"
+var AppStatusData = jQuery.ajax({
+            url: AppStatusURL, 
+            async: false,
+            dataType: 'json'
+        }).responseText
 
+console.log("Getting app status");
+console.log(AppStatusData);
 
 ReactDOM.render(
     <FilterableApplicationListingBox />,
