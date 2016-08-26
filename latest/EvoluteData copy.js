@@ -372,12 +372,10 @@ app.get('/api/container_stats', function(req, res) {
 });
 
 app.get('/api/container_stats/current', function(req, res) {
-    console.log("someone hit /api/container_stats/current")
-//    console.log(currentContainerStats)
+    console.log(currentContainerStats)
     currentContainerStats.find(function(err, data) {
-//        console.log("Logging current container stats data")
-//        console.log(data)
-        console.log("query executed to mongodb for all current container stats")
+        console.log("Logging current container stats data")
+        console.log(data)
         res.json(data);
     })
 
@@ -721,108 +719,99 @@ app.use('/api/health/application/:app_id', function(req, res) {
 
 });
 
-//
-//app.use('/api/application/:app_id/count', function(req, res) {
-//    console.log("someone hit /api/application/:app_id/count");
-//    
-//    
-//    var match = '/.*' + req.params.app_id + '.*/',
-////    query={$project: {_id: 0,Names: 1,lxc_id: 1},"Names": match}
-//    query={ $match:  {"Names": match} }
-//   
-//   console.log("logging query")
-//   console.log(query)
-//currentContainerStats.aggregate([query
-////    {
-////     $project: {
-////            _id: 0,
-////            Names: 1,
-////            lxc_id: 1
-////    }
-////        },
-//////    WORKS{ $match:  {"Names": /.*evo-cassandra-seed.*/}}
-////    { $match:  {"Names": /.*(req.params.app_id).*/}}
-////    
-//////    {
-//////        $match:
-//////                {"Names": '/.*evo-cassandra-seed.*/'}
-//////        {"Names": '/.*' + req.params.app_id + '.*/'}
-////        
-//////        {"Names": new RegExp('^'+req.params.app_id+'$', "i")}
-//////    }
-//    
-// ], function(err, result) {
-//        if (err) {
-//            console.log("error detected")
-//            console.log(err);
-//            return;
-//        }
-//        console.log("no errors, logging results")
-//        console.log(result);
-////    console.log('/.*' + req.params.app_id + '.*/')
-////    console.log(new RegExp('^'+req.params.app_id+'$', "i"))
-//
-//        res.json(result);
-//    });
-//    
-//});
-
-
 
 app.use('/api/application/:app_id/count', function(req, res) {
-var querystring = `^${req.params.app_id}`
+    console.log("someone hit /api/application/:app_id/count");
+    
+    
+    var match = '/.*' + req.params.app_id + '.*/',
+//    query={$project: {_id: 0,Names: 1,lxc_id: 1},"Names": match}
+    query={ $match:  {"Names": match} }
+   
+   console.log("logging query")
+   console.log(query)
+currentContainerStats.aggregate([query
+//    {
+//     $project: {
+//            _id: 0,
+//            Names: 1,
+//            lxc_id: 1
+//    }
+//        },
+////    WORKS{ $match:  {"Names": /.*evo-cassandra-seed.*/}}
+//    { $match:  {"Names": /.*(req.params.app_id).*/}}
+//    
+////    {
+////        $match:
+////                {"Names": '/.*evo-cassandra-seed.*/'}
+////        {"Names": '/.*' + req.params.app_id + '.*/'}
+//        
+////        {"Names": new RegExp('^'+req.params.app_id+'$', "i")}
+////    }
+    
+ ], function(err, result) {
+        if (err) {
+            console.log("error detected")
+            console.log(err);
+            return;
+        }
+        console.log("no errors, logging results")
+        console.log(result);
+//    console.log('/.*' + req.params.app_id + '.*/')
+//    console.log(new RegExp('^'+req.params.app_id+'$', "i"))
+
+        res.json(result);
+    });
+    
+});
+
+
+
+app.use('/api/application/:app_id/count2', function(req, res) {
+    
+    array =[];
+var querystring = "^evo-cassandra-seed"
 //var query = `$(/${querystring}.*/)`
 var regEx = new RegExp(querystring);
 var ContainerNames = [];
-    var testarray = [];
-     request({
-        method: 'GET',
-        url: 'http://127.0.0.1:3000/api/container_stats/current'
-    }, function(error, response, body) {
-        if (error) {
-            console.log("Made it to /api/application/:app_id/count2 error")
-            res.json(502, {
-                error: "bad_gateway",
-                reason: err.code
-            });
-            return;
-        }
-        if (!error && response.statusCode == 200) {
-            //    console.log(body) // Show the HTML for the Google homepage.
-//            console.log("logging response")
-//            console.log(response)
-            var responseString = (JSON.stringify(response))
-//            console.log("logging responseString")
-//            console.log(responseString)
-            var responseJSON = JSON.parse(responseString)
-//            console.log("logging responseString JSON")
-//        console.log(responseJSON)
-//        console.log(responseJSON.body)
-        var containers = responseJSON.body
-        var containersJSON = JSON.parse(containers)
-//        res.send(containersJSON[0])    
-        
-containersJSON.forEach(function(containerItem, index, arr) {
-//console.log("logging container item")
-//console.log(containerItem)
-//console.log("logging container item Names")
-//console.log(containerItem.Names)
+var ContainerURL = "http://127.0.0.1:3000/api/container_stats/current"
+var ContainerData = jQuery.ajax({
+            url: ContainerURL, 
+            async: false,
+            dataType: 'json'
+        }).responseText
+
+console.log("Getting current_container_stats");
+console.log(ContainerData);
+
+var containers = jQuery.parseJSON(ContainerData);
+console.log("Parsing containers JSON")
+console.log(containers)
+
+containers.forEach(function(containerItem, index, arr) {
+console.log("logging container item")
+console.log(containerItem)
+console.log("logging container item Names")
+console.log(containerItem.Names)
 ContainerNames.push(containerItem.Names)
+
+
+
+
 });
-        
-            
+
 ContainerNames.forEach(function(containerNamesItem, index, arr) {
-//    console.log("logging regEx")
-//    console.log(regEx)
-//    console.log("logging containerNamesItem array")
-//    console.log(containerNamesItem)
-//    console.log("logging containerNamesItem element")
+    console.log("logging regEx")
+    console.log(regEx)
+    console.log("logging containerNamesItem array")
+    console.log(containerNamesItem)
+    console.log("logging containerNamesItem element")
     var containerNamesItemElement = containerNamesItem[0]
-//    console.log(containerNamesItem[0])
+    console.log(containerNamesItem[0])
     
 //    if (containerNamesItemElement.match(/evo-cassandra-seed/g)){
     if (containerNamesItemElement.match(regEx)){
-//        console.log("match found on containerNamesItemElement")
+        console.log("match found on containerNamesItemElement")
         testarray.push(containerNamesItemElement)
         
     }
@@ -830,34 +819,36 @@ ContainerNames.forEach(function(containerNamesItem, index, arr) {
     return testarray.length
         
 });
-//console.log("loggin test array")
-//console.log(testarray)
+
+//
+//function findItem(ContainerItem){
+////    console.log("looking for item via findItem function")
+////    console.log("container item in finditem function is")
+////    console.log(ContainerItem)
+////    console.log("container item element in find item function is")
+////    console.log(ContainerItem[0])
+//    
+//   
+//    return ContainerItem[0].toString().match(/evo/g)
+////    return ContainerItem[0] === 'evo-cassandra-seed006'
+//}
+//    console.log("starting executing find")
+//console.log(ContainerNames.find(findItem))
+//console.log("finished executing find")
+
+
+console.log("list of container names")
+console.log(ContainerNames)
+console.log("second item in container names")
+console.log(ContainerNames[1])
+console.log("second item name in container names")
+console.log(ContainerNames[1]["0"])
+//console.log("match on container names")
+//console.log(ContainerNames.match(/evo-cassandra-seed/g))
+console.log("loggin test array")
+console.log(testarray)
 console.log("loggin test array length")
 console.log(testarray.length)
-res.json(testarray.length) 
-        
-        
-//            var containers = JSON.parse(response)
-//            
-//console.log("Parsing response JSON")
-//console.log(containers)
-//                //    res.json(data);
-//            var parsedbody = JSON.parse(body);
-//            console.log("parsing json of returned body")
-//            console.log(parsedbody)
-//            console.log("parsing json of returned body status")
-//            console.log(parsedbody[0].Status)
-//            res.send(body);
-            //            res.send(parsedbody[0].Status);
-        } else {
-            console.log("something else happened when querying /api/health/container brother")
-            console.log(response)
-            console.log(body)
-            res.send(body);
-        }
-
-    });
-   
     
     
 });

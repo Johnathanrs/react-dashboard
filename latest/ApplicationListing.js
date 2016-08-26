@@ -187,20 +187,27 @@ class ApplicationItem extends React.Component {
         super();
 
         this.state = {
-             appCount: [{ id: 1, name:"evo-cassandra-seed", count: 4}]
+// WORKS            appCount: [{ id: 1, name:"evo-cassandra-seed", count: 4}]
+            appCount: []
             
         };
     }
     render() {
+        const InstanceCount = this._getInstanceCount(this.props.name)
+//        const InstanceCount = this._getInstanceCount("evo-cassandra-seed")
+        console.log("logging InstanceCount")
+        console.log(InstanceCount)
+        console.log("logging state of appCount")
+        console.log(this.state.appCount)
         return (
                               	<tr>
 									<td className="name"><span className="checkbox"><input type="checkbox"></input><label></label></span><a href="#">{this.props.name}</a></td>
 									<td className="uptime">{this.props.uptime}</td>
 									<td className="owner">Jason Richards</td>
 									<td className="deployment">{this.props.status}<a href="#" className="btn btn-blue" onClick={this._handleDeploy.bind(this)}>Deploy</a></td>
-									<td className="instances" ref="instances">1</td>
+									<td className="instances" ref="instances">{this.state.appCount}</td>
 									<td className="time">{this.props.uptime}</td>
-									<td className="errors"><img width="11" src="img/ico_flag.png" alt="" />{this._getInstanceCount()} </td>
+									<td className="errors"><img width="11" src="img/ico_flag.png" alt="" />1</td>
 								</tr>
 
       
@@ -235,22 +242,38 @@ class ApplicationItem extends React.Component {
 //        this._appImage.value = '';
     }
 
-_getInstanceCount(appId){
-    var count = 3;
-    var name = appId
-    
-//        this.setState(
-//        appCount: [{ id: 1, name:"evo-cassandra-seed", count: 4}]
-//    )
-//    return this.appId.count;
-    console.log("logging state appCount")
-    console.log(this.state.appCount)
-    console.log("logging state appCountname ")
-    console.log(this.state.appCount[0].name)
-    console.log("logging state appCountname ")
-    console.log(this.state.appCount[0].count)
-    return this.state.appCount[0].count;
-}
+//WORKS_getInstanceCount(appId){
+//    var count = 3;
+//    var name = appId
+//    
+//
+//    console.log("logging state appCount")
+//    console.log(this.state.appCount)
+//    console.log("logging state appCountname ")
+//    console.log(this.state.appCount[0].name)
+//    console.log("logging state appCountname ")
+//    console.log(this.state.appCount[0].count)
+//    return this.state.appCount[0].count;
+//    
+//    
+//    
+//}
+
+    _getInstanceCount(appId) {
+             console.log("_getInstanceCount executed")
+        $.ajax({
+            method: 'GET',
+            url: "http://127.0.0.1:3000/api/application/" + appId + "/count",
+            success: (appCount) => {
+                this.setState({
+                    appCount
+                })
+            }
+        });
+        console.log("logging appCount")
+        console.log(this.state.appCount)
+        return this.state.appCount;
+    }
 
 }
 
@@ -291,11 +314,11 @@ class CreateApp extends React.Component {
 
         );
     }
-    _getInstanceCount() {
-        this.setState({
-            characters: this._body.value.length.notdoneyet
-        });
-    }
+//    _getInstanceCount() {
+//        this.setState({
+//            characters: this._body.value.length.notdoneyet
+//        });
+//    }
 
     _handleSubmit(event) {
         event.preventDefault();
@@ -458,7 +481,104 @@ let applications2 = [{
 //
 //var apps = jQuery.parseJSON(AppsData);
 
+//WORKED AMAZINGLY TRANSPORTED TO NODE IN EVOLUTEDATA.JS
+//var testarray =[];
+//var querystring = "^evo-cassandra-seed"
+////var query = `$(/${querystring}.*/)`
+//var regEx = new RegExp(querystring);
+//var ContainerNames = [];
+//var ContainerURL = "http://127.0.0.1:3000/api/container_stats/current"
+//var ContainerData = jQuery.ajax({
+//            url: ContainerURL, 
+//            async: false,
+//            dataType: 'json'
+//        }).responseText
+//
+//console.log("Getting current_container_stats");
+//console.log(ContainerData);
+//
+//var containers = jQuery.parseJSON(ContainerData);
+//console.log("Parsing containers JSON")
+//console.log(containers)
+//
+//containers.forEach(function(containerItem, index, arr) {
+//console.log("logging container item")
+//console.log(containerItem)
+//console.log("logging container item Names")
+//console.log(containerItem.Names)
+//ContainerNames.push(containerItem.Names)
+//
+//
+//
+//
+//});
+//
+//ContainerNames.forEach(function(containerNamesItem, index, arr) {
+//    console.log("logging regEx")
+//    console.log(regEx)
+//    console.log("logging containerNamesItem array")
+//    console.log(containerNamesItem)
+//    console.log("logging containerNamesItem element")
+//    var containerNamesItemElement = containerNamesItem[0]
+//    console.log(containerNamesItem[0])
+//    
+////    if (containerNamesItemElement.match(/evo-cassandra-seed/g)){
+//    if (containerNamesItemElement.match(regEx)){
+//        console.log("match found on containerNamesItemElement")
+//        testarray.push(containerNamesItemElement)
+//        
+//    }
+//        
+//});
+//
+////
+////function findItem(ContainerItem){
+//////    console.log("looking for item via findItem function")
+//////    console.log("container item in finditem function is")
+//////    console.log(ContainerItem)
+//////    console.log("container item element in find item function is")
+//////    console.log(ContainerItem[0])
+////    
+////   
+////    return ContainerItem[0].toString().match(/evo/g)
+//////    return ContainerItem[0] === 'evo-cassandra-seed006'
+////}
+////    console.log("starting executing find")
+////console.log(ContainerNames.find(findItem))
+////console.log("finished executing find")
+//
+//
+//console.log("list of container names")
+//console.log(ContainerNames)
+//console.log("second item in container names")
+//console.log(ContainerNames[1])
+//console.log("second item name in container names")
+//console.log(ContainerNames[1]["0"])
+////console.log("match on container names")
+////console.log(ContainerNames.match(/evo-cassandra-seed/g))
+//console.log("loggin test array")
+//console.log(testarray)
+//console.log("loggin test array length")
+//console.log(testarray.length)
+//
 
+
+//function findByPrefix(appId) {
+//    var str = appId.toString();
+//    console.log(str)
+//var regexp = '/' + appId + '/gi';
+//var matches_array = str.match(regexp);
+//  return matches_array;
+//}
+//
+////console.log("Filter evo-cassandra-seed returned: " + ContainerNames)
+//console.log("logging next filter attempt on ContainerNames")
+//console.log(ContainerNames.filter(function(a, b){
+//    
+////    console.log(a)
+//var matches_array = a.toString().match(/evo-cassandra-seed/g);
+//    return matches_array
+//}));
 
 
 ReactDOM.render(

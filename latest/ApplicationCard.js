@@ -106,7 +106,22 @@ componentDidMount(){
 }
 
 class ApplicationCardItem extends React.Component{
+            constructor() {
+        super();
+
+        this.state = {
+// WORKS            appCount: [{ id: 1, name:"evo-cassandra-seed", count: 4}]
+            appCount: []
+            
+        };
+    }
     render(){
+                const InstanceCount = this._getInstanceCount(this.props.name)
+//        const InstanceCount = this._getInstanceCount("evo-cassandra-seed")
+        console.log("logging InstanceCount")
+        console.log(InstanceCount)
+        console.log("logging state of appCount")
+        console.log(this.state.appCount)
         return (
             
             <article>
@@ -122,7 +137,7 @@ class ApplicationCardItem extends React.Component{
 									</a>
 									<a href="#" className="stat ins">
 										<img src="img/ico_green.png" width="13" alt="" />
-										<span>12 INSTANCES</span>
+										<span>{this.state.appCount} INSTANCES</span>
 									</a>
 								</div>
 							</div>
@@ -135,6 +150,21 @@ class ApplicationCardItem extends React.Component{
             </article>
             
         );
+    }
+        _getInstanceCount(appId) {
+             console.log("_getInstanceCount executed")
+        $.ajax({
+            method: 'GET',
+            url: "http://127.0.0.1:3000/api/application/" + appId + "/count",
+            success: (appCount) => {
+                this.setState({
+                    appCount
+                })
+            }
+        });
+        console.log("logging appCount")
+        console.log(this.state.appCount)
+        return this.state.appCount;
     }
     
 }
