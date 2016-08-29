@@ -1,4 +1,3 @@
-
 data = [90]
 var pScale = d3.scaleLinear().domain([0,100]).range([0, Math.PI*2]);
 var rScale = d3.scaleLinear().domain([0,100]).range([0, Math.PI]);

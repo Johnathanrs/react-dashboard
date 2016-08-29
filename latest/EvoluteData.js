@@ -412,6 +412,35 @@ app.get('/api/container_stats/current/top5/cpu', function(req, res) {
 
 });
 
+app.get('/api/container_stats/current/top5/memory', function(req, res) {
+    currentContainerStats.aggregate({
+        $project: {
+            _id: 0,
+            Names: 1,
+            ratio: {
+                $divide: ["$memory_stats.usage", "$memory_stats.limit"]
+            }
+        }
+    }, {
+        $project: {
+            Names: 1,
+            percent: {
+                $multiply: ["$ratio", 100]
+            }
+        }
+    }, {
+        $sort: {
+            percent: -1
+        }
+    }, {
+        $limit: 5
+    }, function(err, data) {
+        res.json(data);
+
+    });
+
+});
+
 
 app.get('/api/container_stats/current/top5/disk', function(req, res) {
     console.log(currentContainerStats)
