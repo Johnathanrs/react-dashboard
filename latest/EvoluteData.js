@@ -450,6 +450,7 @@ app.get('/api/container_stats/current/top5/disk', function(req, res) {
         {
             "$project": {
                 lxc_id: 1,
+                Names: 1,
                 blkio_stats: 1
             }
         }
@@ -470,7 +471,9 @@ app.get('/api/container_stats/current/top5/disk', function(req, res) {
         console.log(resultJSON)
             //        console.log("first result of result JSON")
             //        console.log(resultJSON[0].blkio_stats)
-        var containerToDiskIO = {};
+        var containerToDiskIOTotal = [];
+        var containerToDiskIORead = [];
+        var containerToDiskIOWrite = [];
 
         resultJSON.forEach(function(diskItem, index, arr) {
             console.log("logging disk item")
@@ -483,13 +486,35 @@ app.get('/api/container_stats/current/top5/disk', function(req, res) {
                 ////             FAIL$.each(diskItem, function(i, v) {
             diskItem.blkio_stats.io_service_bytes_recursive.forEach(function(diskIOItem, index, arr) {
                 if ((diskIOItem.major == 253) && (diskIOItem.op == "Read") && (diskIOItem.minor > 0)) {
-                    console.log("Found Read on " + diskItem.lxc_id + " disk " + diskIOItem.major + " " + diskIOItem.minor + " with " + diskIOItem.op + " operations at " + diskIOItem.value);
+                    console.log("Found Read on " + diskItem.Names + " disk " + diskIOItem.major + " " + diskIOItem.minor + " with " + diskIOItem.op + " operations at " + diskIOItem.value);
 
                     var keyname = diskItem.lxc_id
-                    containerToDiskIO[keyname] = diskIOItem.value
-
+//                    WORKSFORSTRINGcontainerToDiskIO[keyname] = "Read: " + diskIOItem.value
+                    containerToDiskIORead[keyname] = {key: diskItem.lxc_id, name: diskItem.Names, read: diskIOItem.value }
                     return;
+                } else if ((diskIOItem.major == 253) && (diskIOItem.op == "Write") && (diskIOItem.minor > 0)) {
+                     console.log("Found Write on " + diskItem.Names + " disk " + diskIOItem.major + " " + diskIOItem.minor + " with " + diskIOItem.op + " operations at " + diskIOItem.value);
+
+                    var keyname = diskItem.lxc_id
+                    containerToDiskIOWrite[keyname] = {key: diskItem.lxc_id, name: diskItem.Names, write: diskIOItem.value }
+                    return;   
+                  } else if ((diskIOItem.major == 253) && (diskIOItem.op == "Total") && (diskIOItem.minor > 0)) {
+                     console.log("Found Total on " + diskItem.Names + " disk " + diskIOItem.major + " " + diskIOItem.minor + " with " + diskIOItem.op + " operations at " + diskIOItem.value);
+
+                    var keyname = diskItem.lxc_id
+                    containerToDiskIOTotal[keyname] = {key: diskItem.lxc_id, name: diskItem.Names, total: diskIOItem.value }
+                    return;   
                 }
+//                } else if ((diskIOItem.major == 253) && (diskIOItem.op == "Write") && (diskIOItem.minor > 0)) {
+//                     console.log("Found Write on " + diskItem.Names + " disk " + diskIOItem.major + " " + diskIOItem.minor + " with " + diskIOItem.op + " operations at " + diskIOItem.value);
+//
+//                    var keyname = diskItem.Names
+//                    containerToDiskIO[keyname] += ",Write: " + diskIOItem.value
+//
+//                    return;
+//                    
+//                }
+                
                 //                     if ((v.major == 253) && (v.op == "Write") && (v.minor > 0)) {
                 //        console.log("Found Read on " + diskItem._id + " disk " + v.major + " " + v.minor + " with " + v.op + " operations at " + v.value);
                 //            
@@ -501,23 +526,77 @@ app.get('/api/container_stats/current/top5/disk', function(req, res) {
             });
             //        console.log(test)
         });
-        console.log("containerToDiskIO")
-        console.log(containerToDiskIO)
-        var containerToDiskIOitems = Object.keys(containerToDiskIO).map(function(key) {
-            return [key, containerToDiskIO[key]];
+        console.log("containerToDiskIOTotal Total")
+        console.log(containerToDiskIOTotal)
+        console.log("containerToDiskIOTotal first element")
+        console.log(containerToDiskIOTotal[0])
+        console.log("containerToDiskIOTotal total")
+        console.log(containerToDiskIOTotal.total)
+        console.log("containerToDiskIO f2193d3beeb8da439485436c183a55dbb9382ed8125afaab7f6c781b8eefcff5Total")
+        console.log(containerToDiskIOTotal["f2193d3beeb8da439485436c183a55dbb9382ed8125afaab7f6c781b8eefcff5Total"])
+//        console.log("containerToDiskIO f2193d3beeb8da439485436c183a55dbb9382ed8125afaab7f6c781b8eefcff5Read read value")
+//        console.log(containerToDiskIOTotal["f2193d3beeb8da439485436c183a55dbb9382ed8125afaab7f6c781b8eefcff5Read"].read)
+        
+        var containerToDiskIOTotalitems = Object.keys(containerToDiskIOTotal).map(function(key) {
+            return [key, containerToDiskIOTotal[key].total];
         });
-        console.log("containerToDiskIOitems")
-        console.log(containerToDiskIOitems)
+        console.log("containerToDiskIOTotalitems")
+        console.log(containerToDiskIOTotalitems)
 
 
-        containerToDiskIOitems.sort(function(first, second) {
+        containerToDiskIOTotalitems.sort(function(first, second) {
+            console.log("containerToDiskIOTotalitems second - ")
+            console.log(second);
+            console.log("containerToDiskIOTotalitems first")
+            console.log(first)
+//            console.log("containerToDiskIOTotalitems second total ")
+//            console.log(second.total);
+            console.log("containerToDiskIOTotalitems second key ")
+               console.log(second[0])
+               console.log("containerToDiskIOTotalitems second value ")
+               console.log(second[1])
+               
             return second[1] - first[1];
         });
-        console.log("containerToDiskIOitems sorted")
-        console.log(containerToDiskIOitems)
-        console.log("containerToDiskIOitems top 5")
-        console.log(containerToDiskIOitems.slice(0, 5));
-        res.json(containerToDiskIOitems.slice(0, 5));
+        console.log("containerToDiskIOTotalitems sorted")
+        console.log(containerToDiskIOTotalitems)
+        console.log("containerToDiskIOTotalitems top 5")
+        var containerToDiskIOTotalitemsTop5=containerToDiskIOTotalitems.slice(0, 5)
+        console.log(containerToDiskIOTotalitems.slice(0, 5));
+//        res.json(containerToDiskIOTotalitems.slice(0, 5));
+        
+        console.log("containerToDiskIOTotalitems top 1")
+        console.log(containerToDiskIOTotalitems[0])
+        console.log("containerToDiskIOTotalitems top 1 id")
+        console.log(containerToDiskIOTotalitems[0][0])
+        console.log("containerToDiskIOTotalitems top 1 Read item")
+console.log(containerToDiskIORead[containerToDiskIOTotalitems[0][0]])
+console.log("containerToDiskIOTotalitems top 1 Read item value")
+console.log(containerToDiskIORead[containerToDiskIOTotalitems[0][0]].read)
+console.log("containerToDiskIOTotalitems top 1 write item value")
+console.log(containerToDiskIOWrite[containerToDiskIOTotalitems[0][0]].write)
+var diskIOTop5AllValues =[]
+containerToDiskIOTotalitemsTop5.forEach(function(diskIOTop5, index, arr) {
+    console.log("Disk IO Top 5 Item " + index + ": ")
+    console.log(diskIOTop5)
+    diskIOTop5AllValues[index] = {key: diskIOTop5[0], name: containerToDiskIOTotal[diskIOTop5[0]].name, read:containerToDiskIORead[diskIOTop5[0]].read, write: containerToDiskIOWrite[diskIOTop5[0]].write, total: containerToDiskIOTotal[diskIOTop5[0]].total }
+    
+});
+        console.log("Disk IO Top 5 All Values")
+console.log(diskIOTop5AllValues)
+res.json(diskIOTop5AllValues);
+
+//res.json()
+        
+//        
+//        console.log("JSON containerToDiskIOitems top 5")
+//        var containerToDiskIOitemsJSON = JSON.stringify(containerToDiskIOitems);
+//        console.log(containerToDiskIOitemsJSON)
+//        
+//        console.log("containerToDiskIOitems first element")
+//        console.log(containerToDiskIOitems[0])
+//        console.log("containerToDiskIOitems second element")
+//        console.log(containerToDiskIOitems[1])
     });
 
 

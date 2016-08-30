@@ -1437,10 +1437,8 @@ img {
 	overflow: hidden;
 }
 
-.overall-over h4 {
-	padding-top: 15px;
-	color: #142C31;
-	letter-spacing: .3px;
+#disk .left {
+	width: 75px;
 }
 
 .stats-cols {
