@@ -1,5 +1,5 @@
 var express = require('express');
-var bodyParser = require('body-parser');
+var bodyParser = require('body-parser')
 var app = express();
 var mongoose = require('mongoose');
 var request = require('request');
@@ -60,7 +60,7 @@ var info_schema = new mongoose.Schema({
     }
 });
 
-//Mongoose Schemas
+
 var stats_schema = new mongoose.Schema({
     _id: {
         type: mongoose.Schema.Types.ObjectId
@@ -227,6 +227,7 @@ var stats_schema = new mongoose.Schema({
     }
 });
 
+
 var services_schema = new mongoose.Schema({
     _id: {
         type: mongoose.Schema.Types.ObjectId
@@ -283,16 +284,17 @@ function generate_id() {
     console.log("new id generated" + id)
     return id;
 }
-//End Mongoose Schemas
 
-//Mongoose Models
+
+
+
 var containerInfos = mongoose.model('container_infos', info_schema);
 var currentContainerInfos = mongoose.model('current_container_infos', info_schema);
 var containerStats = mongoose.model('container_stats', stats_schema);
 var currentContainerStats = mongoose.model('current_container_stats', stats_schema);
 var serviceInfos = mongoose.model('service_infos', services_schema);
 var appInfos = mongoose.model('app_infos', apps_schema);
-//End Mongoose Models
+
 
 
 app.get('/api/container_infos', function(req, res) {
@@ -315,8 +317,10 @@ app.get('/api/container_infos/current', function(req, res) {
 });
 
 
+//FAIL   .group({'_id': "$lxc_id", lastDate: { $last: "$date"} })
 
 app.get('/api/container_infos/test', function(req, res) {
+    //    console.log(containerInfos)
     containerInfos.aggregate([{
             "$limit": 200
         }, {
@@ -332,6 +336,9 @@ app.get('/api/container_infos/test', function(req, res) {
                 }
             }
         }
+        //fail on host third entry{ $group: {'_id': "$lxc_id", 'host': "$dns_name", lastDate: { $last: "$ReadTime"} }}
+
+        //        { $populate: {'lxc_id'} }
 
 
     ], function(err, result) {
@@ -340,9 +347,23 @@ app.get('/api/container_infos/test', function(req, res) {
             return;
         }
         console.log(result);
+        //FAIL        containerInfos.populate(result, {path: "lxc_id"}, err);
         res.json(result);
     });
+
+    //                             );
 });
+
+//app.get('/api/container_infos_current', function (req, res) {
+//
+//    containerInfosC.find(function (err, data) {
+//        console.log("dumping container infos current information");
+//    console.log(data);
+//        res.json(data);
+//    })
+//});
+
+
 
 app.get('/api/container_stats', function(req, res) {
     containerStats.findOne(function(err, data) {
@@ -352,8 +373,10 @@ app.get('/api/container_stats', function(req, res) {
 
 app.get('/api/container_stats/current', function(req, res) {
     console.log("someone hit /api/container_stats/current")
+//    console.log(currentContainerStats)
     currentContainerStats.find(function(err, data) {
-
+//        console.log("Logging current container stats data")
+//        console.log(data)
         console.log("query executed to mongodb for all current container stats")
         res.json(data);
     })
@@ -420,7 +443,10 @@ app.get('/api/container_stats/current/top5/memory', function(req, res) {
 
 
 app.get('/api/container_stats/current/top5/disk', function(req, res) {
+    console.log(currentContainerStats)
+        //    currentContainerStats.find(function (err, data) {
     currentContainerStats.aggregate([
+        //        { "$limit": 10000 },
         {
             "$project": {
                 lxc_id: 1,
@@ -436,11 +462,15 @@ app.get('/api/container_stats/current/top5/disk', function(req, res) {
         console.log("Logging current container stats data")
         console.log(result);
         console.log("parsing data on /api/container_stats/current/top5/disk ")
-           
+            //        console.log(result[0])
+            //        //FAIL        containerInfos.populate(result, {path: "lxc_id"}, err);
+            //        WORKS WELL res.json(result);
         var resultString = (JSON.stringify(result))
         console.log(resultString)
         var resultJSON = JSON.parse(resultString)
         console.log(resultJSON)
+            //        console.log("first result of result JSON")
+            //        console.log(resultJSON[0].blkio_stats)
         var containerToDiskIOTotal = [];
         var containerToDiskIORead = [];
         var containerToDiskIOWrite = [];
@@ -452,11 +482,14 @@ app.get('/api/container_stats/current/top5/disk', function(req, res) {
             console.log(diskItem.blkio_stats)
             console.log("disk item blkio_stats io_service_bytes_recursive")
             console.log(diskItem.blkio_stats.io_service_bytes_recursive)
+                //            
+                ////             FAIL$.each(diskItem, function(i, v) {
             diskItem.blkio_stats.io_service_bytes_recursive.forEach(function(diskIOItem, index, arr) {
                 if ((diskIOItem.major == 253) && (diskIOItem.op == "Read") && (diskIOItem.minor > 0)) {
                     console.log("Found Read on " + diskItem.Names + " disk " + diskIOItem.major + " " + diskIOItem.minor + " with " + diskIOItem.op + " operations at " + diskIOItem.value);
 
                     var keyname = diskItem.lxc_id
+//                    WORKSFORSTRINGcontainerToDiskIO[keyname] = "Read: " + diskIOItem.value
                     containerToDiskIORead[keyname] = {key: diskItem.lxc_id, name: diskItem.Names, read: diskIOItem.value }
                     return;
                 } else if ((diskIOItem.major == 253) && (diskIOItem.op == "Write") && (diskIOItem.minor > 0)) {
@@ -472,8 +505,26 @@ app.get('/api/container_stats/current/top5/disk', function(req, res) {
                     containerToDiskIOTotal[keyname] = {key: diskItem.lxc_id, name: diskItem.Names, total: diskIOItem.value }
                     return;   
                 }
+//                } else if ((diskIOItem.major == 253) && (diskIOItem.op == "Write") && (diskIOItem.minor > 0)) {
+//                     console.log("Found Write on " + diskItem.Names + " disk " + diskIOItem.major + " " + diskIOItem.minor + " with " + diskIOItem.op + " operations at " + diskIOItem.value);
+//
+//                    var keyname = diskItem.Names
+//                    containerToDiskIO[keyname] += ",Write: " + diskIOItem.value
+//
+//                    return;
+//                    
+//                }
+                
+                //                     if ((v.major == 253) && (v.op == "Write") && (v.minor > 0)) {
+                //        console.log("Found Read on " + diskItem._id + " disk " + v.major + " " + v.minor + " with " + v.op + " operations at " + v.value);
+                //            
+                //                var keyname = diskItem._id
+                //        containerToDiskIO[keyname] = v.value
+                //           return;
+                //    }
 
             });
+            //        console.log(test)
         });
         console.log("containerToDiskIOTotal Total")
         console.log(containerToDiskIOTotal)
@@ -483,6 +534,8 @@ app.get('/api/container_stats/current/top5/disk', function(req, res) {
         console.log(containerToDiskIOTotal.total)
         console.log("containerToDiskIO f2193d3beeb8da439485436c183a55dbb9382ed8125afaab7f6c781b8eefcff5Total")
         console.log(containerToDiskIOTotal["f2193d3beeb8da439485436c183a55dbb9382ed8125afaab7f6c781b8eefcff5Total"])
+//        console.log("containerToDiskIO f2193d3beeb8da439485436c183a55dbb9382ed8125afaab7f6c781b8eefcff5Read read value")
+//        console.log(containerToDiskIOTotal["f2193d3beeb8da439485436c183a55dbb9382ed8125afaab7f6c781b8eefcff5Read"].read)
         
         var containerToDiskIOTotalitems = Object.keys(containerToDiskIOTotal).map(function(key) {
             return [key, containerToDiskIOTotal[key].total];
@@ -496,7 +549,8 @@ app.get('/api/container_stats/current/top5/disk', function(req, res) {
             console.log(second);
             console.log("containerToDiskIOTotalitems first")
             console.log(first)
-
+//            console.log("containerToDiskIOTotalitems second total ")
+//            console.log(second.total);
             console.log("containerToDiskIOTotalitems second key ")
                console.log(second[0])
                console.log("containerToDiskIOTotalitems second value ")
@@ -508,7 +562,9 @@ app.get('/api/container_stats/current/top5/disk', function(req, res) {
         console.log(containerToDiskIOTotalitems)
         console.log("containerToDiskIOTotalitems top 5")
         var containerToDiskIOTotalitemsTop5=containerToDiskIOTotalitems.slice(0, 5)
-        console.log(containerToDiskIOTotalitems.slice(0, 5));        
+        console.log(containerToDiskIOTotalitems.slice(0, 5));
+//        res.json(containerToDiskIOTotalitems.slice(0, 5));
+        
         console.log("containerToDiskIOTotalitems top 1")
         console.log(containerToDiskIOTotalitems[0])
         console.log("containerToDiskIOTotalitems top 1 id")
@@ -530,10 +586,27 @@ containerToDiskIOTotalitemsTop5.forEach(function(diskIOTop5, index, arr) {
 console.log(diskIOTop5AllValues)
 res.json(diskIOTop5AllValues);
 
+//res.json()
+        
+//        
+//        console.log("JSON containerToDiskIOitems top 5")
+//        var containerToDiskIOitemsJSON = JSON.stringify(containerToDiskIOitems);
+//        console.log(containerToDiskIOitemsJSON)
+//        
+//        console.log("containerToDiskIOitems first element")
+//        console.log(containerToDiskIOitems[0])
+//        console.log("containerToDiskIOitems second element")
+//        console.log(containerToDiskIOitems[1])
     });
 
 
 
+    //        console.log(data)
+    //            console.log("parsing json of returned body /api/container_stats/current/top5/disk")
+    //            console.log(parsedbody[0].Status)
+    //        var parsedData = JSON.parse(data)
+
+    //        res.json(data);
 
 });
 
@@ -542,14 +615,20 @@ res.json(diskIOTop5AllValues);
 
 
 app.get('/api/container_stats/current/:lxc_id/cpu/by_minute', function(req, res) {
+    //    console.log(containerInfos)
     containerStats.aggregate([
     { "$project": 
      {read: 1, lxc_id: 1, cpu_stats: 1}
      
     }, 
         {"$match": 
+//         { $and: [ 
              {read: 
+              //month in Date function starts at 0...idiots...7 is August
               {"$gte":  new Date(2016, 7, 20),"$lt":  new Date(2016, 7, 21)}},
+//             { lxc_id: "4e87c0a643626201999d67c5bccb7ea43a3e0636d80ad1a2ee4fce41319fc444" }
+//         ] 
+//         }
         }   
 
 
@@ -563,6 +642,10 @@ app.get('/api/container_stats/current/:lxc_id/cpu/by_minute', function(req, res)
 
         
         
+//         WORKSres.json(result);
+//        var lxcQueryCPUJSON = JSON.parse(result)
+//        console.log("logging query to return results for lxc" + req.params.lxc_id + "for date blah blah blah")
+//        console.log(lxcQueryCPUJSON)
         console.log("first entry in query lxc cpu by minute")
         console.log(result[0])
         console.log("first entry in query lxc cpu by minute lxc_id")
@@ -583,6 +666,8 @@ app.get('/api/container_stats/current/:lxc_id/cpu/by_minute', function(req, res)
         
         var reformatResult = result.map(function(lxcCPUStatItem){
            var rlxcCPUStatItem = {};
+//WORKS            rlxcCPUStatItem[lxcCPUStatItem.lxc_id + "_" + lxcCPUStatItem.read.toISOString()] = (lxcCPUStatItem.cpu_stats.cpu_usage.total_usage/lxcCPUStatItem.cpu_stats.system_cpu_usage);
+            
             keyname = lxcCPUStatItem.read.toISOString()
 rlxcCPUStatItem[keyname] = {key: lxcCPUStatItem.lxc_id , utlz: (lxcCPUStatItem.cpu_stats.cpu_usage.total_usage/lxcCPUStatItem.cpu_stats.system_cpu_usage) }
             return rlxcCPUStatItem;
@@ -609,15 +694,43 @@ console.log(typeof d)
 var dDate = new Date (d);
 console.log(dDate)
 
+//var pasedDateWrapped=moment(d)
+//console.log("logging moment parsedDate")
+//console.log(pasedDateWrapped.format())
+
+//console.log("parsing date")
+//console.log(d)
 console.log("logging to minute parsed date")
 console.log(new Date (dDate.toISOString().substring(0, 16)))
 
 
       
+//WORKS            rlxcCPUStatItem[lxcCPUStatItem.lxc_id + "_" + lxcCPUStatItem.read.toISOString()] = (lxcCPUStatItem.cpu_stats.cpu_usage.total_usage/lxcCPUStatItem.cpu_stats.system_cpu_usage);
+            
             var keyname = new Date (dDate.toISOString().substring(0, 16))
+//lxcCPUStatItemRefItem[keyname] = "";
             arrayOfDatesByMinute.push(keyname)
             
+            /*
+            Get array of keys (time by minute)
+            foreach time by minute
+                search reformatResult for match to minute
+                value of keys = previous number + new number /2
+            */
+//               console.log("determining type on lxcCPUStatItemRefItem")
+//            console.log(typeof lxcCPUStatItemRefItem)
+//            console.log("determining type on lxcCPUStatItemRefItem[keyname]")
+//            console.log(typeof lxcCPUStatItemRefItem[keyname])
+//            console.log(typeof (lxcCPUStatItemRefItem[keyname]))
+         
+//(lxcCPUStatItemRefItem[keyname]).push(lxcCPUStatItemRef)
+//            return lxcCPUStatItemRefItem;
+                
+           
 
+//console.log("logging container item Names")
+//console.log(containerItem.Names)
+//ContainerNames.push(containerItem.Names)
 });
             console.log("logging lxcCPUStatItemRefItem")
         console.log(lxcCPUStatItemRefItem)
@@ -628,6 +741,7 @@ console.log(new Date (dDate.toISOString().substring(0, 16)))
     return self.indexOf(value) === index;
 }
 
+// usage example:
 
 var unique = arrayOfDatesByMinute.filter( onlyUnique );
         console.log("logging unique minute")
@@ -667,8 +781,10 @@ containerStats.aggregate([{
             }, {
                 "$match": {
                     read:
+                    //month in Date function starts at 0...idiots...7 is August
                     {
-
+//                     WORKS   "$gte": new Date(2016, 7, 21, 10),
+//                        "$lt": new Date(2016, 7, 21, 11)
                            "$gte": fromMoment.toDate(),
                             "$lt": toMoment.toDate()
                     }
@@ -685,6 +801,36 @@ containerStats.aggregate([{
                     }
                 }
  }
+//containerStats.aggregate([{
+//                "$project": {
+//                    read: 1,
+//                    lxc_id: 1,
+//                    cpu_stats: 1,
+//                    utilization: {
+//                    $divide: ["$cpu_stats.cpu_usage.total_usage", "$cpu_stats.system_cpu_usage"]
+//                    }
+//                }, {
+//                "$match":
+//
+//                {
+//                    read:
+//                    //month in Date function starts at 0...idiots...7 is August
+//                    {
+//                        "$gte": new Date(2016, 7, 20),
+//                        "$lt": new Date(2016, 7, 21)
+//                    }
+//                },
+//
+//                $group: {
+//                    _id: null,
+//                    count: {
+//                        $sum: 1
+//                    },
+//                    avgTotalUsage: {
+//                        $avg: "$utilization"
+//                    }
+//                }
+//            }
 
  ], function(err, result) {
         if (err) {
@@ -699,6 +845,36 @@ containerStats.aggregate([{
     console.log(new Date(2017, 7, 22))
     });
     
+});
+
+
+app.get('/api/container_stats/querytest', function(req, res) {
+    //    console.log(containerInfos)
+    containerStats.aggregate([
+    { "$project": 
+     {read: 1, lxc_id: 1, cpu_stats: 1}
+     
+    }, 
+        {"$match": 
+//         { $and: [ 
+             {read: 
+              //month in Date function starts at 0...idiots...7 is August
+              {"$gte":  new Date(2016, 7, 20),"$lt":  new Date(2016, 7, 21)}},
+//             { lxc_id: "4e87c0a643626201999d67c5bccb7ea43a3e0636d80ad1a2ee4fce41319fc444" }
+//         ] 
+//         }
+        }   
+
+
+
+    ], function(err, result) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        console.log(result);
+        
+    });
 });
 
 
@@ -762,6 +938,19 @@ app.get('/api/app_infos', function(req, res) {
 });
 
 
+//app.get('/api/container', function (req, res) {
+//
+//    request('http://www.google.com', function (error, response, body) {
+//        if (!error && response.statusCode == 200) {
+//            //    console.log(body) // Show the HTML for the Google homepage.
+//            console.log("logging response")
+//            console.log(response)
+//                //    res.json(data);
+//            res.send(body);
+//        }
+//    });
+//});
+
 app.use('/api/container', function(req, res) {
     console.log("someone hit /api/container");
     console.log("user sent name: " + req.query.name + " to /api/container")
@@ -789,6 +978,10 @@ app.use('/api/container', function(req, res) {
             return;
         }
         if (!error && response.statusCode == 200) {
+            //    console.log(body) // Show the HTML for the Google homepage.
+            //            console.log("logging response")
+            //            console.log(response)
+            //    res.json(data);
             res.send(body);
         } else {
             console.log("something else happened brother")
@@ -973,26 +1166,41 @@ var ContainerNames = [];
             return;
         }
         if (!error && response.statusCode == 200) {
-
+            //    console.log(body) // Show the HTML for the Google homepage.
+//            console.log("logging response")
+//            console.log(response)
             var responseString = (JSON.stringify(response))
-
+//            console.log("logging responseString")
+//            console.log(responseString)
             var responseJSON = JSON.parse(responseString)
-
+//            console.log("logging responseString JSON")
+//        console.log(responseJSON)
+//        console.log(responseJSON.body)
         var containers = responseJSON.body
         var containersJSON = JSON.parse(containers)
-
+//        res.send(containersJSON[0])    
         
 containersJSON.forEach(function(containerItem, index, arr) {
-
+//console.log("logging container item")
+//console.log(containerItem)
+//console.log("logging container item Names")
+//console.log(containerItem.Names)
 ContainerNames.push(containerItem.Names)
 });
         
             
 ContainerNames.forEach(function(containerNamesItem, index, arr) {
-
+//    console.log("logging regEx")
+//    console.log(regEx)
+//    console.log("logging containerNamesItem array")
+//    console.log(containerNamesItem)
+//    console.log("logging containerNamesItem element")
     var containerNamesItemElement = containerNamesItem[0]
-
+//    console.log(containerNamesItem[0])
+    
+//    if (containerNamesItemElement.match(/evo-cassandra-seed/g)){
     if (containerNamesItemElement.match(regEx)){
+//        console.log("match found on containerNamesItemElement")
         testarray.push(containerNamesItemElement)
         
     }
@@ -1000,11 +1208,25 @@ ContainerNames.forEach(function(containerNamesItem, index, arr) {
     return testarray.length
         
 });
-
+//console.log("loggin test array")
+//console.log(testarray)
 console.log("loggin test array length")
 console.log(testarray.length)
 res.json(testarray.length) 
-
+        
+        
+//            var containers = JSON.parse(response)
+//            
+//console.log("Parsing response JSON")
+//console.log(containers)
+//                //    res.json(data);
+//            var parsedbody = JSON.parse(body);
+//            console.log("parsing json of returned body")
+//            console.log(parsedbody)
+//            console.log("parsing json of returned body status")
+//            console.log(parsedbody[0].Status)
+//            res.send(body);
+            //            res.send(parsedbody[0].Status);
         } else {
             console.log("something else happened when querying /api/health/container brother")
             console.log(response)
@@ -1019,12 +1241,15 @@ res.json(testarray.length)
 });
 
 app.get('/api/service_infos/apps', function(req, res) {
-    
+    //    console.log(containerInfos)
     serviceInfos.aggregate([
-    
+        //{ $project : { title : 1 , author : 1 } }
         {
             "$limit": 200
         }, 
+//        {
+//            "$skip": 2
+//        },
         {
             "$project": {
                 svcApplications: 1
@@ -1044,7 +1269,8 @@ app.get('/api/service_infos/apps', function(req, res) {
                 apps: {
                     "$push": '$app_info'
                 }
-
+                ////                _id: '$appid',
+                ////                count: {$sum: 1}
             }
         }, {
             "$lookup": {
@@ -1054,7 +1280,17 @@ app.get('/api/service_infos/apps', function(req, res) {
                 as: 'service_info'
             }
         },
- 
+        //        { "$project": 
+        //         { 
+        //             apps: 1,
+        //             service_info: 1,
+        ////             _id: 0
+        //         }
+        //        },
+        //        { $sort: {'lxc_id': 1, 'date': -1}},
+        //        { $group: {'_id': "$lxc_id", lastDate: { $last: "$ReadTime"} }}
+
+
 
 
     ], function(err, result) {
@@ -1067,6 +1303,7 @@ app.get('/api/service_infos/apps', function(req, res) {
         res.json(result);
     });
 
+    //                             );
 });
 
 
@@ -1108,6 +1345,47 @@ var server = app.listen(3000);
 
 
 
+//
+//var CVX_DataLake = new serviceInfos({
+//    _id: id,
+//    svcName: 'CVX_DataLake',
+//    svcStatus: 'Undeployed',
+//    svcOwner: 'Jason Bourne',
+//    svcHealth: 'Healthy',
+//    svcUptime: 'Not Applicable',
+//    svcApplications: [
+//        {
+//            key: 1,
+//            name: "cassandra-seed",
+//            status: "Undeployed",
+//            health: "Not Applicable",
+//            uptime: "Not Applicable"
+//        },
+//        {
+//            key: 2,
+//            name: "cassandra-peer",
+//            status: "Deployed",
+//            health: "Healthy",
+//            uptime: "12 hours 2 Min"
+//        },
+//        {
+//            key: 3,
+//            name: "hadoop-dn",
+//            status: "Undeployed",
+//            health: "Not Applicable",
+//            uptime: "Not Applicable"
+//        },
+//        {
+//            key: 4,
+//            name: "hadoop-nn",
+//            status: "Deployed",
+//            health: "Healthy",
+//            uptime: "12 hours 2 Min"
+//        }
+//        ]
+//});
+
+//TRY NEXT
 var newid = generate_id();
 var CVX_DataLake3 = new serviceInfos({
     _id: newid,
@@ -1130,14 +1408,25 @@ console.log(CVX_DataLake3);
 //});
 
 
+//NOT WORKING SO WELLserviceInfos.find().populate({
+//    path: 'app_infos'
+////  , select: 'svcName'
+////  , match: { color: 'black' }
+//  , options: { sort: { name: 1 }}
+//}).exec(function (err, apps) {
+//  console.log(apps[0]) // Zoopa
+////  FAILconsole.log(apps[0].app_infos._id)
+//})
+
+//_id": "57ab85581eebeadb93454d2a"
 
 
-
+// Mongoose turns a cursor to an array by default in the callback method
 console.log("starting nested query")
 var appids = []
 serviceInfos.find().limit(50).exec(function(err, results) {
     console.log("inside nested query")
-
+        // Just get array of _id values
     var ids = results.map(function(el) {
         return el._id
     });
@@ -1145,8 +1434,10 @@ serviceInfos.find().limit(50).exec(function(err, results) {
     var appids = results.map(function(el) {
             return el.svcApplications
         })
+        //    var appids = "57ab85581eebeadb93454d2a";
     console.log("found the following application ids " + appids)
-     
+        // Not sure if you really mean both collections have the same primary key
+        // I'm presuming two different fields being "id" as opposed to "_id"
     console.log("maintained variable appids: " + appids)
     appids.forEach(function(doc) {
         appInfos.find({
@@ -1155,6 +1446,7 @@ serviceInfos.find().limit(50).exec(function(err, results) {
             }
         }, function(err, items) {
             console.log("found the following applications: " + items)
+                // matching results are here
         })
 
     })
