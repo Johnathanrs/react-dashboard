@@ -11,7 +11,7 @@ const configuration = {
     from: '2016-08-20',
     to: '2016-08-25'
   },
-  aggregationPeriods: ['day', 'hour', 'minute']
+  aggregationPeriods: ['week', 'day', 'hour']
 };
 
 // Imports

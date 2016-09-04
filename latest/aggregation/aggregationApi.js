@@ -8,7 +8,7 @@ The generic URL pattern is:
 where
  :time_from - start time, e.g. '2016-08-01' or '2016-08-01T15' or '2016-08-01T15:10'
  :time_to - finish time (the same format as :time_from)
- :period - aggregation time period, one of the values: 'day', 'hour', 'minute'
+ :period - aggregation time period, one of the values: 'month', 'day', 'week', 'hour', 'minute'
  :lxc_id - container ID. Possible values: 'all' (for all the containers) or full container ID (e.g. '0bddc509f1efa2f1d2a6481b291b0fb413b653141ad056f80e737a4e50337ecd')
  */
 

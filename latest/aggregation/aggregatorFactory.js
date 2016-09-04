@@ -19,7 +19,7 @@ const aggregatorFactory = function (sourceCollection, targetCollectionName) {
 
   /**
    * Performs MongoDB map-reduce aggregation for container stats data.
-   * @param aggregationPeriod {string} Aggregation period, value can be 'month', 'day', 'hour', 'minute'
+   * @param aggregationPeriod {string} Aggregation period, value can be 'month', 'week', 'day', 'hour', 'minute'
    * @param timeFrom {Date} Start date
    * @param timeTo {Date} Finish date
    * @param lxcId {string} ContainerID
@@ -27,12 +27,20 @@ const aggregatorFactory = function (sourceCollection, targetCollectionName) {
    */
   return function (aggregationPeriod, timeFrom, timeTo, lxcId) {
     function map() {
+      function getMonday(date) {
+        const d = new Date(date);
+        const day = d.getDay();
+        const difference = d.getDate() - day + (day === 0 ? -6 : 1);
+        return new Date(d.setDate(difference));
+      }
+
       function key(period) {
         function timeSubstringLength() {
           switch (period) {
             case 'month':
               return 7; // 2016-09
             case 'day':
+            case 'week':
               return 10; // 2016-09-02
             case 'hour':
               return 13; // 2016-09-02T15
@@ -43,7 +51,8 @@ const aggregatorFactory = function (sourceCollection, targetCollectionName) {
           }
         }
 
-        return (timestamp) => timestamp.toISOString().substring(0, timeSubstringLength()) + '_' + aggregationPeriod + '_' + (lxcId ? lxcId : 'all');
+        const preprocessTime = (period === 'week') ? ((time) => getMonday(time.toISOString().substring(0, timeSubstringLength()))) : ((time) => time);
+        return (timestamp) => preprocessTime(timestamp).toISOString().substring(0, timeSubstringLength()) + '_' + aggregationPeriod + '_' + (lxcId ? lxcId : 'all');
       }
 
       function blkioValue(array, operation) {
