@@ -65,8 +65,7 @@ const aggregatorFactory = function (sourceCollection, targetCollectionName) {
 
     function reduce(key, values) {
       function mappedAverage(array, mapperCallback) {
-        // TODO fix this double reducing
-        return array.map(mapperCallback).reduce((total, x) => total + (Array.isArray(x) ? x.reduce((total, x) => total + x, 0) : x), 0) / array.length;
+        return array.map(mapperCallback).reduce((total, x) => total + x, 0) / array.length;
       }
 
       return {
