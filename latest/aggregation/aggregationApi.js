@@ -41,7 +41,7 @@ function createModelClass(mongoose) {
 function initialize(app, mongoose) {
   const ContainerStatsAggregated = createModelClass(mongoose);
 
-  app.get('/api/container_stats_aggregated/:time_from/:time_to/:period/:lxc_id/:value_type', (req, res) => {
+  app.get('/api/container_stats/aggregated/:time_from/:time_to/:period/:lxc_id/:value_type', (req, res) => {
     const timeFrom = req.params['time_from'];
     const timeTo = req.params['time_to'];
     const period = req.params['period'];
