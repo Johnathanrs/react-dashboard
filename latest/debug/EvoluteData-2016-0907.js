@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 var app = express();
 var mongoose = require('mongoose');
 var request = require('request');
+var moment = require('moment');
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -535,6 +536,171 @@ res.json(diskIOTop5AllValues);
 
 
 });
+
+
+
+
+
+app.get('/api/container_stats/current/:lxc_id/cpu/by_minute', function(req, res) {
+    containerStats.aggregate([
+    { "$project": 
+     {read: 1, lxc_id: 1, cpu_stats: 1}
+     
+    }, 
+        {"$match": 
+             {read: 
+              {"$gte":  new Date(2016, 7, 20),"$lt":  new Date(2016, 7, 21)}},
+        }   
+
+
+
+    ], function(err, result) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        console.log(result);
+
+        
+        
+        console.log("first entry in query lxc cpu by minute")
+        console.log(result[0])
+        console.log("first entry in query lxc cpu by minute lxc_id")
+        console.log(result[0].lxc_id)
+        console.log("first entry in query lxc cpu by minute read")
+        console.log(result[0].read)
+        var queryDate=result[0].read
+        var queryDateConverted=queryDate.toISOString().substring(0, 10)
+        console.log("queryDate Full date")
+        console.log(queryDateConverted)
+        var queryDateMinute=queryDate.getMinutes()
+        console.log("queryDate minute")
+        console.log(queryDateMinute)
+        var queryTotalUsage=result[0].cpu_stats.cpu_usage.total_usage
+        console.log("logging query total usage")
+        console.log(queryTotalUsage)
+     
+        
+        var reformatResult = result.map(function(lxcCPUStatItem){
+           var rlxcCPUStatItem = {};
+            keyname = lxcCPUStatItem.read.toISOString()
+rlxcCPUStatItem[keyname] = {key: lxcCPUStatItem.lxc_id , utlz: (lxcCPUStatItem.cpu_stats.cpu_usage.total_usage/lxcCPUStatItem.cpu_stats.system_cpu_usage) }
+            return rlxcCPUStatItem;
+                                        });
+        
+        console.log("logging reformatted results")
+        console.log(reformatResult)
+        res.json(reformatResult);
+             var lxcCPUStatItemRefItem = {};
+        var arrayOfDatesByMinute = []
+        reformatResult.forEach(function(lxcCPUStatItemRef, index, arr) {
+console.log("logging lxcCPUStatItemRef")
+console.log(lxcCPUStatItemRef)
+console.log("logging lxcCPUStatItemRef key")
+console.log(Object.keys(lxcCPUStatItemRef))
+console.log("logging parsed date")
+var parsedDate= Object.keys(lxcCPUStatItemRef)[0]
+console.log(parsedDate)
+console.log("determining parsedDate type")
+console.log(typeof parsedDate)
+var d = Date.parse(parsedDate);
+console.log("determining d type")   
+console.log(typeof d)
+var dDate = new Date (d);
+console.log(dDate)
+
+console.log("logging to minute parsed date")
+console.log(new Date (dDate.toISOString().substring(0, 16)))
+
+
+      
+            var keyname = new Date (dDate.toISOString().substring(0, 16))
+            arrayOfDatesByMinute.push(keyname)
+            
+
+});
+            console.log("logging lxcCPUStatItemRefItem")
+        console.log(lxcCPUStatItemRefItem)
+           console.log("logging array of keys")
+            console.log(arrayOfDatesByMinute)
+            
+            function onlyUnique(value, index, self) { 
+    return self.indexOf(value) === index;
+}
+
+
+var unique = arrayOfDatesByMinute.filter( onlyUnique );
+        console.log("logging unique minute")
+        console.log(unique)
+        
+    });
+
+    //                             );
+});
+
+
+app.use('/api/container_stats/cpu/utilization/:from_date/:to_date', function(req, res) {
+    console.log("someone hit /api/container_stats/cpu/utilization/:from_date/:to_date");
+    
+    console.log("logging start date range")
+   console.log(req.params.from_date)
+   console.log("logging end date range")
+   console.log(req.params.to_date)
+   var fromMoment = moment(req.params.from_date)
+   var toMoment = moment(req.params.to_date)
+   console.log("converting from_date param to moment object")
+   console.log(fromMoment.format())
+     console.log("converting to_date param to moment object")
+   console.log(toMoment.format())
+    
+containerStats.aggregate([{
+                "$project": {
+                    read: 1,
+                    lxc_id: 1,
+                    utilization: {
+                    $divide: ["$cpu_stats.cpu_usage.total_usage", "$cpu_stats.system_cpu_usage"]
+                    },
+                    cpu_stats: 1,
+                    
+                }
+
+            }, {
+                "$match": {
+                    read:
+                    {
+
+                           "$gte": fromMoment.toDate(),
+                            "$lt": toMoment.toDate()
+                    }
+                },
+            },
+{                   
+    $group: {
+                    _id: null,
+                    count: {
+                        $sum: 1
+                    },
+                    avgCpuUtilization: {
+                        $avg: "$utilization"
+                    }
+                }
+ }
+
+ ], function(err, result) {
+        if (err) {
+            console.log("error detected")
+            console.log(err);
+            return;
+        }
+        console.log("no errors, logging results")
+        console.log(result);
+        res.json(result);
+    console.log("troubleshooting date")
+    console.log(new Date(2017, 7, 22))
+    });
+    
+});
+
 
 
 
