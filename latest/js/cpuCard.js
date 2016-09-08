@@ -1,8 +1,8 @@
 var gaugeContainerSideLength = 28;
 var gaugeTransform = 'translate(' + (gaugeContainerSideLength/2) + ',' + (gaugeContainerSideLength/2) + ')';
-var gaugeBackColor = '#e8eef0';
-var gaugeForeColor = '#4fb1e2';
-var gaugeTextColor = "#4d4e57";
+var gaugeInactiveColor = '#e8eef0';
+var gaugeActiveColor = '#4fb1e2';
+var gaugeTextColor = '#3b4f53';
 var letterSpacing = '1.40971704';
 var arcScale = d3.scaleLinear().domain([0, 100]).range([0, Math.PI * 2]);
 var sideScale = d3.scaleLinear().domain([0, 100]).range([0, gaugeContainerSideLength]);
@@ -28,25 +28,25 @@ function dataViz(incomingData) {
     var group = canvas.append("g")
       .attr("transform", gaugeTransform);
 
-    var arcInner = d3.arc()
+    var arcActive = d3.arc()
       .innerRadius(sideScale(40))
       .outerRadius(sideScale(48))
       .startAngle(0)
       .endAngle(arcScale(Math.ceil(incomingData[gaugeIndex].percent)));
 
-    var arcOuter = d3.arc()
-      .innerRadius(sideScale(40))
-      .outerRadius(sideScale(48))
+    var arcInactive = d3.arc()
+      .innerRadius(sideScale(41))
+      .outerRadius(sideScale(46))
       .startAngle(0)
       .endAngle(fullArc);
 
     group.append("path")
-      .attr("d", arcOuter)
-      .attr("fill", gaugeBackColor);
+      .attr("d", arcInactive)
+      .attr("fill", gaugeInactiveColor);
 
     group.append("path")
-      .attr("d", arcInner)
-      .attr("fill", gaugeForeColor)
+      .attr("d", arcActive)
+      .attr("fill", gaugeActiveColor)
       .style("opacity", 0.800000012);
 
     var text = group.selectAll("text")
