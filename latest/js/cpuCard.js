@@ -1,12 +1,12 @@
-var gaugeContainerSideLength = 32;
+var gaugeContainerSideLength = 28;
 var gaugeTransform = 'translate(' + (gaugeContainerSideLength/2) + ',' + (gaugeContainerSideLength/2) + ')';
 var gaugeBackColor = '#e8eef0';
 var gaugeForeColor = '#4fb1e2';
 var letterSpacing = '1.40971704';
-var fontSize = '10.47494996';
 var arcScale = d3.scaleLinear().domain([0, 100]).range([0, Math.PI * 2]);
 var sideScale = d3.scaleLinear().domain([0, 100]).range([0, gaugeContainerSideLength]);
 var fullArc = Math.PI * 2;
+var fontSize = sideScale(30);
 
 d3.json("http://localhost:3000/api/container_stats/current/top5/cpu", function (error, data) {
   console.log('cpuCard: got CPU data', data);
@@ -55,7 +55,7 @@ function dataViz(incomingData) {
 
     var textLabels = text
       .attr('text-anchor', 'middle')
-      .attr("y", 4)
+      .attr("y", sideScale(10))
       .text(function (d) {
           return d + "%";
       })
