@@ -1,44 +1,51 @@
-data=[10, 40, 60, 80, 100];
-applications=["hadoop-nn", "hadoop-dn", "cassandra-seed", "cassandra-peer", "nginx-proxy"]
+data = [10, 40, 60, 80, 100];
+applications = ["hadoop-nn", "hadoop-dn", "cassandra-seed", "cassandra-peer", "nginx-proxy"]
 console.log(data)
 console.log(applications)
 
 
-
-d3.json("http://localhost:3000/api/container_stats/current/top5/cpu", function(error, data) {
-    console.log("executing dataviz function");
-    dataVizMem(data)
+d3.json("http://localhost:3000/api/container_stats/current/top5/cpu", function (error, data) {
+  console.log("executing dataviz function");
+  dataVizMem(data)
 });
 
-function dataVizMem(incomingData){
+function dataVizMem(incomingData) {
 
- console.log("first element in incomingDataMem's Name")
-    console.log(incomingData[0].Names)
- console.log("second element in incomingDataMem's Name")
-    console.log(incomingData[1].Names)
- console.log("third element in incomingDataMem's Name")
-    console.log(incomingData[2].Names)
- console.log("fourth element in incomingDataMem's Name")
-    console.log(incomingData[3].Names)
- console.log("fifth element in incomingDataMem's Name")
-    console.log(incomingData[4].Names)
-    
-    
-    d3.select('#memory')
+  console.log("first element in incomingDataMem's Name")
+  console.log(incomingData[0].Names)
+  console.log("second element in incomingDataMem's Name")
+  console.log(incomingData[1].Names)
+  console.log("third element in incomingDataMem's Name")
+  console.log(incomingData[2].Names)
+  console.log("fourth element in incomingDataMem's Name")
+  console.log(incomingData[3].Names)
+  console.log("fifth element in incomingDataMem's Name")
+  console.log(incomingData[4].Names)
+
+
+  d3.select('#memory')
     .selectAll('.purple')
     .data(incomingData)
-    .style("width", function(d) {return d.percent.toString()+"%";} )
+    .style("width", function (d) {
+      return d.percent.toString() + "%";
+    })
 
-    
-    d3.select('#memory')
+
+  d3.select('#memory')
     .selectAll('.appName')
     .data(incomingData)
-    .text(function (d) {console.log("Logging d"); console.log(d); return d.Names;})
+    .text(function (d) {
+      console.log("Logging d");
+      console.log(d);
+      return d.Names;
+    })
 
-d3.select('#memory')
+  d3.select('#memory')
     .selectAll('.right h4')
     .data(incomingData)
-    .text(function(d) {return Math.ceil(d.percent).toString()+"%";})
+    .text(function (d) {
+      return Math.ceil(d.percent).toString() + "%";
+    })
 
 //
 //    
@@ -286,14 +293,10 @@ d3.select('#memory')
 }
 
 
-
-
-
-
-data.forEach(function(element) {
+data.forEach(function (element) {
   // The asynchronous action simulator
-  setTimeout(function() {
-    console.log(element.toString() +"%");
+  setTimeout(function () {
+    console.log(element.toString() + "%");
   }, 100);
 });
 
