@@ -1,10 +1,7 @@
 class FilterableContainerListingBox extends React.Component {
   render() {
     return (
-
       <ContainerListingList />
-
-
     )
   }
 }
@@ -50,14 +47,14 @@ class ContainerListingRow extends React.Component {
         <table>
           <thead>
           <tr>
-            <th className="name">CONTAINER NAME</th>
-            <th>HOST</th>
-            <th>HOST RING</th>
-            <th>OWNER</th>
+            <th className="name">Container name</th>
+            <th>Host</th>
+            <th>Host ring</th>
+            <th>Owner</th>
             <th>CPU</th>
-            <th>NETWORK</th>
-            <th>MEMORY</th>
-            <th>DISK</th>
+            <th>Network</th>
+            <th>Memory</th>
+            <th>Disk</th>
           </tr>
           </thead>
           {containers_row}
