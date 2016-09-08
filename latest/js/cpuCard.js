@@ -9,13 +9,11 @@ var rScale = d3.scaleLinear().domain([0, 100]).range([0, gaugeSize]);
 var fullArc = Math.PI * 2;
 
 d3.json("http://localhost:3000/api/container_stats/current/top5/cpu", function (error, data) {
-  console.log("TEST executing dataviz function", data);
+  console.log('cpuCard: got CPU data', data);
   dataViz(data)
 });
 
 function dataViz(incomingData) {
-
-  console.log('cpuCard: incomingData', incomingData);
 
   function buildGauge(gaugeIndex) {
     d3.select("#cpu")
