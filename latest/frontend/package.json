@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node node_modules/webpack/bin/webpack.js --config config/webpack.app.build.js --bail -p",
     "build-production": "node node_modules/webpack/bin/webpack.js --config config/webpack.app.build.js --bail -p --production",
-    "dev": "node node_modules/webpack-dev-server/bin/webpack-dev-server.js --host 0.0.0.0 --port 8085 --history-api-fallback --debug --inline --progress --config config/webpack.app.dev.js",
+    "dev": "node node_modules/webpack-dev-server/bin/webpack-dev-server.js --host 0.0.0.0 --port 8080 --history-api-fallback --debug --inline --progress --config config/webpack.app.dev.js",
     "test": "node_modules/karma/bin/karma start config/karma.conf.js",
     "test:live": "node_modules/karma/bin/karma start --auto-watch --no-single-run config/karma.conf.js"
   },
