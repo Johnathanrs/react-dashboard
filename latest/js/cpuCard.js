@@ -15,16 +15,7 @@ d3.json("http://localhost:3000/api/container_stats/current/top5/cpu", function (
 
 function dataViz(incomingData) {
 
-  console.log("first element in incomingData's Name")
-  console.log(incomingData[0].Names)
-  console.log("second element in incomingData's Name")
-  console.log(incomingData[1].Names)
-  console.log("third element in incomingData's Name")
-  console.log(incomingData[2].Names)
-  console.log("fourth element in incomingData's Name")
-  console.log(incomingData[3].Names)
-  console.log("fifth element in incomingData's Name")
-  console.log(incomingData[4].Names)
+  console.log('cpuCard: incomingData', incomingData);
 
   function buildGauge(gaugeIndex) {
     d3.select("#cpu")
