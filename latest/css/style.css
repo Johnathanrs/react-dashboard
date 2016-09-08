@@ -7,7 +7,7 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, figcaption, figure, 
+article, aside, canvas, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section, summary,
 time, mark, audio, video {
 	margin: 0;
@@ -40,7 +40,7 @@ input[type=button], input[type=submit], button, textarea {
 	-webkit-border-radius: 0;
 }
 
-article, aside, details, figcaption, figure, 
+article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
@@ -68,22 +68,22 @@ table {
 	border-spacing: 0;
 }
 
-a[href], label[for], select, 
+a[href], label[for], select,
 input[type=checkbox], input[type=radio] {
 	cursor: pointer;
 }
 
-button, input[type=button], input[type=image], 
+button, input[type=button], input[type=image],
 input[type=reset], input[type=submit] {
 	padding: 0;
 	overflow: visible;
 	cursor: pointer;
 }
 
-button::-moz-focus-inner, 
-input[type=button]::-moz-focus-inner, 
-input[type=image]::-moz-focus-inner, 
-input[type=reset]::-moz-focus-inner, 
+button::-moz-focus-inner,
+input[type=button]::-moz-focus-inner,
+input[type=image]::-moz-focus-inner,
+input[type=reset]::-moz-focus-inner,
 input[type=submit]::-moz-focus-inner {
 	border: 0;
 }
@@ -133,7 +133,7 @@ abbr, acronym {
 	cursor: help;
 }
 
-sub, 
+sub,
 sup {
 	position: relative;
 	font-size: 75%;
@@ -1331,6 +1331,10 @@ img {
 	margin-bottom: -3px;
 }
 
+#cpu.overall-over article {
+    padding-top: 2px;
+}
+
 .overall-over .left, .overall-over .left1, .overall-over .left2, .overall-over .left3, .overall-over .left4, .overall-over .left5{
 	float: left;
 	width: 130px;
@@ -1995,7 +1999,7 @@ img {
 }
 
 /* Fonts
-------------------------------------------------------------------------------*/ 
+------------------------------------------------------------------------------*/
 
 @font-face {
     font-family: 'HelveticaNeue';
@@ -2043,7 +2047,7 @@ img {
   src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-semibold-webfont.woff");
 }
 
-/** Bold */ 
+/** Bold */
 @font-face {
   font-family: "San Francisco";
   font-weight: 700;
@@ -2062,7 +2066,7 @@ img {
 }
 
 /* Media
-------------------------------------------------------------------------------*/ 
+------------------------------------------------------------------------------*/
 
 @media screen and (max-width: 1000px) {
 
