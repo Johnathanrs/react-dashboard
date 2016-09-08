@@ -1,11 +1,11 @@
-var gaugeSize = 32;
-var gaugeTransform = 'translate(' + (gaugeSize/2) + ',' + (gaugeSize/2) + ')';
+var gaugeContainerSideLength = 32;
+var gaugeTransform = 'translate(' + (gaugeContainerSideLength/2) + ',' + (gaugeContainerSideLength/2) + ')';
 var gaugeBackColor = '#e8eef0';
 var gaugeForeColor = '#4fb1e2';
 var letterSpacing = '1.40971704';
 var fontSize = '10.47494996';
-var pScale = d3.scaleLinear().domain([0, 100]).range([0, Math.PI * 2]);
-var rScale = d3.scaleLinear().domain([0, 100]).range([0, gaugeSize]);
+var arcScale = d3.scaleLinear().domain([0, 100]).range([0, Math.PI * 2]);
+var sideScale = d3.scaleLinear().domain([0, 100]).range([0, gaugeContainerSideLength]);
 var fullArc = Math.PI * 2;
 
 d3.json("http://localhost:3000/api/container_stats/current/top5/cpu", function (error, data) {
@@ -21,21 +21,21 @@ function dataViz(incomingData) {
       .html(incomingData[gaugeIndex].Names.toString().substring(0, 16));
 
     var canvas = d3.select("#cpu").select('.right' + (gaugeIndex+1)).append("svg")
-      .attr("width", gaugeSize)
-      .attr("height", gaugeSize);
+      .attr("width", gaugeContainerSideLength)
+      .attr("height", gaugeContainerSideLength);
 
     var group = canvas.append("g")
       .attr("transform", gaugeTransform);
 
     var arcInner = d3.arc()
-      .innerRadius(rScale(40))
-      .outerRadius(rScale(48))
+      .innerRadius(sideScale(40))
+      .outerRadius(sideScale(48))
       .startAngle(0)
-      .endAngle(pScale(Math.ceil(incomingData[gaugeIndex].percent)));
+      .endAngle(arcScale(Math.ceil(incomingData[gaugeIndex].percent)));
 
     var arcOuter = d3.arc()
-      .innerRadius(rScale(40))
-      .outerRadius(rScale(48))
+      .innerRadius(sideScale(40))
+      .outerRadius(sideScale(48))
       .startAngle(0)
       .endAngle(fullArc);
 
