@@ -54,7 +54,7 @@ function dataViz(incomingData) {
       .append("text");
 
     var textLabels = text
-      .attr("x", -6)
+      .attr('text-anchor', 'middle')
       .attr("y", 4)
       .text(function (d) {
           return d + "%";
