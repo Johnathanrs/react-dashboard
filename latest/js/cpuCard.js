@@ -2,6 +2,7 @@ var gaugeContainerSideLength = 28;
 var gaugeTransform = 'translate(' + (gaugeContainerSideLength/2) + ',' + (gaugeContainerSideLength/2) + ')';
 var gaugeBackColor = '#e8eef0';
 var gaugeForeColor = '#4fb1e2';
+var gaugeTextColor = "#4d4e57";
 var letterSpacing = '1.40971704';
 var arcScale = d3.scaleLinear().domain([0, 100]).range([0, Math.PI * 2]);
 var sideScale = d3.scaleLinear().domain([0, 100]).range([0, gaugeContainerSideLength]);
@@ -61,7 +62,7 @@ function dataViz(incomingData) {
       })
       .attr("font-family", "San Francisco")
       .attr("font-size", fontSize)
-      .attr("fill", "#4D4E57")
+      .attr("fill", gaugeTextColor)
       .attr("font-weight", "regular")
       .attr("letter-spacing", letterSpacing);
   }
