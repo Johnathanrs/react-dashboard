@@ -1,7 +1,9 @@
-const Panel = () => <div className="panel">
-  <div className="head">{ this.props.title }</div>
+import React from 'react';
+
+const Panel = (props) => <div className="panel">
+  <div className="head">{ props.title }</div>
   <div className="body">
-    { this.props.children }
+    { props.children }
   </div>
 </div>;
 export default Panel;
