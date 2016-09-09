@@ -2,6 +2,8 @@ import React from 'react';
 
 // TODO support D3 logic
 
+const mockImageUrl = require('../../img/odal.png');
+
 const CpuUtilization = () => <section id="cpu" className="overall-over">
   <article>
     <div className="left1">
@@ -11,7 +13,7 @@ const CpuUtilization = () => <section id="cpu" className="overall-over">
 
     </div>
     <div className="modal">
-      <img src="img/odal.png" alt=""/>
+      <img src={ mockImageUrl } alt=""/>
     </div>
   </article>
   <article>
@@ -21,7 +23,7 @@ const CpuUtilization = () => <section id="cpu" className="overall-over">
     <div className="right2">
     </div>
     <div className="modal">
-      <img src="img/odal.png" alt=""/>
+      <img src={ mockImageUrl } alt=""/>
     </div>
   </article>
   <article>
@@ -31,7 +33,7 @@ const CpuUtilization = () => <section id="cpu" className="overall-over">
     <div className="right3">
     </div>
     <div className="modal">
-      <img src="img/odal.png" alt=""/>
+      <img src={ mockImageUrl } alt=""/>
     </div>
   </article>
   <article>
@@ -41,7 +43,7 @@ const CpuUtilization = () => <section id="cpu" className="overall-over">
     <div className="right4">
     </div>
     <div className="modal">
-      <img src="img/odal.png" alt=""/>
+      <img src={ mockImageUrl } alt=""/>
     </div>
   </article>
   <article>
@@ -51,7 +53,7 @@ const CpuUtilization = () => <section id="cpu" className="overall-over">
     <div className="right5">
     </div>
     <div className="modal">
-      <img src="img/odal.png" alt=""/>
+      <img src={ mockImageUrl } alt=""/>
     </div>
   </article>
 </section>;
