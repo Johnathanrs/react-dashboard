@@ -1,2 +1,6 @@
 import React from 'react';
-export default () => <div className="container">System</div>;
+export default class System extends React.Component {
+  render() {
+
+  }
+}

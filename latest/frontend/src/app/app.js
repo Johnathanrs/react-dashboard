@@ -8,6 +8,7 @@ console.log('Frontend settings', settings);
 //require('../../node_modules/reset-css/reset.css');
 
 require('./styles/style.css');
+require('./styles/fonts.css');
 
 import Main from './components/Main.jsx';
 import Dashboard from './components/Dashboard.jsx';
