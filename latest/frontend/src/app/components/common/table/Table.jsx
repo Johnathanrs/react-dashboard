@@ -59,7 +59,13 @@ export default class Table extends React.Component {
     const currentPage = this._currentPage();
     const pageSize = this.props.pageSize;
     const startIndex = pageSize * currentPage;
-    return allItems.slice(startIndex, pageSize);
+    return allItems.slice(startIndex, startIndex + pageSize);
+  }
+
+  _setCurrentPage(pageIndex) {
+    this.setState({
+      currentPage: pageIndex
+    });
   }
 
   render() {
@@ -74,11 +80,13 @@ export default class Table extends React.Component {
         { this._renderBodyRows() }
         </tbody>
       </table>
-      <TablePagination pageCount={this._pageCount()} currentPage={this._currentPage()}/>
+      <TablePagination pageCount={this._pageCount()}
+                       currentPage={this._currentPage()}
+                       onPageClicked={ (pageIndex) => { this._setCurrentPage(pageIndex) } }/>
     </div>;
   }
 }
 
 Table.defaultProps = {
-  pageSize: 25
+  pageSize: 5
 };
