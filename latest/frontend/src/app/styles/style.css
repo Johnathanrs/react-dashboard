@@ -1971,6 +1971,7 @@ img {
 
 .pagination {
 	text-align: center;
+	margin-bottom: 26px;
 }
 
 .pagination .current a {
