@@ -1,2 +1,2 @@
 import React from 'react';
-export default () => <div>Application</div>;
+export default () => <div className="container">Application</div>;

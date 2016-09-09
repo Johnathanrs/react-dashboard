@@ -5,7 +5,7 @@ export default class Main extends React.Component {
   render() {
     return <div>
       <Header/>
-      <div className="main-container">
+      <div id="body">
         { this.props.children }
       </div>
     </div>;

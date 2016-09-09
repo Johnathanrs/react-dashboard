@@ -1,10 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router';
 export default class Menu extends React.Component {
   render() {
+    // TODO add className="current" to the current LI
     return <ul className="menu">
-      <li><a href="02-dashboard.html">Dashboard</a></li>
-      <li className="current"><a href="03-system.html">System</a></li>
-      <li><a href="01-application-prototype.html">Application</a></li>
+      <li><Link to="/">Dashboard</Link></li>
+      <li><Link to="/system">System</Link></li>
+      <li><Link to="/application">Application</Link></li>
     </ul>;
   }
 }

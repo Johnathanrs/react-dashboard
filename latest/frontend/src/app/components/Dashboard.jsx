@@ -1,2 +1,8 @@
 import React from 'react';
-export default () => <div>Dashbaord</div>;
+export default class Dashboard extends React.Component {
+  render() {
+    return <div className="container">
+      Dashboard
+    </div>;
+  }
+}

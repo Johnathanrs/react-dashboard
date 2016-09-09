@@ -1,2 +1,2 @@
 import React from 'react';
-export default () => <div>System</div>;
+export default () => <div className="container">System</div>;
