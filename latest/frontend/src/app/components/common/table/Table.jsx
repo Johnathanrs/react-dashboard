@@ -1,6 +1,8 @@
 import _ from 'lodash';
 import React from 'react';
 
+import TablePagination from './TablePagination.jsx';
+
 export default class Table extends React.Component {
   constructor(props) {
     super(props);
@@ -48,6 +50,10 @@ export default class Table extends React.Component {
     return this.props.items || [];
   }
 
+  _pageCount() {
+    return Math.ceil(this._dataItems().length / this.props.pageSize);
+  }
+
   _currentPageDataItems() {
     const allItems = this._dataItems();
     const currentPage = this._currentPage();
@@ -68,13 +74,7 @@ export default class Table extends React.Component {
         { this._renderBodyRows() }
         </tbody>
       </table>
-      <ul className="pagination">
-        <li className="current"><a href="#">1</a></li>
-        <li><a href="#">2</a></li>
-        <li><a href="#">3</a></li>
-        <li><a href="#">4</a></li>
-        <li><a href="#">5</a></li>
-      </ul>
+      <TablePagination pageCount={this._pageCount()} currentPage={this._currentPage()}/>
     </div>;
   }
 }
