@@ -12,12 +12,27 @@ import ServiceCard from './applications/ServiceCard.jsx';
 import ServiceCardApplications from './applications/ServiceCardApplications.jsx';
 
 export default class Application extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentTab: 'applications'
+    };
+  }
+
   componentDidMount() {
 
   }
 
+  currentTab() {
+    return this.state.currentTab;
+  }
+
+  _setCurrentTab(tabValue) {
+    this.setState({currentTab: tabValue});
+  }
+
   /*
-  Custom row for application creation:
+   Custom row for application creation:
 
    <tr className="add-clone">
    <td colspan="7">
@@ -69,31 +84,31 @@ export default class Application extends React.Component {
   }
 
   /*
-  Table row selection:
+   Table row selection:
    <th className="name"><span className="checkbox"><input type="checkbox"></input><label></label></span>Name
    </th>
 
    <td className="name"><span className="checkbox"><input type="checkbox"></input><label></label></span><a
    href="#">hadoop-nn</a>
 
-  */
+   */
 
   /*
    <td className="deployment">Undeployed <a href="#" className="btn btn-blue">Deploy</a></td>
-  */
+   */
 
   _renderApplications() {
     return <div id="appls">
       <div className="row-list">
         <ApplicationSelectionSummary />
         <Table>
-          <TableColumn title="Name" getter={ () => 'hadoop-nn' } />
-          <TableColumn title="Uptime" getter={ () => '12 hours 2 Min' } />
-          <TableColumn title="Owner" getter={ () => 'Jason Richards' } />
-          <TableColumn title="Deployment" getter={ () => 'Undeployed' } />
-          <TableColumn title="Instances" getter={ () => '12' } />
-          <TableColumn title="Response Time" getter={ () => '15 sec' } />
-          <TableColumn title="Errors" getter={ () => <div><img width="12" src="img/ico_red.png" alt=""/>2</div> } />
+          <TableColumn title="Name" getter={ () => 'hadoop-nn' }/>
+          <TableColumn title="Uptime" getter={ () => '12 hours 2 Min' }/>
+          <TableColumn title="Owner" getter={ () => 'Jason Richards' }/>
+          <TableColumn title="Deployment" getter={ () => 'Undeployed' }/>
+          <TableColumn title="Instances" getter={ () => '12' }/>
+          <TableColumn title="Response Time" getter={ () => '15 sec' }/>
+          <TableColumn title="Errors" getter={ () => <div><img width="12" src="img/ico_red.png" alt=""/>2</div> }/>
         </Table>
 
       </div>
@@ -127,10 +142,14 @@ export default class Application extends React.Component {
             <ApplicationOverview/>
           </Panel>
 
-          <SimpleTabs items={ ['Applications', 'Services'] } onItemClicked={ (tab) => { console.log('Tab selected', tab) } }>
+          <SimpleTabs items={ ['Applications', 'Services'] }
+                      onItemClicked={ (tab) => { this._setCurrentTab(tab) } }
+                      currentValue={ this.currentTab() }>
             <a href="javascript:void(0)" className="btn btn-grey filter">Filter</a>
-            <a href="javascript:void(0)" className="btn btn-add btn-add-app" onClick={ () => {this.onAddApplication()} }>Add Application</a>
-            <a href="javascript:void(0)" className="btn btn-add btn-add-serv" onClick={ () => {this.onAddService()} }>Add Service</a>
+            <a href="javascript:void(0)" className="btn btn-add btn-add-app"
+               onClick={ () => {this.onAddApplication()} }>Add Application</a>
+            <a href="javascript:void(0)" className="btn btn-add btn-add-serv" onClick={ () => {this.onAddService()} }>Add
+              Service</a>
           </SimpleTabs>
 
 
