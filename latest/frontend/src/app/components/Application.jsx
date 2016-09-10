@@ -78,17 +78,32 @@ export default class Application extends React.Component {
    </tr>
    */
 
+  _renderServiceCards() {
+    return <div className="cols-list">
+      <ServiceCard />
+      <ServiceCardApplications />
+      <ServiceCard />
+      <ServiceCardApplications />
+    </div>;
+  }
+
+  _renderServiceRows() {
+    return <div className="row-list">
+      TODO ServiceTable here
+    </div>;
+  }
+
   _renderServices() {
     return <div id="services">
-      <div className="row-list">
-        TODO ServiceTable here
-      </div>
-      <div className="cols-list">
-        <ServiceCard />
-        <ServiceCardApplications />
-        <ServiceCard />
-        <ServiceCardApplications />
-      </div>
+      {
+        (() => {
+          if (this.currentViewType() === 'cards') {
+            return this._renderServiceCards();
+          } else if (this.currentViewType() === 'rows') {
+            return this._renderServiceRows();
+          }
+        })()
+      }
     </div>;
   }
 
@@ -106,34 +121,48 @@ export default class Application extends React.Component {
    <td className="deployment">Undeployed <a href="#" className="btn btn-blue">Deploy</a></td>
    */
 
+  _renderApplicationCards() {
+    return <div className="cols-list">
+      <section className="add-aplication">
+        <article>
+          <a href="#" className="add">ADD APPLICATION</a>
+        </article>
+        <ApplicationCard />
+        <ApplicationCard />
+        <ApplicationCard />
+        <ApplicationCard />
+        <ApplicationCard />
+        <ApplicationCard />
+      </section>
+    </div>;
+  }
+
+  _renderApplicationRows() {
+    return <div className="row-list">
+      <ApplicationSelectionSummary />
+      <Table>
+        <TableColumn title="Name" getter={ () => 'hadoop-nn' }/>
+        <TableColumn title="Uptime" getter={ () => '12 hours 2 Min' }/>
+        <TableColumn title="Owner" getter={ () => 'Jason Richards' }/>
+        <TableColumn title="Deployment" getter={ () => 'Undeployed' }/>
+        <TableColumn title="Instances" getter={ () => '12' }/>
+        <TableColumn title="Response Time" getter={ () => '15 sec' }/>
+        <TableColumn title="Errors" getter={ () => <div><img width="12" src="img/ico_red.png" alt=""/>2</div> }/>
+      </Table>
+    </div>;
+  }
+
   _renderApplications() {
     return <div id="appls">
-      <div className="row-list">
-        <ApplicationSelectionSummary />
-        <Table>
-          <TableColumn title="Name" getter={ () => 'hadoop-nn' }/>
-          <TableColumn title="Uptime" getter={ () => '12 hours 2 Min' }/>
-          <TableColumn title="Owner" getter={ () => 'Jason Richards' }/>
-          <TableColumn title="Deployment" getter={ () => 'Undeployed' }/>
-          <TableColumn title="Instances" getter={ () => '12' }/>
-          <TableColumn title="Response Time" getter={ () => '15 sec' }/>
-          <TableColumn title="Errors" getter={ () => <div><img width="12" src="img/ico_red.png" alt=""/>2</div> }/>
-        </Table>
-
-      </div>
-      <div className="cols-list">
-        <section className="add-aplication">
-          <article>
-            <a href="#" className="add">ADD APPLICATION</a>
-          </article>
-          <ApplicationCard />
-          <ApplicationCard />
-          <ApplicationCard />
-          <ApplicationCard />
-          <ApplicationCard />
-          <ApplicationCard />
-        </section>
-      </div>
+      {
+        (() => {
+          if (this.currentViewType() === 'cards') {
+            return this._renderApplicationCards();
+          } else if (this.currentViewType() === 'rows') {
+            return this._renderApplicationRows();
+          }
+        })()
+      }
     </div>;
   }
 
@@ -167,8 +196,15 @@ export default class Application extends React.Component {
       </div>
 
       <div className="container ff">
-        { this._renderServices() }
-        { this._renderApplications() }
+        {
+          (() => {
+            if (this.currentTab() === 'applications') {
+              return this._renderApplications();
+            } else if (this.currentTab() === 'services') {
+              return this._renderServices();
+            }
+          })()
+        }
       </div>
 
     </div>;
