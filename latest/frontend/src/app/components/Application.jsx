@@ -15,7 +15,8 @@ export default class Application extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentTab: 'applications'
+      currentTab: 'applications',
+      currentViewType: 'cards'
     };
   }
 
@@ -29,6 +30,14 @@ export default class Application extends React.Component {
 
   _setCurrentTab(tabValue) {
     this.setState({currentTab: tabValue});
+  }
+
+  currentViewType() {
+    return this.state.currentViewType;
+  }
+
+  _setCurrentViewType(viewType) {
+    this.setState({currentViewType: viewType});
   }
 
   /*
@@ -135,7 +144,8 @@ export default class Application extends React.Component {
         <div className="container ff">
           <div className="main-title">
             <h2>Applications</h2>
-            <ViewTypeSelector />
+            <ViewTypeSelector currentViewType={ this.currentViewType() }
+                              onViewTypeClicked={(viewType) => { this._setCurrentViewType(viewType) }}/>
           </div>
 
           <Panel title="Application Overview">
