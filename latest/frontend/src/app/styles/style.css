@@ -1333,6 +1333,7 @@ img {
 
 #cpu.overall-over article {
     padding-top: 2px;
+	height: 35px;
 }
 
 .overall-over .left, .overall-over .left1, .overall-over .left2, .overall-over .left3, .overall-over .left4, .overall-over .left5{

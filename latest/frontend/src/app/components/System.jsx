@@ -18,19 +18,22 @@ export default class System extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      containers: []
+      containers: [],
+      cpuUtilizationItems: []
     };
   }
 
-  componentDidMount() {
-    $.ajax({
-      type: 'GET',
-      url: settings.apiBase + '/container_stats/current'
-    }).then((result) => {
-      this.setState({
-        containers: result
-      });
+  _loadData() {
+    $.get(settings.apiBase + '/container_stats/current').then((result) => {
+      this.setState({ containers: result });
     });
+    $.get(settings.apiBase + '/container_stats/current/top5/cpu').then((result) => {
+      this.setState({ cpuUtilizationItems: result });
+    });
+  }
+
+  componentDidMount() {
+    this._loadData();
   }
 
   render() {
@@ -52,7 +55,7 @@ export default class System extends React.Component {
             <div className="col">
 
               <Panel title="CPU Utilization">
-                <CpuUtilization/>
+                <CpuUtilization items={ this.state.cpuUtilizationItems }/>
               </Panel>
 
             </div>
