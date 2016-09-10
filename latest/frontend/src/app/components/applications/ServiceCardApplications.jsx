@@ -1,5 +1,12 @@
 import React from 'react';
 
+const mockImageUrls = {
+  '1': require('../../img/1.png'),
+  'ico_flag':  require('../../img/ico_flag.png'),
+  'ico_green':  require('../../img/ico_green.png'),
+  'ico_red':  require('../../img/ico_red.png')
+};
+
 const ServiceCardApplications = () => <div className="gate-apl">
   <h3 className="active">MDL_Gateway Applications</h3>
 
@@ -7,16 +14,16 @@ const ServiceCardApplications = () => <div className="gate-apl">
     <section className="add-aplication">
       <article>
         <div className="head">
-          <img src="img/1.png" alt=""/>
+          <img src={ mockImageUrls['1'] } alt=""/>
           <h4><a href="#">Application_123</a></h4>
 
           <div className="tags">
             <a href="#" className="stat">
-              <img src="img/ico_flag.png" width="10" alt=""/>
+              <img src={ mockImageUrls['ico_flag'] } width="10" alt=""/>
               <span>0 ERRORS</span>
             </a>
             <a href="#" className="stat ins">
-              <img src="img/ico_green.png" width="13" alt=""/>
+              <img src={ mockImageUrls['ico_green'] } width="13" alt=""/>
               <span>12 INSTANCES</span>
             </a>
           </div>
@@ -30,16 +37,16 @@ const ServiceCardApplications = () => <div className="gate-apl">
       </article>
       <article>
         <div className="head">
-          <img src="img/1.png" alt=""/>
+          <img src={ mockImageUrls['1'] } alt=""/>
           <h4><a href="#">Application_123</a></h4>
 
           <div className="tags">
             <a href="#" className="stat">
-              <img src="img/ico_red.png" width="12" alt=""/>
+              <img src={ mockImageUrls['ico_red'] } width="12" alt=""/>
               <span>2 ERRORS</span>
             </a>
             <a href="#" className="stat ins">
-              <img src="img/ico_green.png" width="13" alt=""/>
+              <img src={ mockImageUrls['ico_green'] } width="13" alt=""/>
               <span>12 INSTANCES</span>
             </a>
           </div>
@@ -53,16 +60,16 @@ const ServiceCardApplications = () => <div className="gate-apl">
       </article>
       <article>
         <div className="head">
-          <img src="img/1.png" alt=""/>
+          <img src={ mockImageUrls['1'] } alt=""/>
           <h4><a href="#">Application_123</a></h4>
 
           <div className="tags">
             <a href="#" className="stat">
-              <img src="img/ico_red.png" width="12" alt=""/>
+              <img src={ mockImageUrls['ico_red'] } width="12" alt=""/>
               <span>2 ERRORS</span>
             </a>
             <a href="#" className="stat ins">
-              <img src="img/ico_green.png" width="13" alt=""/>
+              <img src={ mockImageUrls['ico_green'] } width="13" alt=""/>
               <span>12 INSTANCES</span>
             </a>
           </div>
@@ -76,16 +83,16 @@ const ServiceCardApplications = () => <div className="gate-apl">
       </article>
       <article>
         <div className="head">
-          <img src="img/1.png" alt=""/>
+          <img src={ mockImageUrls['1'] } alt=""/>
           <h4><a href="#">Application_123</a></h4>
 
           <div className="tags">
             <a href="#" className="stat">
-              <img src="img/ico_red.png" width="12" alt=""/>
+              <img src={ mockImageUrls['ico_red'] } width="12" alt=""/>
               <span>2 ERRORS</span>
             </a>
             <a href="#" className="stat ins">
-              <img src="img/ico_green.png" width="13" alt=""/>
+              <img src={ mockImageUrls['ico_green'] } width="13" alt=""/>
               <span>12 INSTANCES</span>
             </a>
           </div>
@@ -99,16 +106,16 @@ const ServiceCardApplications = () => <div className="gate-apl">
       </article>
       <article>
         <div className="head">
-          <img src="img/1.png" alt=""/>
+          <img src={ mockImageUrls['1'] } alt=""/>
           <h4><a href="#">Application_123</a></h4>
 
           <div className="tags">
             <a href="#" className="stat">
-              <img src="img/ico_red.png" width="12" alt=""/>
+              <img src={ mockImageUrls['ico_red'] } width="12" alt=""/>
               <span>2 ERRORS</span>
             </a>
             <a href="#" className="stat ins">
-              <img src="img/ico_green.png" width="13" alt=""/>
+              <img src={ mockImageUrls['ico_green'] } width="13" alt=""/>
               <span>12 INSTANCES</span>
             </a>
           </div>
@@ -122,16 +129,16 @@ const ServiceCardApplications = () => <div className="gate-apl">
       </article>
       <article>
         <div className="head">
-          <img src="img/1.png" alt=""/>
+          <img src={ mockImageUrls['1'] } alt=""/>
           <h4><a href="#">Application_123</a></h4>
 
           <div className="tags">
             <a href="#" className="stat">
-              <img src="img/ico_red.png" width="12" alt=""/>
+              <img src={ mockImageUrls['ico_red'] } width="12" alt=""/>
               <span>2 ERRORS</span>
             </a>
             <a href="#" className="stat ins">
-              <img src="img/ico_green.png" width="13" alt=""/>
+              <img src={ mockImageUrls['ico_green'] } width="13" alt=""/>
               <span>12 INSTANCES</span>
             </a>
           </div>

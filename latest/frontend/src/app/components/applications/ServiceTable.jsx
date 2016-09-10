@@ -1,5 +1,17 @@
 import React from 'react';
 
+const mockImageUrls = {
+  '2': require('../../img/2.png'),
+  '3': require('../../img/3.png'),
+  'ico_red': require('../../img/ico_red.png'),
+  'ico_green': require('../../img/ico_green.png'),
+  'ico_flag': require('../../img/ico_flag.png'),
+  'ico_s_3': require('../../img/ico_s_3.png'),
+  'ico_s_2': require('../../img/ico_s_2.png'),
+  'ico_s_1': require('../../img/ico_s_1.png')
+};
+
+
 const ServiceTable = () => <div className="table services">
   <table>
     <thead>
@@ -24,29 +36,29 @@ const ServiceTable = () => <div className="table services">
         <td className="deployment">Undeployed</td>
         <td className="instances" contenteditable="true">12</td>
         <td className="time">12 SEC</td>
-        <td className="errors"><img width="11" src="img/ico_flag.png" alt=""/>0</td>
+        <td className="errors"><img width="11" src={ mockImageUrls['ico_flag'] } alt=""/>0</td>
       </tr>
       <tr className="details active">
         <td colspan="7">
           <div className="service-card">
             <div className="graph">
-              <img src="img/3.png" alt=""/>
+              <img src={ mockImageUrls['3'] } alt=""/>
             </div>
             <div className="stats">
               <ul>
                 <li className="orange">
                   <strong>2</strong>
-                  <img src="img/ico_se_1.png" alt=""/>
+                  <img src={ mockImageUrls['ico_se_1'] } alt=""/>
                   <span className="text">Database</span>
                 </li>
                 <li className="purple">
                   <strong>10</strong>
-                  <img src="img/ico_se_2.png" alt=""/>
+                  <img src={ mockImageUrls['ico_se_2'] } alt=""/>
                   <span className="text">Web Engine</span>
                 </li>
                 <li className="blue">
                   <strong>12</strong>
-                  <img src="img/ico_se_3.png" alt=""/>
+                  <img src={ mockImageUrls['ico_se_3'] } alt=""/>
                   <span className="text">Applications</span>
                 </li>
               </ul>
@@ -62,7 +74,7 @@ const ServiceTable = () => <div className="table services">
                 </thead>
                 <tbody>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_1.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_1'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">1</td>
@@ -70,7 +82,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Database</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_1.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_1'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">2</td>
@@ -78,7 +90,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Database</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">1</td>
@@ -86,7 +98,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Application</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">2</td>
@@ -94,7 +106,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Application</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">1</td>
@@ -102,7 +114,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Application</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">2</td>
@@ -110,7 +122,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Application</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">1</td>
@@ -130,29 +142,29 @@ const ServiceTable = () => <div className="table services">
         <td className="deployment">Undeployed</td>
         <td className="instances" contenteditable="true">12</td>
         <td className="time">12 SEC</td>
-        <td className="errors"><img width="11" src="img/ico_flag.png" alt=""/>0</td>
+        <td className="errors"><img width="11" src={ mockImageUrls['ico_flag'] } alt=""/>0</td>
       </tr>
       <tr className="details">
         <td colspan="7">
           <div className="service-card">
             <div className="graph">
-              <img src="img/3.png" alt=""/>
+              <img src={ mockImageUrls['3'] } alt=""/>
             </div>
             <div className="stats">
               <ul>
                 <li className="orange">
                   <strong>2</strong>
-                  <img src="img/ico_se_1.png" alt=""/>
+                  <img src={ mockImageUrls['ico_se_1'] } alt=""/>
                   <span className="text">Database</span>
                 </li>
                 <li className="purple">
                   <strong>10</strong>
-                  <img src="img/ico_se_2.png" alt=""/>
+                  <img src={ mockImageUrls['ico_se_2'] } alt=""/>
                   <span className="text">Web Engine</span>
                 </li>
                 <li className="blue">
                   <strong>12</strong>
-                  <img src="img/ico_se_3.png" alt=""/>
+                  <img src={ mockImageUrls['ico_se_3'] } alt=""/>
                   <span className="text">Applications</span>
                 </li>
               </ul>
@@ -168,7 +180,7 @@ const ServiceTable = () => <div className="table services">
                 </thead>
                 <tbody>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_1.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_1'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">1</td>
@@ -176,7 +188,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Database</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_1.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_1'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">2</td>
@@ -184,7 +196,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Database</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">1</td>
@@ -192,7 +204,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Application</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">2</td>
@@ -200,7 +212,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Application</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">1</td>
@@ -208,7 +220,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Application</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">2</td>
@@ -216,7 +228,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Application</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">1</td>
@@ -236,29 +248,29 @@ const ServiceTable = () => <div className="table services">
         <td className="deployment">Undeployed</td>
         <td className="instances" contenteditable="true">12</td>
         <td className="time">12 SEC</td>
-        <td className="errors"><img width="11" src="img/ico_flag.png" alt=""/>0</td>
+        <td className="errors"><img width="11" src={ mockImageUrls['ico_flag'] } alt=""/>0</td>
       </tr>
       <tr className="details">
         <td colspan="7">
           <div className="service-card">
             <div className="graph">
-              <img src="img/3.png" alt=""/>
+              <img src={ mockImageUrls['3'] } alt=""/>
             </div>
             <div className="stats">
               <ul>
                 <li className="orange">
                   <strong>2</strong>
-                  <img src="img/ico_se_1.png" alt=""/>
+                  <img src={ mockImageUrls['ico_se_1'] } alt=""/>
                   <span className="text">Database</span>
                 </li>
                 <li className="purple">
                   <strong>10</strong>
-                  <img src="img/ico_se_2.png" alt=""/>
+                  <img src={ mockImageUrls['ico_se_2'] } alt=""/>
                   <span className="text">Web Engine</span>
                 </li>
                 <li className="blue">
                   <strong>12</strong>
-                  <img src="img/ico_se_3.png" alt=""/>
+                  <img src={ mockImageUrls['ico_se_3'] } alt=""/>
                   <span className="text">Applications</span>
                 </li>
               </ul>
@@ -274,7 +286,7 @@ const ServiceTable = () => <div className="table services">
                 </thead>
                 <tbody>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_1.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_1'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">1</td>
@@ -282,7 +294,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Database</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_1.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_1'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">2</td>
@@ -290,7 +302,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Database</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">1</td>
@@ -298,7 +310,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Application</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">2</td>
@@ -306,7 +318,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Application</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">1</td>
@@ -314,7 +326,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Application</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">2</td>
@@ -322,7 +334,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Application</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">1</td>
@@ -342,29 +354,29 @@ const ServiceTable = () => <div className="table services">
         <td className="deployment">Undeployed</td>
         <td className="instances" contenteditable="true">12</td>
         <td className="time">12 SEC</td>
-        <td className="errors"><img width="11" src="img/ico_flag.png" alt=""/>0</td>
+        <td className="errors"><img width="11" src={ mockImageUrls['ico_flag'] } alt=""/>0</td>
       </tr>
       <tr className="details">
         <td colspan="7">
           <div className="service-card">
             <div className="graph">
-              <img src="img/3.png" alt=""/>
+              <img src={ mockImageUrls['3'] } alt=""/>
             </div>
             <div className="stats">
               <ul>
                 <li className="orange">
                   <strong>2</strong>
-                  <img src="img/ico_se_1.png" alt=""/>
+                  <img src={ mockImageUrls['ico_se_1'] } alt=""/>
                   <span className="text">Database</span>
                 </li>
                 <li className="purple">
                   <strong>10</strong>
-                  <img src="img/ico_se_2.png" alt=""/>
+                  <img src={ mockImageUrls['ico_se_2'] } alt=""/>
                   <span className="text">Web Engine</span>
                 </li>
                 <li className="blue">
                   <strong>12</strong>
-                  <img src="img/ico_se_3.png" alt=""/>
+                  <img src={ mockImageUrls['ico_se_3'] } alt=""/>
                   <span className="text">Applications</span>
                 </li>
               </ul>
@@ -380,7 +392,7 @@ const ServiceTable = () => <div className="table services">
                 </thead>
                 <tbody>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_1.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_1'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">1</td>
@@ -388,7 +400,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Database</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_1.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_1'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">2</td>
@@ -396,7 +408,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Database</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">1</td>
@@ -404,7 +416,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Application</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">2</td>
@@ -412,7 +424,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Application</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">1</td>
@@ -420,7 +432,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Application</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">2</td>
@@ -428,7 +440,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Application</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">1</td>
@@ -448,29 +460,29 @@ const ServiceTable = () => <div className="table services">
         <td className="deployment">Undeployed</td>
         <td className="instances" contenteditable="true">12</td>
         <td className="time">12 SEC</td>
-        <td className="errors"><img width="11" src="img/ico_flag.png" alt=""/>0</td>
+        <td className="errors"><img width="11" src={ mockImageUrls['ico_flag'] } alt=""/>0</td>
       </tr>
       <tr className="details">
         <td colspan="7">
           <div className="service-card">
             <div className="graph">
-              <img src="img/3.png" alt=""/>
+              <img src={ mockImageUrls['3'] } alt=""/>
             </div>
             <div className="stats">
               <ul>
                 <li className="orange">
                   <strong>2</strong>
-                  <img src="img/ico_se_1.png" alt=""/>
+                  <img src={ mockImageUrls['ico_se_1'] } alt=""/>
                   <span className="text">Database</span>
                 </li>
                 <li className="purple">
                   <strong>10</strong>
-                  <img src="img/ico_se_2.png" alt=""/>
+                  <img src={ mockImageUrls['ico_se_2'] } alt=""/>
                   <span className="text">Web Engine</span>
                 </li>
                 <li className="blue">
                   <strong>12</strong>
-                  <img src="img/ico_se_3.png" alt=""/>
+                  <img src={ mockImageUrls['ico_se_3'] } alt=""/>
                   <span className="text">Applications</span>
                 </li>
               </ul>
@@ -486,7 +498,7 @@ const ServiceTable = () => <div className="table services">
                 </thead>
                 <tbody>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_1.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_1'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">1</td>
@@ -494,7 +506,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Database</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_1.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_1'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">2</td>
@@ -502,7 +514,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Database</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">1</td>
@@ -510,7 +522,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Application</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">2</td>
@@ -518,7 +530,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Application</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">1</td>
@@ -526,7 +538,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Application</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">2</td>
@@ -534,7 +546,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Application</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">1</td>
@@ -554,29 +566,29 @@ const ServiceTable = () => <div className="table services">
         <td className="deployment">Undeployed</td>
         <td className="instances" contenteditable="true">12</td>
         <td className="time">12 SEC</td>
-        <td className="errors"><img width="11" src="img/ico_flag.png" alt=""/>0</td>
+        <td className="errors"><img width="11" src={ mockImageUrls['ico_flag'] } alt=""/>0</td>
       </tr>
       <tr className="details">
         <td colspan="7">
           <div className="service-card">
             <div className="graph">
-              <img src="img/3.png" alt=""/>
+              <img src={ mockImageUrls['3'] } alt=""/>
             </div>
             <div className="stats">
               <ul>
                 <li className="orange">
                   <strong>2</strong>
-                  <img src="img/ico_se_1.png" alt=""/>
+                  <img src={ mockImageUrls['ico_se_1'] } alt=""/>
                   <span className="text">Database</span>
                 </li>
                 <li className="purple">
                   <strong>10</strong>
-                  <img src="img/ico_se_2.png" alt=""/>
+                  <img src={ mockImageUrls['ico_se_2'] } alt=""/>
                   <span className="text">Web Engine</span>
                 </li>
                 <li className="blue">
                   <strong>12</strong>
-                  <img src="img/ico_se_3.png" alt=""/>
+                  <img src={ mockImageUrls['ico_se_3'] } alt=""/>
                   <span className="text">Applications</span>
                 </li>
               </ul>
@@ -592,7 +604,7 @@ const ServiceTable = () => <div className="table services">
                 </thead>
                 <tbody>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_1.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_1'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">1</td>
@@ -600,7 +612,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Database</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_1.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_1'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">2</td>
@@ -608,7 +620,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Database</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">1</td>
@@ -616,7 +628,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Application</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">2</td>
@@ -624,7 +636,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Application</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">1</td>
@@ -632,7 +644,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Application</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">2</td>
@@ -640,7 +652,7 @@ const ServiceTable = () => <div className="table services">
                   <td className="th-type">Application</td>
                 </tr>
                 <tr>
-                  <td className="th-name"><img src="img/ico_se_3.png" alt=""/><a href="#">Application…123</a>
+                  <td className="th-name"><img src={ mockImageUrls['ico_se_3'] } alt=""/><a href="#">Application…123</a>
                   </td>
                   <td className="th-uptime">12 hours 2 Min</td>
                   <td className="th-instances">1</td>
@@ -663,29 +675,29 @@ const ServiceTable = () => <div className="table services">
         <td className="deployment">Undeployed</td>
         <td className="instances" contenteditable="true">12</td>
         <td className="time">12 SEC</td>
-        <td className="errors"><img width="11" src="img/ico_flag.png" alt=""/>0</td>
+        <td className="errors"><img width="11" src={ mockImageUrls['ico_flag'] } alt=""/>0</td>
       </tr>
       <tr className="details">
         <td colspan="7">
           <div className="service-card">
             <div className="graph">
-              <img src="img/3.png" alt=""/>
+              <img src={ mockImageUrls['3'] } alt=""/>
             </div>
             <div className="stats">
               <ul>
                 <li className="orange">
                   <strong>2</strong>
-                  <img src="img/ico_se_1.png" alt=""/>
+                  <img src={ mockImageUrls['ico_se_1'] } alt=""/>
                   <span className="text">Database</span>
                 </li>
                 <li className="purple">
                   <strong>10</strong>
-                  <img src="img/ico_se_2.png" alt=""/>
+                  <img src={ mockImageUrls['ico_se_2'] } alt=""/>
                   <span className="text">Web Engine</span>
                 </li>
                 <li className="blue">
                   <strong>12</strong>
-                  <img src="img/ico_se_3.png" alt=""/>
+                  <img src={ mockImageUrls['ico_se_3'] } alt=""/>
                   <span className="text">Applications</span>
                 </li>
               </ul>

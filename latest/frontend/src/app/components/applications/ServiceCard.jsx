@@ -1,19 +1,29 @@
 import React from 'react';
 
+const mockImageUrls = {
+  '2': require('../../img/2.png'),
+  '3': require('../../img/3.png'),
+  'ico_red': require('../../img/ico_red.png'),
+  'ico_green': require('../../img/ico_green.png'),
+  'ico_s_3': require('../../img/ico_s_3.png'),
+  'ico_s_2': require('../../img/ico_s_2.png'),
+  'ico_s_1': require('../../img/ico_s_1.png')
+};
+
 const ServiceCard = () => <div className="service-card">
   <div className="left-side">
     <div className="avatar">
-      <img src="img/2.png" alt=""/>
+      <img src={ mockImageUrls['2'] } alt=""/>
     </div>
     <h3>MDL_Gateway</h3>
 
     <div className="tags">
       <a href="#" className="stat">
-        <img src="img/ico_red.png" width="15" alt=""/>
+        <img src={ mockImageUrls['ico_red'] } width="15" alt=""/>
         <span>0 ERRORS</span>
       </a>
       <a href="#" className="stat ins">
-        <img src="img/ico_green.png" width="17" alt=""/>
+        <img src={ mockImageUrls['ico_green'] } width="17" alt=""/>
         <span>12 INSTANCES</span>
       </a>
     </div>
@@ -29,23 +39,23 @@ const ServiceCard = () => <div className="service-card">
       <ul>
         <li className="green">
           <strong>2</strong>
-          <img src="img/ico_s_3.png" alt=""/>
+          <img src={ mockImageUrls['ico_s_3'] } alt=""/>
           <span className="text">Database</span>
         </li>
         <li className="grey">
           <strong>10</strong>
-          <img src="img/ico_s_2.png" alt=""/>
+          <img src={ mockImageUrls['ico_s_2'] } alt=""/>
           <span className="text">Web Engine</span>
         </li>
         <li className="blue">
           <strong>12</strong>
-          <img src="img/ico_s_1.png" alt=""/>
+          <img src={ mockImageUrls['ico_s_1'] } alt=""/>
           <span className="text">Applications</span>
         </li>
       </ul>
     </div>
     <div className="graph">
-      <img src="img/3.png" alt=""/>
+      <img src={ mockImageUrls['3'] } alt=""/>
     </div>
   </div>
 </div>;
