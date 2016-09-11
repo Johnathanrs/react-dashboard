@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 
 import Button from './common/button/Button.jsx';
 import Panel from './common/panel/Panel.jsx';
@@ -16,6 +17,17 @@ const imageUrls = {
   g4: require('../img/g4.png'),
   g5: require('../img/g5.png'),
   circle: require('../img/circle.png')
+};
+
+const overallResourceUtilizationMockData = () => {
+  return _.range(0, 5).map((i) => ({
+    _id: _.uniqueId(),
+    name: 'Container ' + (i+1),
+    cpu: Math.random() * 100,
+    network: Math.random() * 100,
+    memory: Math.random() * 100,
+    disk: Math.random() * 100
+  }));
 };
 
 export default class Dashboard extends React.Component {
@@ -43,7 +55,7 @@ export default class Dashboard extends React.Component {
 
             <Panel title="Highest Overall Utilization"
                    headingAside={ <Button type="grey">Full List</Button> }>
-              <OverallResourceUtilization/>
+              <OverallResourceUtilization items={ overallResourceUtilizationMockData() }/>
             </Panel>
 
           </div>

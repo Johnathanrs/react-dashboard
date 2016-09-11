@@ -9,7 +9,6 @@ const Button = (props) => {
     'btn-add': props.type === 'add',
     'btn-blue': _.isUndefined(props.type) || props.type === 'blue'
   });
-  console.log('Button', props, classes);
   return <a href="javascript:void(0)"
             className={ classes }
             onClick={ () => { props.onClick && props.onClick() } } >{ props.children }</a>;
