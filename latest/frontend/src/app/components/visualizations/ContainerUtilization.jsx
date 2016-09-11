@@ -12,10 +12,10 @@ const renderItem = (item) => {
     </div>
     <div className="right">
       <ul>
-        <li><span className="blue" style={{width: cpu + '%'}}></span></li>
-        <li><span className="purple" style={{width: network + '%'}}></span></li>
-        <li><span className="red" style={{width: memory + '%'}}></span></li>
-        <li><span className="yellow" style={{width: disk + '%'}}></span></li>
+        <li><span className="blue" style={ {width: cpu + '%'} }></span></li>
+        <li><span className="purple" style={ {width: network + '%'} }></span></li>
+        <li><span className="red" style={ {width: memory + '%'} }></span></li>
+        <li><span className="yellow" style={ {width: disk + '%'} }></span></li>
       </ul>
     </div>
   </article>;

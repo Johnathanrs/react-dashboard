@@ -19,6 +19,7 @@ const imageUrls = {
   circle: require('../img/circle.png')
 };
 
+// TODO replace with real data
 const containerUtilizationMockData = () => {
   return _.range(0, 5).map((i) => ({
     _id: _.uniqueId(),
@@ -29,6 +30,19 @@ const containerUtilizationMockData = () => {
     disk: Math.random() * 100
   }));
 };
+
+// TODO replace with real data
+const applicationAvailabilityMockData = () => {
+  return _.range(0, 5).map((i) => ({
+    _id: _.uniqueId(),
+    name: 'Container ' + (i + 1),
+    errorCount: Math.random() * 100,
+    deviationOfErrors: Math.random() * 100,
+    responseTime: Math.random() * 100,
+    gaugeValue: Math.random() * 100
+  }));
+};
+
 
 export default class Dashboard extends React.Component {
   render() {
@@ -63,7 +77,7 @@ export default class Dashboard extends React.Component {
 
             <Panel title="Highest Overall Utilization"
                    headingAside={ <Button type="grey">Full List</Button> }>
-              <ApplicationAvailability />
+              <ApplicationAvailability items={ applicationAvailabilityMockData() }/>
             </Panel>
 
           </div>

@@ -1,84 +1,36 @@
 import React from 'react';
+import _ from 'lodash';
 
 import Gauge from './Gauge.jsx';
 
-const ApplicationAvailability = () => <div>
+const renderItem = (item) => {
+  const name = item.name;
+  const errorCount = item.errorCount;
+  const deviationOfErrors = item.deviationOfErrors;
+  const responseTime = item.responseTime;
+  const gaugeValue = item.gaugeValue;
+  return <article key={ _.uniqueId() }>
+    <div className="left">
+      <h4>{ name }</h4>
+    </div>
+    <div className="center">
+      <Gauge value={ gaugeValue }/>
+    </div>
+    <div className="right">
+      <ul>
+        <li><span className="purple" style={ {width: errorCount + '%'} }></span></li>
+        <li><span className="red" style={ {width: deviationOfErrors + '%'} }></span></li>
+        <li><span className="yellow" style={ {width: responseTime + '%'} }></span></li>
+      </ul>
+    </div>
+  </article>;
+};
+
+const renderItems = (items) => items.map((item) => renderItem(item));
+
+const ApplicationAvailability = (props) => <div>
   <section className="overall-over v2">
-    <article>
-      <div className="left">
-        <h4>Application ABC</h4>
-      </div>
-      <div className="center">
-        <Gauge value={ 35 }/>
-      </div>
-      <div className="right">
-        <ul>
-          <li><span className="purple" style={{width: '80%'}}></span></li>
-          <li><span className="red" style={{width: '85%'}}></span></li>
-          <li><span className="yellow" style={{width: '50%'}}></span></li>
-        </ul>
-      </div>
-    </article>
-    <article>
-      <div className="left">
-        <h4>Application ABC</h4>
-      </div>
-      <div className="center">
-        <Gauge value={ 35 }/>
-      </div>
-      <div className="right">
-        <ul>
-          <li><span className="purple" style={{width: '80%'}}></span></li>
-          <li><span className="red" style={{width: '85%'}}></span></li>
-          <li><span className="yellow" style={{width: '50%'}}></span></li>
-        </ul>
-      </div>
-    </article>
-    <article>
-      <div className="left">
-        <h4>Application ABC</h4>
-      </div>
-      <div className="center">
-        <Gauge value={ 35 }/>
-      </div>
-      <div className="right">
-        <ul>
-          <li><span className="purple" style={{width: '80%'}}></span></li>
-          <li><span className="red" style={{width: '85%'}}></span></li>
-          <li><span className="yellow" style={{width: '50%'}}></span></li>
-        </ul>
-      </div>
-    </article>
-    <article>
-      <div className="left">
-        <h4>Application ABC</h4>
-      </div>
-      <div className="center">
-        <Gauge value={ 35 }/>
-      </div>
-      <div className="right">
-        <ul>
-          <li><span className="purple" style={{width: '80%'}}></span></li>
-          <li><span className="red" style={{width: '85%'}}></span></li>
-          <li><span className="yellow" style={{width: '50%'}}></span></li>
-        </ul>
-      </div>
-    </article>
-    <article>
-      <div className="left">
-        <h4>Application ABC</h4>
-      </div>
-      <div className="center">
-        <Gauge value={ 35 }/>
-      </div>
-      <div className="right">
-        <ul>
-          <li><span className="purple" style={{width: '80%'}}></span></li>
-          <li><span className="red" style={{width: '85%'}}></span></li>
-          <li><span className="yellow" style={{width: '50%'}}></span></li>
-        </ul>
-      </div>
-    </article>
+    { renderItems(_.take(props.items, 5)) }
   </section>
   <div className="captions">
     <ul>
