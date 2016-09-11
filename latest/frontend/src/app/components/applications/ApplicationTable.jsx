@@ -28,6 +28,6 @@ const ApplicationTable = (props) => {
                  classes="errors"
                  getter={ () => renderErrors(errorCount) }/>
   </Table>;
-}
+};
 
 export default ApplicationTable;
