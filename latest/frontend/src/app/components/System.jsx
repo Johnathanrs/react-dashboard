@@ -23,7 +23,7 @@ export default class System extends React.Component {
     };
   }
 
-  _loadData() {
+  _fetchData() {
     $.get(settings.apiBase + '/container_stats/current').then((result) => {
       this.setState({ containers: result });
     });
@@ -33,7 +33,7 @@ export default class System extends React.Component {
   }
 
   componentDidMount() {
-    this._loadData();
+    this._fetchData();
   }
 
   render() {

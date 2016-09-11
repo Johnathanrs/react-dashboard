@@ -1,4 +1,5 @@
 import React from 'react';
+import $ from 'jquery';
 import Panel from './common/panel/Panel.jsx';
 import Table from './common/table/Table.jsx';
 import TableColumn from './common/table/TableColumn.jsx';
@@ -8,20 +9,31 @@ import ApplicationOverview from './visualizations/ApplicationOverview.jsx';
 
 import ApplicationSelectionSummary from './applications/ApplicationSelectionSummary.jsx';
 import ApplicationCard from './applications/ApplicationCard.jsx';
+import ApplicationCardGrid from './applications/ApplicationCardGrid.jsx';
+import ApplicationTable from './applications/ApplicationTable.jsx';
 import ServiceCard from './applications/ServiceCard.jsx';
 import ServiceCardApplications from './applications/ServiceCardApplications.jsx';
+
+import settings from '../app.settings';
 
 export default class Application extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       currentTab: 'applications',
-      currentViewType: 'cards'
+      currentViewType: 'cards',
+      applications: []
     };
   }
 
-  componentDidMount() {
+  _fetchData() {
+    $.get(settings.apiBase + '/app_infos').then((result) => {
+      this.setState({applications: result});
+    });
+  }
 
+  componentDidMount() {
+    this._fetchData();
   }
 
   currentTab() {
@@ -38,6 +50,15 @@ export default class Application extends React.Component {
 
   _setCurrentViewType(viewType) {
     this.setState({currentViewType: viewType});
+  }
+
+
+  _applications() {
+    return this.state.applications || [];
+  }
+
+  _services() {
+    return this.state.services || [];
   }
 
   /*
@@ -123,32 +144,14 @@ export default class Application extends React.Component {
 
   _renderApplicationCards() {
     return <div className="cols-list">
-      <section className="add-aplication">
-        <article>
-          <a href="#" className="add">ADD APPLICATION</a>
-        </article>
-        <ApplicationCard />
-        <ApplicationCard />
-        <ApplicationCard />
-        <ApplicationCard />
-        <ApplicationCard />
-        <ApplicationCard />
-      </section>
+      <ApplicationCardGrid items={ this._applications() }/>
     </div>;
   }
 
   _renderApplicationRows() {
     return <div className="row-list">
       <ApplicationSelectionSummary />
-      <Table>
-        <TableColumn title="Name" getter={ () => 'hadoop-nn' }/>
-        <TableColumn title="Uptime" getter={ () => '12 hours 2 Min' }/>
-        <TableColumn title="Owner" getter={ () => 'Jason Richards' }/>
-        <TableColumn title="Deployment" getter={ () => 'Undeployed' }/>
-        <TableColumn title="Instances" getter={ () => '12' }/>
-        <TableColumn title="Response Time" getter={ () => '15 sec' }/>
-        <TableColumn title="Errors" getter={ () => <div><img width="12" src="img/ico_red.png" alt=""/>2</div> }/>
-      </Table>
+      <ApplicationTable items={ this._applications() }/>
     </div>;
   }
 
@@ -168,7 +171,6 @@ export default class Application extends React.Component {
 
   render() {
     return <div>
-
       <div className="bg-d">
         <div className="container ff">
           <div className="main-title">
@@ -190,7 +192,6 @@ export default class Application extends React.Component {
             <a href="javascript:void(0)" className="btn btn-add btn-add-serv" onClick={ () => {this.onAddService()} }>Add
               Service</a>
           </SimpleTabs>
-
 
         </div>
       </div>
