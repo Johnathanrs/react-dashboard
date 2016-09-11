@@ -1,8 +1,6 @@
 import React from 'react';
 
-const imageUrls = {
-  circle: require('../../img/circle.png')
-};
+import Gauge from './Gauge.jsx';
 
 const ApplicationAvailability = () => <div>
   <section className="overall-over v2">
@@ -11,7 +9,7 @@ const ApplicationAvailability = () => <div>
         <h4>Application ABC</h4>
       </div>
       <div className="center">
-        <img src={ imageUrls.circle } alt=""/>
+        <Gauge value={ 35 }/>
       </div>
       <div className="right">
         <ul>
@@ -26,7 +24,7 @@ const ApplicationAvailability = () => <div>
         <h4>Application ABC</h4>
       </div>
       <div className="center">
-        <img src={ imageUrls.circle } alt=""/>
+        <Gauge value={ 35 }/>
       </div>
       <div className="right">
         <ul>
@@ -41,7 +39,7 @@ const ApplicationAvailability = () => <div>
         <h4>Application ABC</h4>
       </div>
       <div className="center">
-        <img src={ imageUrls.circle } alt=""/>
+        <Gauge value={ 35 }/>
       </div>
       <div className="right">
         <ul>
@@ -56,7 +54,7 @@ const ApplicationAvailability = () => <div>
         <h4>Application ABC</h4>
       </div>
       <div className="center">
-        <img src={ imageUrls.circle } alt=""/>
+        <Gauge value={ 35 }/>
       </div>
       <div className="right">
         <ul>
@@ -71,7 +69,7 @@ const ApplicationAvailability = () => <div>
         <h4>Application ABC</h4>
       </div>
       <div className="center">
-        <img src={ imageUrls.circle } alt=""/>
+        <Gauge value={ 35 }/>
       </div>
       <div className="right">
         <ul>
