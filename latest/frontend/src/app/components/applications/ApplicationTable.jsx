@@ -1,13 +1,33 @@
 import React from 'react';
 
 import Table from '../common/table/Table.jsx';
+import TableColumn from '../common/table/TableColumn.jsx';
 
-const ApplicationTable = () => <Table>
-  <TableColumn title="Name" getter={ () => 'hadoop-nn' }/>
-  <TableColumn title="Uptime" getter={ () => '12 hours 2 Min' }/>
-  <TableColumn title="Owner" getter={ () => 'Jason Richards' }/>
-  <TableColumn title="Deployment" getter={ () => 'Undeployed' }/>
-  <TableColumn title="Instances" getter={ () => '12' }/>
-  <TableColumn title="Response Time" getter={ () => '15 sec' }/>
-  <TableColumn title="Errors" getter={ () => <div><img width="12" src="img/ico_red.png" alt=""/>2</div> }/>
-</Table>;
+const mockImageUrls = {
+  'ico_red': require('../../img/ico_red.png'),
+  'ico_flag': require('../../img/ico_flag.png')
+};
+
+const renderErrors = (errorCount) => <div><img width="12"
+                                               src={ mockImageUrls[errorCount > 0 ? 'ico_red' : 'ico_flag'] }
+                                               alt=""/>{errorCount}</div>;
+
+const ApplicationTable = (props) => {
+  const owner = 'Jason Richards';
+  const instances = 12;
+  const responseTime = '15 sec';
+  const errorCount = 0;
+  return <Table items={ props.items }>
+    <TableColumn title="Name" classes="name" getter="appName"/>
+    <TableColumn title="Uptime" classes="uptime" getter="appUptime"/>
+    <TableColumn title="Owner" classes="owner" getter={ () => owner }/>
+    <TableColumn title="Deployment" classes="deployment" getter="appStatus"/>
+    <TableColumn title="Instances" classes="instances" getter={ () => instances }/>
+    <TableColumn title="Response Time" classes="time" getter={ () => responseTime }/>
+    <TableColumn title="Errors"
+                 classes="errors"
+                 getter={ () => renderErrors(errorCount) }/>
+  </Table>;
+}
+
+export default ApplicationTable;
