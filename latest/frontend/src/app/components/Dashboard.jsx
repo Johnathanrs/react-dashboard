@@ -6,8 +6,8 @@ import Panel from './common/panel/Panel.jsx';
 import Events from './dashboard/Events.jsx';
 import DashboardSummary from './dashboard/DashboardSummary.jsx';
 import ApplicationOverview from './visualizations/ApplicationOverview.jsx';
-import OverallReliability from './visualizations/OverallReliability.jsx';
-import OverallResourceUtilization from './visualizations/OverallResourceUtilization.jsx';
+import ApplicationAvailability from './visualizations/ApplicationAvailability.jsx';
+import ContainerUtilization from './visualizations/ContainerUtilization.jsx';
 
 const imageUrls = {
   g: require('../img/g.png'),
@@ -19,10 +19,10 @@ const imageUrls = {
   circle: require('../img/circle.png')
 };
 
-const overallResourceUtilizationMockData = () => {
+const containerUtilizationMockData = () => {
   return _.range(0, 5).map((i) => ({
     _id: _.uniqueId(),
-    name: 'Container ' + (i+1),
+    name: 'Container ' + (i + 1),
     cpu: Math.random() * 100,
     network: Math.random() * 100,
     memory: Math.random() * 100,
@@ -41,7 +41,7 @@ export default class Dashboard extends React.Component {
         </div>
 
         <Panel title="System Utilization Overview"
-          headingAside={ <Button type="grey">More Details</Button> }>
+               headingAside={ <Button type="grey">More Details</Button> }>
           <img src={ imageUrls.g } alt=""/>
         </Panel>
 
@@ -55,7 +55,7 @@ export default class Dashboard extends React.Component {
 
             <Panel title="Highest Overall Utilization"
                    headingAside={ <Button type="grey">Full List</Button> }>
-              <OverallResourceUtilization items={ overallResourceUtilizationMockData() }/>
+              <ContainerUtilization items={ containerUtilizationMockData() }/>
             </Panel>
 
           </div>
@@ -63,7 +63,7 @@ export default class Dashboard extends React.Component {
 
             <Panel title="Highest Overall Utilization"
                    headingAside={ <Button type="grey">Full List</Button> }>
-              <OverallReliability/>
+              <ApplicationAvailability />
             </Panel>
 
           </div>

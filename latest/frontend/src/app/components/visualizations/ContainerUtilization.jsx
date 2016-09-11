@@ -23,7 +23,7 @@ const renderItem = (item) => {
 
 const renderItems = (items) => items.map((item) => renderItem(item));
 
-const OverallResourceUtilization = (props) => <div>
+const ContainerUtilization = (props) => <div>
   <section className="overall-over">
     { renderItems(_.take(props.items, 5)) }
   </section>
@@ -37,4 +37,4 @@ const OverallResourceUtilization = (props) => <div>
   </div>
 </div>;
 
-export default OverallResourceUtilization;
+export default ContainerUtilization;

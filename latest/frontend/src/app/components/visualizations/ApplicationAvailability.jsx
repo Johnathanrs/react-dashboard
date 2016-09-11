@@ -4,7 +4,7 @@ const imageUrls = {
   circle: require('../../img/circle.png')
 };
 
-const OverallReliability = () => <div>
+const ApplicationAvailability = () => <div>
   <section className="overall-over v2">
     <article>
       <div className="left">
@@ -91,4 +91,4 @@ const OverallReliability = () => <div>
   </div>
 </div>;
 
-export default OverallReliability;
+export default ApplicationAvailability;
