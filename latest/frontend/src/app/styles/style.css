@@ -668,7 +668,7 @@ a:hover {
 	display: block;
 }
 
-.add-aplication {
+.add-application {
 	overflow: hidden;
 	display: flex;
 	flex-flow: row wrap;
@@ -676,14 +676,14 @@ a:hover {
 	margin: 0 0 0 -15px;
 }
 
-.add-aplication article {
+.add-application article {
 	width: 31.792%;
 	margin: 0 0 15px 1.538%;
 	background: #fff;
 	border: 1px solid #eef1f3;
 }
 
-.add-aplication .add {
+.add-application .add {
 	font-size: 21px;
 	background: url(../img/ico_plus_b.png) no-repeat 50% 71px;
 	padding-top: 153px;
@@ -697,12 +697,12 @@ a:hover {
 	letter-spacing: 2px;
 }
 
-.add-aplication ul {
+.add-application ul {
 	padding: 19px 25px 2px 32px;
 	font-size: 0;
 }
 
-.add-aplication ul li {
+.add-application ul li {
 	display: inline-block;
 	vertical-align: top;
 	width: 50%;
@@ -710,7 +710,7 @@ a:hover {
 	font-size: 12px;
 }
 
-.add-aplication ul strong {
+.add-application ul strong {
 	display: block;
 	font-weight: normal;
 	font-size: 9px;
@@ -720,7 +720,7 @@ a:hover {
 	color: #9699a7;
 }
 
-.add-aplication ul span {
+.add-application ul span {
 	display: block;
 	padding-top: 3px;
 	font-family: 'Titillium Web', sans-serif;
@@ -728,16 +728,16 @@ a:hover {
 	color: #4f5365;
 }
 
-.add-aplication .head {
+.add-application .head {
 	background: #ecf0f2;
 	padding: 20px 15px 25px 24px;
 }
 
-.add-aplication .head h4 a {
+.add-application .head h4 a {
 	color: inherit;
 }
 
-.add-aplication .head h4 {
+.add-application .head h4 {
 	padding: 7px 20px 32px;
 	font-family: 'Titillium Web', sans-serif;
 	letter-spacing: 2px;
@@ -747,7 +747,7 @@ a:hover {
 	color: #414559;
 }
 
-.add-aplication .head > img {
+.add-application .head > img {
 	float: left;
 	width: 33px;
 	height: 33px;
@@ -755,27 +755,27 @@ a:hover {
 	border-radius: 50%;
 }
 
-.add-aplication .stat img {
+.add-application .stat img {
 	vertical-align: top;
 	margin-right: 10px;
 	margin-top: 5px;
 }
 
-.add-aplication .stat.ins img {
+.add-application .stat.ins img {
 	margin-right: 5px;
 }
 
-.add-aplication .stat.ins {
+.add-application .stat.ins {
 	padding-left: 14px;
 }
 
-.add-aplication .tags {
+.add-application .tags {
 	clear: both;
 	margin-right: -20px;
 	overflow: hidden;
 }
 
-.add-aplication .stat {
+.add-application .stat {
 	float: left;
 	color: #414558;
 	font-size: 10px;
@@ -2148,7 +2148,7 @@ img {
 		padding-top: 30px;
 	}
 
-	.add-aplication article {
+	.add-application article {
 		width: 48.4%;
 	}
 
@@ -2170,7 +2170,7 @@ img {
 		height: 100%
 	}
 
-	.add-aplication .head {
+	.add-application .head {
 		padding: 10px;
 	}
 
@@ -2180,12 +2180,12 @@ img {
 	}
 
 	.service-card .stat,
-	.add-aplication .stat {
+	.add-application .stat {
 		margin-right: 10px;
 	}
 
 	.service-card .tags,
-	.add-aplication .tags {
+	.add-application .tags {
 		margin-right: -10px;
 	}
 
@@ -2209,8 +2209,8 @@ img {
 		margin-right: 0;
 	}
 
-	.add-aplication,
-	.add-aplication article {
+	.add-application,
+	.add-application article {
 		margin-left: 0;
 	}
 
@@ -2238,7 +2238,7 @@ img {
 		width: 100%;
 	}
 
-	.add-aplication article {
+	.add-application article {
 		width: 100%;
 	}
 

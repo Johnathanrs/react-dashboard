@@ -12,6 +12,8 @@ import ApplicationCard from './applications/ApplicationCard.jsx';
 import ApplicationCardGrid from './applications/ApplicationCardGrid.jsx';
 import ApplicationTable from './applications/ApplicationTable.jsx';
 import ServiceCard from './applications/ServiceCard.jsx';
+import ServiceCardGrid from './applications/ServiceCardGrid.jsx';
+import ServiceTable from './applications/ServiceTable.jsx';
 import ServiceCardApplications from './applications/ServiceCardApplications.jsx';
 
 import settings from '../app.settings';
@@ -22,7 +24,8 @@ export default class Application extends React.Component {
     this.state = {
       currentTab: 'applications',
       currentViewType: 'cards',
-      applications: []
+      applications: [],
+      services: []
     };
   }
 
@@ -30,6 +33,10 @@ export default class Application extends React.Component {
     $.get(settings.apiBase + '/app_infos').then((result) => {
       this.setState({applications: result});
     });
+    $.get(settings.apiBase + '/service_infos/apps').then((result) => {
+      this.setState({services: result});
+    });
+
   }
 
   componentDidMount() {
@@ -101,16 +108,13 @@ export default class Application extends React.Component {
 
   _renderServiceCards() {
     return <div className="cols-list">
-      <ServiceCard />
-      <ServiceCardApplications />
-      <ServiceCard />
-      <ServiceCardApplications />
+      <ServiceCardGrid items={ this._services() } />
     </div>;
   }
 
   _renderServiceRows() {
     return <div className="row-list">
-      TODO ServiceTable here
+      <ServiceTable items={ this._services() } />
     </div>;
   }
 

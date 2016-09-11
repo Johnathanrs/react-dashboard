@@ -17,7 +17,7 @@ export default class ApplicationCardGrid extends React.Component {
   }
 
   render() {
-    return <section className="add-aplication">
+    return <section className="add-application">
       <AddApplicationCard />
       { this._renderCards() }
     </section>;

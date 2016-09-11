@@ -4,60 +4,72 @@ const mockImageUrls = {
   '2': require('../../img/2.png'),
   '3': require('../../img/3.png'),
   'ico_red': require('../../img/ico_red.png'),
+  'ico_flag': require('../../img/ico_flag.png'),
   'ico_green': require('../../img/ico_green.png'),
   'ico_s_3': require('../../img/ico_s_3.png'),
   'ico_s_2': require('../../img/ico_s_2.png'),
   'ico_s_1': require('../../img/ico_s_1.png')
 };
 
-const ServiceCard = () => <div className="service-card">
-  <div className="left-side">
-    <div className="avatar">
-      <img src={ mockImageUrls['2'] } alt=""/>
-    </div>
-    <h3>MDL_Gateway</h3>
+class ServiceCard extends React.Component {
+  render() {
+    const service = this.props.card.service_info[0];
+    const errorCount = 0;
+    const instances = 12;
+    const responseTime = '12 sec';
+    const databaseCount = 7;
+    const webEngineCount = 12;
+    const applicationCount = 19;
+    return <div className="service-card">
+      <div className="left-side">
+        <div className="avatar">
+          <img src={ mockImageUrls['2'] } alt=""/>
+        </div>
+        <h3>{ service.svcName }</h3>
 
-    <div className="tags">
-      <a href="#" className="stat">
-        <img src={ mockImageUrls['ico_red'] } width="15" alt=""/>
-        <span>0 ERRORS</span>
-      </a>
-      <a href="#" className="stat ins">
-        <img src={ mockImageUrls['ico_green'] } width="17" alt=""/>
-        <span>12 INSTANCES</span>
-      </a>
-    </div>
-    <ul>
-      <li><strong>DEPLOYMENT</strong><span>Undeployed</span></li>
-      <li><strong>RESPONSE TIME</strong><span>12 SEC</span></li>
-      <li><strong>SERVICE</strong><span>None</span></li>
-      <li><strong>UPTIME</strong><span>12 hours 2 Min</span></li>
-    </ul>
-  </div>
-  <div className="right-side">
-    <div className="stats">
-      <ul>
-        <li className="green">
-          <strong>2</strong>
-          <img src={ mockImageUrls['ico_s_3'] } alt=""/>
-          <span className="text">Database</span>
-        </li>
-        <li className="grey">
-          <strong>10</strong>
-          <img src={ mockImageUrls['ico_s_2'] } alt=""/>
-          <span className="text">Web Engine</span>
-        </li>
-        <li className="blue">
-          <strong>12</strong>
-          <img src={ mockImageUrls['ico_s_1'] } alt=""/>
-          <span className="text">Applications</span>
-        </li>
-      </ul>
-    </div>
-    <div className="graph">
-      <img src={ mockImageUrls['3'] } alt=""/>
-    </div>
-  </div>
-</div>;
+        <div className="tags">
+          <a href="#" className="stat">
+            <img src={ mockImageUrls[errorCount > 0 ? 'ico_red' : 'ico_flag'] } width="15" alt=""/>
+            <span>{errorCount} ERRORS</span>
+          </a>
+          <a href="#" className="stat ins">
+            <img src={ mockImageUrls['ico_green'] } width="17" alt=""/>
+            <span>{instances} INSTANCES</span>
+          </a>
+        </div>
+        <ul>
+          <li><strong>Deployment</strong><span>{ service.svcStatus }</span></li>
+          <li><strong>Response time</strong><span>{ responseTime }</span></li>
+          <li><strong>Service</strong><span>None</span></li>
+          <li><strong>Uptime</strong><span>{ service.svcUptime }</span></li>
+        </ul>
+      </div>
+      <div className="right-side">
+        <div className="stats">
+          <ul>
+            <li className="green">
+              <strong>{ databaseCount }</strong>
+              <img src={ mockImageUrls['ico_s_3'] } alt=""/>
+              <span className="text">Database</span>
+            </li>
+            <li className="grey">
+              <strong>{ webEngineCount }</strong>
+              <img src={ mockImageUrls['ico_s_2'] } alt=""/>
+              <span className="text">Web Engine</span>
+            </li>
+            <li className="blue">
+              <strong>{ applicationCount }</strong>
+              <img src={ mockImageUrls['ico_s_1'] } alt=""/>
+              <span className="text">Applications</span>
+            </li>
+          </ul>
+        </div>
+        <div className="graph">
+          <img src={ mockImageUrls['3'] } alt=""/>
+        </div>
+      </div>
+    </div>;
+  }
+}
 
 export default ServiceCard;
