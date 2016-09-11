@@ -1,5 +1,9 @@
 import React from 'react';
 
+import Table from '../common/table/Table.jsx';
+import TableColumn from '../common/table/TableColumn.jsx';
+import ErrorCount from './ErrorCount.jsx';
+
 const mockImageUrls = {
   '2': require('../../img/2.png'),
   '3': require('../../img/3.png'),
@@ -11,8 +15,17 @@ const mockImageUrls = {
   'ico_s_1': require('../../img/ico_s_1.png')
 };
 
+const ServiceTable = (props) => <Table items={props.items}>
+  <TableColumn title="Name" classes="name" getter={ () => 'MDL_Gateway' }/>
+  <TableColumn title="Uptime" classes="uptime" getter={ () => '12 hours 2 min' }/>
+  <TableColumn title="Owner" classes="owner" getter={ () => 'Jason Richards' }/>
+  <TableColumn title="Deployment" classes="deployment" getter={ () => 'Undeployed' }/>
+  <TableColumn title="Instances" classes="instances" getter={ () => 12 }/>
+  <TableColumn title="Response time" classes="time" getter={ () => '12 sec' }/>
+  <TableColumn title="Errors" classes="errors" getter={ () => <ErrorCount value={0} /> }/>
+</Table>;
 
-const ServiceTable = () => <div className="table services">
+const ServiceTableMock = () => <div className="table services">
   <table>
     <thead>
     <tr>

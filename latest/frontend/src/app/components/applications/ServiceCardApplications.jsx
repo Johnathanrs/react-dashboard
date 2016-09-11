@@ -1,5 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
+import _ from 'lodash';
 
 import ApplicationCard from './ApplicationCard.jsx';
 
@@ -11,11 +12,11 @@ const mockImageUrls = {
 };
 
 const renderCards = (items) => {
-  return items.map((item) => <ApplicationCard card={item}/>);
+  return items.map((item) => <ApplicationCard key={item._id} card={item}/>);
 };
 
 // TODO remove this
-const mockCard = {appName: 'test', appStatus: 'Deployed', appUptime: '4h 3min'};
+const mockCard = () => ({_id: 'id_' + _.uniqueId(), appName: 'test', appStatus: 'Deployed', appUptime: '4h 3min'});
 
 class ServiceCardApplications extends React.Component {
   constructor(props) {
@@ -38,7 +39,7 @@ class ServiceCardApplications extends React.Component {
 
       <div className={classNames({active: this.state.active, inside: true})}>
         <section className="add-application">
-          { renderCards([mockCard, mockCard, mockCard]) }
+          { renderCards([mockCard(), mockCard(), mockCard()]) }
         </section>
       </div>
     </div>;

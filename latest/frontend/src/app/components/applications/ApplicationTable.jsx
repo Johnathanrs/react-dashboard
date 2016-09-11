@@ -2,15 +2,7 @@ import React from 'react';
 
 import Table from '../common/table/Table.jsx';
 import TableColumn from '../common/table/TableColumn.jsx';
-
-const mockImageUrls = {
-  'ico_red': require('../../img/ico_red.png'),
-  'ico_flag': require('../../img/ico_flag.png')
-};
-
-const renderErrors = (errorCount) => <div><img width="12"
-                                               src={ mockImageUrls[errorCount > 0 ? 'ico_red' : 'ico_flag'] }
-                                               alt=""/>{errorCount}</div>;
+import ErrorCount from './ErrorCount.jsx';
 
 const ApplicationTable = (props) => {
   const owner = 'Jason Richards';
@@ -26,7 +18,7 @@ const ApplicationTable = (props) => {
     <TableColumn title="Response Time" classes="time" getter={ () => responseTime }/>
     <TableColumn title="Errors"
                  classes="errors"
-                 getter={ () => renderErrors(errorCount) }/>
+                 getter={ () => <ErrorCount value={errorCount} /> }/>
   </Table>;
 };
 
