@@ -3,21 +3,26 @@
  */
 const configuration = {
   mongo: {
-    url: 'mongodb://localhost:27017/evolute',
-    sourceCollectionName: 'container_stats',
-    targetCollectionName: 'container_stats_aggregated'
+    url: 'mongodb://localhost:27017/evolute'
   },
   dateRange: {
     from: '2016-08-20',
     to: '2016-08-25'
   },
-  aggregationPeriods: ['week', 'day', 'hour']
+  aggregationPeriods: ['week', 'day', 'hour'],
+  aggregations: [
+    {
+      name: 'Container Stats',
+      aggregatorFactory: require('./aggregatorFactory.containerStats'),
+      sourceCollectionName: 'container_stats',
+      targetCollectionName: 'container_stats_aggregated'
+    }
+  ]
 };
 
 // Imports
 const MongoClient = require('mongodb').MongoClient;
-const aggregatorFactory = require('./aggregatorFactory');
-
+const q = require('q');
 
 /**
  * Performs a single map-reduce MongoDB aggregation
@@ -32,47 +37,38 @@ function performAggregation(aggregator, period, lxcId) {
   return aggregator(period, new Date(configuration.dateRange.from), new Date(configuration.dateRange.to), lxcId);
 }
 
-function performAllAggregations(db, sourceCollection, lxcIds) {
-  console.log(`Starting aggregation: ${configuration.mongo.sourceCollectionName} --> ${configuration.mongo.targetCollectionName}`);
+function performAggregationsWithAllParameters(db, sourceCollection, targetCollection, lxcIds, aggregation) {
+  console.log(`Starting aggregation: ${aggregation.sourceCollectionName} --> ${aggregation.targetCollectionName}`);
   lxcIds.unshift(null);
-  let aggregator = aggregatorFactory(sourceCollection, configuration.mongo.targetCollectionName);
-  let invocations = [];
+  const aggregator = aggregation.aggregatorFactory(sourceCollection, aggregation.targetCollectionName);
+  let invokers = [];
   lxcIds.forEach((lxcId) => {
     configuration.aggregationPeriods.forEach((period) => {
-      invocations.push({
-        lxcId: lxcId,
-        period: period
+      invokers.push(function () {
+        const lxcIdParameter = lxcId;
+        const periodParameter = period;
+        return performAggregation(aggregator, periodParameter, lxcIdParameter);
       })
     });
   });
-  let invocationIndex = -1;
+  invokers.push(function () {
+    console.log(`${aggregation.name} aggregation completed.`);
+  });
+  return invokers.reduce((soFar, f) => soFar.then(f), q());
+}
 
-  function invokeNextAggregation() {
-    invocationIndex++;
-    if (invocationIndex >= invocations.length) {
-      console.log('Aggregation completed.');
-      db.close();
-      return;
-    }
-    const invocation = invocations[invocationIndex];
-    performAggregation(aggregator, invocation.period, invocation.lxcId).then((targetCollection) => {
-      setTimeout(() => {
-        invokeNextAggregation();
-      }, 0);
-    }, (error) => {
-      console.log('AGGREGATION ERROR', error);
-      db.close();
+function aggregationExecutorFactory(aggregation, db) {
+  return function () {
+    const sourceCollection = db.collection(aggregation.sourceCollectionName);
+    return db.createCollection(aggregation.targetCollectionName).then((targetCollection) => {
+      return sourceCollection.distinct('lxc_id').then((lxcIds) => {
+        return performAggregationsWithAllParameters(db, sourceCollection, targetCollection, lxcIds, aggregation);
+      });
     });
   }
-
-  invokeNextAggregation();
 }
 
 MongoClient.connect(configuration.mongo.url).then((db) => {
-  let sourceCollection = db.collection(configuration.mongo.sourceCollectionName);
-  db.createCollection(configuration.mongo.targetCollectionName).then((targetCollection) => {
-    sourceCollection.distinct('lxc_id').then((lxcIds) => {
-      performAllAggregations(db, sourceCollection, lxcIds);
-    });
-  });
+  const aggregationExecutors = configuration.aggregations.map((aggregation) => aggregationExecutorFactory(aggregation, db));
+  return aggregationExecutors.reduce((soFar, f) => soFar.then(f), q());
 });
