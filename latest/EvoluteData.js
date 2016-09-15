@@ -1004,4 +1004,4 @@ db.once('open', function() {
     // we're connected!
 });
 
-require('./aggregation/aggregationApi').initialize(app, mongoose);
+require('./dataHandling/aggregation/aggregationApi').initialize(app, mongoose);

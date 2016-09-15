@@ -29,14 +29,21 @@ export default class Application extends React.Component {
     };
   }
 
-  _fetchData() {
+  _fetchApplications() {
     $.get(settings.apiBase + '/app_infos').then((result) => {
       this.setState({applications: result});
     });
+  }
+
+  _fetchServices() {
     $.get(settings.apiBase + '/service_infos/apps').then((result) => {
       this.setState({services: result});
     });
+  }
 
+  _fetchData() {
+    this._fetchApplications();
+    this._fetchServices();
   }
 
   componentDidMount() {
@@ -108,13 +115,13 @@ export default class Application extends React.Component {
 
   _renderServiceCards() {
     return <div className="cols-list">
-      <ServiceCardGrid items={ this._services() } />
+      <ServiceCardGrid items={ this._services() }/>
     </div>;
   }
 
   _renderServiceRows() {
     return <div className="row-list">
-      <ServiceTable items={ this._services() } />
+      <ServiceTable items={ this._services() }/>
     </div>;
   }
 
@@ -148,14 +155,18 @@ export default class Application extends React.Component {
 
   _renderApplicationCards() {
     return <div className="cols-list">
-      <ApplicationCardGrid items={ this._applications() }/>
+      <ApplicationCardGrid ref="applicationCardGrid"
+                           items={ this._applications() }
+                           onAddApplication={ () => { this.onAddApplication() } }
+                           onApplicationChange={ (application) => { this.saveApplication(application) } }/>
     </div>;
   }
 
   _renderApplicationRows() {
     return <div className="row-list">
       <ApplicationSelectionSummary />
-      <ApplicationTable items={ this._applications() }/>
+      <ApplicationTable ref="applicationTable"
+                        items={ this._applications() }/>
     </div>;
   }
 
@@ -217,10 +228,28 @@ export default class Application extends React.Component {
 
   onAddApplication() {
     console.log('onAddApplication');
+    let newApplicationArray = _.clone(this.state.applications);
+    newApplicationArray.unshift({editing: true, appName: 'test'});
+    this.setState({applications: newApplicationArray});
+
   }
 
   onAddService() {
     console.log('onAddService');
+  }
+
+  saveApplication(application) {
+    $.ajax({
+      type: application._id ? 'PUT' : 'POST',
+      url: settings.apiBase + '/app_infos',
+      data: application,
+      dataType: 'json'
+    });
+
+    // TODO move this into 'then' promise section
+    this._fetchApplications();
+    this.refs.applicationCardGrid && this.refs.applicationCardGrid.reset();
+    this.refs.applicationTable && this.refs.applicationTable.reset();
   }
 }
 
