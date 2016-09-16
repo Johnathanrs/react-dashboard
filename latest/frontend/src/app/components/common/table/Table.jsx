@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
+import classNames from 'classnames';
 
 import TablePagination from './TablePagination.jsx';
 import TableColumn from './TableColumn.jsx';
@@ -113,7 +114,9 @@ export default class Table extends React.Component {
   }
 
   render() {
-    return <div className="table">
+    let classes = _.isString(this.props.classes) ? {} : {table: true};
+    _.each(_.filter((this.props.classes || '').split(/\s/)), (cls) => { classes[cls] = true });
+    return <div className="table" className={classNames(classes)}>
       <table>
         <thead>
         <tr>
