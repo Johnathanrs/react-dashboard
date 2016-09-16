@@ -75,6 +75,7 @@ class ApplicationCard extends React.Component {
   onCancelChanges() {
     this.refs.appNameEdit.reset();
     this.setState({dirty: null});
+    this.props.onCancelChanges && this.props.onCancelChanges();
   }
 
   onApplyChanges() {

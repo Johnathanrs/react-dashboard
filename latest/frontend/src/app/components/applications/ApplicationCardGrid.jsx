@@ -35,7 +35,8 @@ export default class ApplicationCardGrid extends React.Component {
         (()=> this.state.applicationToAdd ?
           <ApplicationCard key="applicationToAdd"
                            card={ this.state.applicationToAdd }
-                           onApplicationChange={(application) => { this.onApplicationChange(application) }}/> :
+                           onApplicationChange={(application) => { this.onApplicationChange(application) }}
+                           onCancelChanges={ () => { this.reset() } }/> :
           <AddApplicationCard onClick={ () => { this.onAddApplication() } }/>)()
       }
 
