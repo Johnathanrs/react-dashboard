@@ -1,12 +1,14 @@
 import React from 'react';
 import $ from 'jquery';
+
 import Panel from './common/panel/Panel.jsx';
 import Table from './common/table/Table.jsx';
 import TableColumn from './common/table/TableColumn.jsx';
 import ViewTypeSelector from './common/viewType/ViewTypeSelector.jsx';
 import SimpleTabs from './common/tabs/SimpleTabs.jsx';
-import ApplicationOverview from './visualizations/ApplicationOverview.jsx';
+import modalUtil from './common/modal/modalUtil';
 
+import ApplicationOverview from './visualizations/ApplicationOverview.jsx';
 import ApplicationSelectionSummary from './applications/ApplicationSelectionSummary.jsx';
 import ApplicationCard from './applications/ApplicationCard.jsx';
 import ApplicationCardGrid from './applications/ApplicationCardGrid.jsx';
@@ -15,6 +17,7 @@ import ServiceCard from './applications/ServiceCard.jsx';
 import ServiceCardGrid from './applications/ServiceCardGrid.jsx';
 import ServiceTable from './applications/ServiceTable.jsx';
 import ServiceCardApplications from './applications/ServiceCardApplications.jsx';
+
 
 import settings from '../app.settings';
 
@@ -186,7 +189,7 @@ export default class Application extends React.Component {
   }
 
   onAddService() {
-    console.log('onAddService');
+    modalUtil.showModal(<div>Content!!!</div>, {title: 'Cool dilog'});
   }
 
   saveApplication(application) {
