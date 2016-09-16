@@ -7,12 +7,14 @@ import TableColumn from './TableColumn.jsx';
 import FirstExtraRow from './FirstExtraRow.jsx';
 import LastExtraRow from './LastExtraRow.jsx';
 import DetailsExtraRow from './DetailsExtraRow.jsx';
+import CheckBox from '../checkbox/CheckBox.jsx';
 
 export default class Table extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentPage: 0
+      currentPage: 0,
+      itemStates: _.map(props.items, () => ({}))
     };
   }
 
@@ -33,9 +35,13 @@ export default class Table extends React.Component {
   }
 
   _renderHeadCells() {
-    return this._columns().map((column, index) => <th key={'column' + index} className={column.props.classes}>
+    const headCells = this._columns().map((column, index) => <th key={'column' + index} className={column.props.classes}>
       {column.props.title}
     </th>);
+    const selectionHeadCell = () => <th key="column-selection" className="row-selection-cell">
+      <CheckBox onChange={ (newValue) => { this.selectAll(newValue) } }/>
+    </th>;
+    return this.props.supportsSelection ? [selectionHeadCell()].concat(headCells) : headCells;
   }
 
   _renderFirstExtraRow() {
@@ -70,8 +76,13 @@ export default class Table extends React.Component {
           { cellValue(column.props.getter) }
         </td>
       };
-      const rowCells = () => this._columns().map((column, index) => cell(column, index));
-      rows.push(<tr key={`row-${dataItemIndex}`}>{ rowCells() }</tr>);
+      const dataRowCells = () => this._columns().map((column, index) => cell(column, index));
+      const selectionRowCell = () => <td className="row-selection-cell" key={`row-selection-${dataItemIndex}`}>
+        <CheckBox value={ this.state.itemStates[dataItemIndex].selected }
+                  onChange={ (newValue) => { this.state.itemStates[dataItemIndex].selected = newValue } }/>
+      </td>;
+      const allRowCells = this.props.supportsSelection ? [selectionRowCell()].concat(dataRowCells()) : dataRowCells();
+      rows.push(<tr key={`row-${dataItemIndex}`}>{ allRowCells }</tr>);
       if (detailsExtraRow) {
         if (_.get(detailsExtraRow, 'props.children.type')) {
           const rowContent = React.cloneElement(detailsExtraRow.props.children, {
@@ -113,6 +124,12 @@ export default class Table extends React.Component {
     });
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      itemStates: _.map(nextProps.items, () => ({}))
+    });
+  }
+
   render() {
     let classes = _.isString(this.props.classes) ? {} : {table: true};
     _.each(_.filter((this.props.classes || '').split(/\s/)), (cls) => { classes[cls] = true });
@@ -126,12 +143,23 @@ export default class Table extends React.Component {
         <tbody>
         { this._renderFirstExtraRow() }
         { this._renderBodyRows() }
+        { this._renderLastExtraRow() }
         </tbody>
       </table>
       <TablePagination pageCount={this._pageCount()}
                        currentPage={this._currentPage()}
                        onPageClicked={ (pageIndex) => { this._setCurrentPage(pageIndex) } }/>
     </div>;
+  }
+
+  selectAll(selected) {
+    this.setState({
+      itemStates: _.map(this.state.itemStates, (itemState) => _.defaults({selected: selected}, itemState))
+    });
+  }
+
+  selectedItems() {
+    return _.filter(this.props.items, (item, itemIndex) => this.state.itemStates[itemIndex].selected );
   }
 }
 

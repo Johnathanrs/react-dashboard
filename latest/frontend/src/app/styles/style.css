@@ -1844,30 +1844,19 @@ img {
     background: #fff;
 }
 
-#appls .row-list .checkbox {
-    display: none;
-}
-
-#appls .row-list.editable .checkbox {
+.checkbox {
     display: block;
+    width: 15px;
 }
 
-#appls .row-list.editable .name {
-    padding-left: 30px;
-}
-
-#appls .row-list.editable label.checked {
+.checkbox label.checked {
     background: #4d5164;
 }
 
-#appls .row-list.editable label {
+.checkbox label {
     display: block;
-    float: left;
     width: 15px;
     height: 15px;
-    margin-top: 2px;
-    margin-right: 10px;
-    margin-left: -18px;
     background: #f7f9fa;
 }
 
@@ -2561,4 +2550,16 @@ img {
 
 .card-buttons a {
     margin-right: 8px;
+}
+
+.table td.row-selection-cell {
+    width: 35px;
+    padding: 28px 5px 24px 26px;
+    text-align: center;
+}
+
+.table th.row-selection-cell {
+    width: 35px;
+    padding: 15px 5px 15px 26px;
+    text-align: center;
 }
