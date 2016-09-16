@@ -30,7 +30,6 @@ export default class ApplicationCardGrid extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     return <section className="add-application">
       {
         (()=> this.state.applicationToAdd ?

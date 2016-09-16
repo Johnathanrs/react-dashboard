@@ -2,6 +2,10 @@ import _ from 'lodash';
 import React from 'react';
 
 import TablePagination from './TablePagination.jsx';
+import TableColumn from './TableColumn.jsx';
+import FirstExtraRow from './FirstExtraRow.jsx';
+import LastExtraRow from './LastExtraRow.jsx';
+import DetailsExtraRow from './DetailsExtraRow.jsx';
 
 export default class Table extends React.Component {
   constructor(props) {
@@ -12,7 +16,19 @@ export default class Table extends React.Component {
   }
 
   _columns() {
-    return this.props.children || [];
+    return _.filter(this.props.children, (child) => child.type === TableColumn);
+  }
+
+  _firstExtraRow() {
+    return _.find(this.props.children, (child) => child.type === FirstExtraRow);
+  }
+
+  _lastExtraRow() {
+    return _.find(this.props.children, (child) => child.type === LastExtraRow);
+  }
+
+  _detailsExtraRow() {
+    return _.find(this.props.children, (child) => child.type === DetailsExtraRow);
   }
 
   _renderHeadCells() {
@@ -21,9 +37,25 @@ export default class Table extends React.Component {
     </th>);
   }
 
+  _renderFirstExtraRow() {
+    const firstExtraRow = this._firstExtraRow();
+    if (firstExtraRow) {
+      return <tr key="first-extra-row">{ firstExtraRow.props.children }</tr>
+    }
+  }
+
+  _renderLastExtraRow() {
+    const lastExtraRow = this._lastExtraRow();
+    if (lastExtraRow) {
+      return <tr key="last-extra-row">{ lastExtraRow.props.children }</tr>
+    }
+  }
+
   _renderBodyRows() {
-    return this._currentPageDataItems().map((dataItem, dataItemIndex) => {
-      let cellValue = (getter) => {
+    const detailsExtraRow = this._detailsExtraRow();
+    let rows = [];
+    this._currentPageDataItems().forEach((dataItem, dataItemIndex) => {
+      const cellValue = (getter) => {
         if (!getter) {
           return '';
         } else if (_.isFunction(getter)) {
@@ -32,14 +64,26 @@ export default class Table extends React.Component {
           return dataItem[getter];
         }
       };
-      let cell = (column, index) => {
+      const cell = (column, index) => {
         return <td key={`row-${dataItemIndex}-${index}`} className={column.props.classes}>
           { cellValue(column.props.getter) }
         </td>
       };
-      let rowCells = () => this._columns().map((column, index) => cell(column, index));
-      return <tr key={`row-${dataItemIndex}`}>{ rowCells() }</tr>;
+      const rowCells = () => this._columns().map((column, index) => cell(column, index));
+      rows.push(<tr key={`row-${dataItemIndex}`}>{ rowCells() }</tr>);
+      if (detailsExtraRow) {
+        if (_.get(detailsExtraRow, 'props.children.type')) {
+          const rowContent = React.cloneElement(detailsExtraRow.props.children, {
+            item: dataItem,
+            itemIndex: dataItemIndex
+          });
+          rows.push(<tr key={`row-details-${dataItemIndex}`} className="details-extra-row">{ rowContent }</tr>)
+        } else {
+          console.warn('DetailsExtraRow must have exactly one child and the child must be React Component');
+        }
+      }
     });
+    return rows;
   }
 
   _currentPage() {
@@ -77,6 +121,7 @@ export default class Table extends React.Component {
         </tr>
         </thead>
         <tbody>
+        { this._renderFirstExtraRow() }
         { this._renderBodyRows() }
         </tbody>
       </table>
