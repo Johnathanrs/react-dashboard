@@ -1860,10 +1860,6 @@ img {
     background: #f7f9fa;
 }
 
-.add-clone {
-    display: none;
-}
-
 .add-clone .cols {
     overflow: hidden;
     width: 100%;

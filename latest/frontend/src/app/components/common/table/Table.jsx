@@ -7,6 +7,7 @@ import TableColumn from './TableColumn.jsx';
 import FirstExtraRow from './FirstExtraRow.jsx';
 import LastExtraRow from './LastExtraRow.jsx';
 import DetailsExtraRow from './DetailsExtraRow.jsx';
+import CustomRow from './CustomRow.jsx';
 import CheckBox from '../checkbox/CheckBox.jsx';
 
 export default class Table extends React.Component {
@@ -16,6 +17,7 @@ export default class Table extends React.Component {
       currentPage: 0,
       itemStates: _.map(props.items, () => ({}))
     };
+    this._preparedCustomRows = this._customRows();
   }
 
   _columns() {
@@ -32,6 +34,10 @@ export default class Table extends React.Component {
 
   _detailsExtraRow() {
     return _.find(this.props.children, (child) => child.type === DetailsExtraRow);
+  }
+
+  _customRows() {
+    return _.filter(this.props.children, (child) => child.type === CustomRow);
   }
 
   _renderHeadCells() {
@@ -62,6 +68,17 @@ export default class Table extends React.Component {
     const detailsExtraRow = this._detailsExtraRow();
     let rows = [];
     this._currentPageDataItems().forEach((dataItem, dataItemIndex) => {
+      const clonePredefinedRowComponent = (rowComponent, className) => {
+        if (_.get(rowComponent, 'props.children.type')) {
+          const rowContent = React.cloneElement(rowComponent.props.children, {
+            item: dataItem,
+            itemIndex: dataItemIndex
+          });
+          return <tr key={`row-details-${dataItemIndex}`} className={className}>{ rowContent }</tr>;
+        } else {
+          console.warn(`${rowComponent.type} must have exactly one child and the child must be React Component`);
+        }
+      };
       const cellValue = (getter) => {
         if (!getter) {
           return '';
@@ -81,18 +98,16 @@ export default class Table extends React.Component {
         <CheckBox value={ this.state.itemStates[dataItemIndex].selected }
                   onChange={ (newValue) => { this.state.itemStates[dataItemIndex].selected = newValue } }/>
       </td>;
-      const allRowCells = this.props.supportsSelection ? [selectionRowCell()].concat(dataRowCells()) : dataRowCells();
-      rows.push(<tr key={`row-${dataItemIndex}`}>{ allRowCells }</tr>);
+      const allRowCells = () => this.props.supportsSelection ? [selectionRowCell()].concat(dataRowCells()) : dataRowCells();
+      const matchedCustomRow = _.find(this._preparedCustomRows,
+        (customRow) => customRow.props.predicate && customRow.props.predicate.call(this, dataItem, dataItemIndex));
+      if (matchedCustomRow) {
+        rows.push(clonePredefinedRowComponent(matchedCustomRow, 'custom-row'));
+      } else {
+        rows.push(<tr key={`row-${dataItemIndex}`}>{ allRowCells() }</tr>);
+      }
       if (detailsExtraRow) {
-        if (_.get(detailsExtraRow, 'props.children.type')) {
-          const rowContent = React.cloneElement(detailsExtraRow.props.children, {
-            item: dataItem,
-            itemIndex: dataItemIndex
-          });
-          rows.push(<tr key={`row-details-${dataItemIndex}`} className="details-extra-row">{ rowContent }</tr>)
-        } else {
-          console.warn('DetailsExtraRow must have exactly one child and the child must be React Component');
-        }
+        rows.push(clonePredefinedRowComponent(detailsExtraRow, 'details-extra-row'));
       }
     });
     return rows;
