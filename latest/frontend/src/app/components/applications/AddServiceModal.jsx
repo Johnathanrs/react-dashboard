@@ -61,7 +61,7 @@ const AddServiceModal = () => <div>
 
       <div className="right">
         <button type="submit" className="btn btn-grey close">Cancel</button>
-        <button type="submit" className="btn btn-blue"> Create</button>
+        <button type="submit" className="btn btn-blue">Create</button>
       </div>
     </div>
   </form>

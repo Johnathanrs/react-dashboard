@@ -45,7 +45,8 @@ export default class Table extends React.Component {
       {column.props.title}
     </th>);
     const selectionHeadCell = () => <th key="column-selection" className="row-selection-cell">
-      <CheckBox onChange={ (newValue) => { this.selectAll(newValue) } }/>
+      <CheckBox value={ this._dataItems().length === this.selectedItems().length }
+                onChange={ (newValue) => { this.selectAll(newValue) } }/>
     </th>;
     return this.props.supportsSelection ? [selectionHeadCell()].concat(headCells) : headCells;
   }
@@ -96,7 +97,7 @@ export default class Table extends React.Component {
       const dataRowCells = () => this._columns().map((column, index) => cell(column, index));
       const selectionRowCell = () => <td className="row-selection-cell" key={`row-selection-${dataItemIndex}`}>
         <CheckBox value={ this.state.itemStates[dataItemIndex].selected }
-                  onChange={ (newValue) => { this.state.itemStates[dataItemIndex].selected = newValue } }/>
+                  onChange={ (selected) => { this.onItemSelected(dataItemIndex, selected) } }/>
       </td>;
       const allRowCells = () => this.props.supportsSelection ? [selectionRowCell()].concat(dataRowCells()) : dataRowCells();
       const matchedCustomRow = _.find(this._preparedCustomRows,
@@ -140,8 +141,19 @@ export default class Table extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    const equals = (x, y) => (x === y) || (x._id === y._id);
+    const newItemStates = _.map(nextProps.items, (item, itemIndex) => {
+      if (equals(item, this.props.items[itemIndex])) {
+        return this.state.itemStates[itemIndex];
+      }
+      const existingItemIndex = _.findIndex(this.props.items, (existingItem) => existingItem === item );
+      if (existingItemIndex) {
+        return this.state.itemStates[existingItemIndex];
+      }
+      return {};
+    });
     this.setState({
-      itemStates: _.map(nextProps.items, () => ({}))
+      itemStates: newItemStates
     });
   }
 
@@ -167,10 +179,24 @@ export default class Table extends React.Component {
     </div>;
   }
 
+  onItemSelected(itemIndex, selected) {
+    let newState = {itemStates: _.clone(this.state.itemStates)};
+    newState.itemStates[itemIndex].selected = selected;
+    this.setState(newState);
+    this.raiseSelectionChange();
+  }
+
   selectAll(selected) {
     this.setState({
       itemStates: _.map(this.state.itemStates, (itemState) => _.defaults({selected: selected}, itemState))
     });
+    this.raiseSelectionChange();
+  }
+
+  raiseSelectionChange() {
+    setTimeout(() => {
+      this.props.onSelectionChange && this.props.onSelectionChange(this.selectedItems());
+    }, 1);
   }
 
   selectedItems() {

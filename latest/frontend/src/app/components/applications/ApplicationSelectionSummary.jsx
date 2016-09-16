@@ -1,16 +1,15 @@
 import React from 'react';
 
-const imageUrls = {
-  close: require('../../img/ico_close.png')
-};
+import CloseButton from '../common/button/CloseButton.jsx';
+import Button from '../common/button/Button.jsx';
 
-const ApplicationSelectionSummary = () => <div className="options">
+const ApplicationSelectionSummary = (props) => <div className="options">
   <p>Select your service applications below:</p>
 
   <div className="right">
-    <span className="selected"><span className="count">0</span> Applications selected</span>
-    <a href="#" className="btn btn-blue">Create</a>
-    <a href="#" className="close"><img src={ imageUrls.close } alt=""/></a>
+    <span className="selected">{ props.applicationCount } applications selected</span>
+    <Button onClick={ () => { props.onApply && props.onApply() } }>Create</Button>
+    <CloseButton onClick={ () => { props.onCancel && props.onCancel() } } />
   </div>
 </div>;
 

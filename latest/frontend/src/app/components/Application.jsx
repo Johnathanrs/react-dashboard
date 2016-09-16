@@ -6,7 +6,6 @@ import Table from './common/table/Table.jsx';
 import TableColumn from './common/table/TableColumn.jsx';
 import ViewTypeSelector from './common/viewType/ViewTypeSelector.jsx';
 import SimpleTabs from './common/tabs/SimpleTabs.jsx';
-import modalUtil from './common/modal/modalUtil';
 
 import ApplicationOverview from './visualizations/ApplicationOverview.jsx';
 import ApplicationSelectionSummary from './applications/ApplicationSelectionSummary.jsx';
@@ -17,8 +16,9 @@ import ServiceCard from './applications/ServiceCard.jsx';
 import ServiceCardGrid from './applications/ServiceCardGrid.jsx';
 import ServiceTable from './applications/ServiceTable.jsx';
 import ServiceCardApplications from './applications/ServiceCardApplications.jsx';
+import ServiceCreationPanel from './applications/ServiceCreationPanel.jsx';
 
-import AddServiceModal from './applications/AddServiceModal.jsx';
+
 
 
 import settings from '../app.settings';
@@ -29,6 +29,7 @@ export default class Application extends React.Component {
     this.state = {
       currentTab: 'applications',
       currentViewType: 'cards',
+      isServiceCreationInProgress: false,
       applications: [],
       services: []
     };
@@ -173,7 +174,10 @@ export default class Application extends React.Component {
       <div className="container ff">
         {
           (() => {
-            if (this.currentTab() === 'applications') {
+            if (this.state.isServiceCreationInProgress) {
+              return <ServiceCreationPanel applications={ this._applications() }
+                onCancel={() => { this.onCancelServiceCreation() } }/>;
+            } else if (this.currentTab() === 'applications') {
               return this._renderApplications();
             } else if (this.currentTab() === 'services') {
               return this._renderServices();
@@ -191,7 +195,12 @@ export default class Application extends React.Component {
   }
 
   onAddService() {
-    modalUtil.showModal(<AddServiceModal/>, {title: 'Service'});
+    this.setState({isServiceCreationInProgress: true});
+    //modalUtil.showModal(<AddServiceModal/>, {title: 'Service'});
+  }
+
+  onCancelServiceCreation() {
+    this.setState({isServiceCreationInProgress: false});
   }
 
   saveApplication(application) {

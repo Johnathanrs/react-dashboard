@@ -16,8 +16,8 @@ class AddApplicationRow extends React.Component {
     super(props);
     this.state = {
       application: {
-        appName: 'test-name',
-        appExec: '/test/exec'
+        appName: '',
+        appExec: ''
       }
     };
   }
@@ -107,7 +107,10 @@ class ApplicationTable extends React.Component {
     const instances = 12;
     const responseTime = '15 sec';
     const errorCount = 0;
-    return <Table items={ this.props.items } supportsSelection={ false }>
+    return <Table ref="table"
+                  items={ this.props.items }
+                  supportsSelection={ this.props.supportsSelection }
+      onSelectionChange={ (items) => { this.props.onSelectionChange && this.props.onSelectionChange(items) } }>
       <TableColumn title="Name" classes="name" getter="appName"/>
       <TableColumn title="Uptime" classes="uptime" getter="appUptime"/>
       <TableColumn title="Owner" classes="owner" getter={ () => owner }/>
@@ -128,6 +131,14 @@ class ApplicationTable extends React.Component {
   requestAddApplication() {
     this.setState({applicationToAdd: {}});
   }
+
+  selectedItems() {
+    return this.refs.table.selectedItems();
+  }
 }
+
+ApplicationTable.defaultProps = {
+  supportsSelection: false
+};
 
 export default ApplicationTable;
