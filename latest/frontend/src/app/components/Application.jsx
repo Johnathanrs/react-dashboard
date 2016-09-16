@@ -18,6 +18,8 @@ import ServiceCardGrid from './applications/ServiceCardGrid.jsx';
 import ServiceTable from './applications/ServiceTable.jsx';
 import ServiceCardApplications from './applications/ServiceCardApplications.jsx';
 
+import AddServiceModal from './applications/AddServiceModal.jsx';
+
 
 import settings from '../app.settings';
 
@@ -189,7 +191,7 @@ export default class Application extends React.Component {
   }
 
   onAddService() {
-    modalUtil.showModal(<div>Content!!!</div>, {title: 'Cool dilog'});
+    modalUtil.showModal(<AddServiceModal/>, {title: 'Service'});
   }
 
   saveApplication(application) {
