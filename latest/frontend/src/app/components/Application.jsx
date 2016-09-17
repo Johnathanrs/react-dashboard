@@ -6,6 +6,7 @@ import Table from './common/table/Table.jsx';
 import TableColumn from './common/table/TableColumn.jsx';
 import ViewTypeSelector from './common/viewType/ViewTypeSelector.jsx';
 import SimpleTabs from './common/tabs/SimpleTabs.jsx';
+import EditInPlace from './common/edit/EditInPlace.jsx';
 
 import ApplicationOverview from './visualizations/ApplicationOverview.jsx';
 import ApplicationSelectionSummary from './applications/ApplicationSelectionSummary.jsx';
@@ -153,6 +154,10 @@ export default class Application extends React.Component {
                               onViewTypeClicked={(viewType) => { this._setCurrentViewType(viewType) }}/>
           </div>
 
+          <Panel title="Controls Test">
+            <EditInPlace value="My current value" placeholder="Click me" onApply={ (value) => { console.log(value) } }/>
+          </Panel>
+
           <Panel title="Application Overview">
             <ApplicationOverview/>
           </Panel>
@@ -175,7 +180,7 @@ export default class Application extends React.Component {
           (() => {
             if (this.state.isServiceCreationInProgress) {
               return <ServiceCreationPanel applications={ this._applications() }
-                onCancel={() => { this.onCancelServiceCreation() } }/>;
+                                           onCancel={() => { this.onCancelServiceCreation() } }/>;
             } else if (this.currentTab() === 'applications') {
               return this._renderApplications();
             } else if (this.currentTab() === 'services') {

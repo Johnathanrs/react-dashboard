@@ -2514,7 +2514,8 @@ img {
 }
 
 .edit-in-place {
-    display: inline;
+    display: inline-block;
+    position: relative;
     cursor: pointer;
 }
 
@@ -2530,10 +2531,27 @@ img {
 
 }
 
+.edit-in-place .edit-in-place-buttons {
+    position: absolute;
+    bottom: -24px;
+    right: 0;
+    display: inline-block;
+    background-color: #4fb1e2;
+
+}
+
+.edit-in-place .edit-in-place-buttons a {
+    display: inline-block;
+    padding: 4px;
+}
+
 .edit-in-place textarea {
     width: 100%;
     padding: 0;
     font-size: inherit;
+    outline: none;
+    border: 2px solid #4fb1e2;
+
     /*border: none;*/
 }
 
