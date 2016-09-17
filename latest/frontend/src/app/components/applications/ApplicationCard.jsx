@@ -24,8 +24,9 @@ class ApplicationCard extends React.Component {
     const card = this.props.card;
     const errorCount = 0;
     const instanceCount = 12;
-    const responseTime = '12 SEC';
-    const serviceName = 'None';
+    const responseTime = '12 sec';
+    const image = 'container-image';
+    const exec = '/usr/sbin/application';
     const classes = {
       dirty: !!this.state.dirty
     };
@@ -50,10 +51,10 @@ class ApplicationCard extends React.Component {
         </div>
       </div>
       <ul>
-        <li><strong>Deployment</strong><span>{ card.appStatus }</span></li>
-        <li><strong>Response time</strong><span>{ responseTime }</span></li>
-        <li><strong>Service</strong><span>{ serviceName }</span></li>
+        <li><strong>Image</strong><span>{ image }</span></li>
+        <li><strong>Exec</strong><span>{ exec }</span></li>
         <li><strong>Uptime</strong><span>{ card.appUptime }</span></li>
+        <li><strong>Response time</strong><span>{ responseTime }</span></li>
       </ul>
       {
         (() => {

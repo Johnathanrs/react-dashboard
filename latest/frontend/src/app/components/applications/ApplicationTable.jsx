@@ -103,20 +103,23 @@ class ApplicationTable extends React.Component {
   }
 
   render() {
-    const owner = 'Jason Richards';
+    //const owner = 'Jason Richards';
+    const image = 'app-image';
+    const exec = '/usr/sbin/application';
     const instances = 12;
     const responseTime = '15 sec';
     const errorCount = 0;
+    const uptime = '2h 30min';
     return <Table ref="table"
                   items={ this.props.items }
                   supportsSelection={ this.props.supportsSelection }
       onSelectionChange={ (items) => { this.props.onSelectionChange && this.props.onSelectionChange(items) } }>
       <TableColumn title="Name" classes="name" getter="appName"/>
-      <TableColumn title="Uptime" classes="uptime" getter="appUptime"/>
-      <TableColumn title="Owner" classes="owner" getter={ () => owner }/>
-      <TableColumn title="Deployment" classes="deployment" getter="appStatus"/>
+      <TableColumn title="Image" classes="image" getter={ () => image }/>
+      <TableColumn title="Exec" classes="exec" getter={ () => exec }/>
+      <TableColumn title="Status" classes="status" getter="appStatus"/>
       <TableColumn title="Instances" classes="instances" getter={ () => instances }/>
-      <TableColumn title="Response Time" classes="time" getter={ () => responseTime }/>
+      <TableColumn title="Uptime" classes="time" getter={ () => uptime }/>
       <TableColumn title="Errors"
                    classes="errors"
                    getter={ () => <ErrorCount value={errorCount} /> }/>
