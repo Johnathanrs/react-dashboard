@@ -21,7 +21,7 @@ export default class ServiceCreationPanel extends React.Component {
   render() {
     return <div>
       <ApplicationSelectionSummary applicationCount={ this.state.selectedApplicationCount }
-                                   onApply={() => { this.onApplyApplicationSelection() } }
+                                   onApply={() => { this.onApply() } }
                                    onCancel={() => { this.props.onCancel && this.props.onCancel() } }/>
       <ApplicationTable ref="applicationTable"
                         items={ this.props.applications }
@@ -30,12 +30,18 @@ export default class ServiceCreationPanel extends React.Component {
     </div>;
   }
 
-  onApplyApplicationSelection() {
+  // TODO remove
+  /*onApplyApplicationSelection() {
     let modalHandle;
     const modalContent = <ServiceCreationModal applications={ this._selectedApplications() }
       onCancel={ () => { modalHandle.close() } }
       onApply={ () => { console.log('Creating the service...') } }/>;
     modalHandle = modalUtil.showModal(modalContent, {title: 'Service'});
+  }*/
+
+  onApply() {
+    const selectedApplications = this._selectedApplications();
+    this.props.onApply && this.props.onApply(selectedApplications);
   }
 
 }

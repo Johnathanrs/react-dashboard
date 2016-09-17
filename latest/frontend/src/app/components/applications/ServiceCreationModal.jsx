@@ -46,6 +46,9 @@ const ServiceApplication = (props) => <div className="application">
   </fieldset>
 </div>;
 
+/**
+ * @deprecated
+ */
 class ServiceCreationModal extends React.Component {
   constructor(props) {
     super(props);

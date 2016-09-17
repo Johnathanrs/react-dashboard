@@ -1,5 +1,6 @@
 import React from 'react';
 
+import EditInPlace from '../common/edit/EditInPlace.jsx';
 import Table from '../common/table/Table.jsx';
 import TableColumn from '../common/table/TableColumn.jsx';
 import DetailsExtraRow from '../common/table/DetailsExtraRow.jsx';
@@ -19,11 +20,11 @@ const mockImageUrls = {
   'ico_se_1': require('../../img/ico_se_1.png')
 };
 
-const EmbeddedServiceApplicationTable = () => {
-  return <Table classes="" items={ [ {}, {}, {}, {} ] }>
-    <TableColumn title="Name" getter={ () => <span><img src={ mockImageUrls['ico_se_1'] } alt=""/><a href="#">Application123</a></span> } />
-    <TableColumn title="Uptime" getter={ () => '12 hours 2 Min' } />
-    <TableColumn title="Instances" getter={ () => 2 } />
+const EmbeddedServiceApplicationTable = (props) => {
+  return <Table classes="" items={ props.items }>
+    <TableColumn title="Name" getter={ (item) => <span><img src={ mockImageUrls['ico_se_1'] } alt=""/><a href="#">{ item.appName }</a></span> } />
+    <TableColumn title="Uptime" getter={ (item) => item.appUptime } />
+    <TableColumn title="Instances" getter={ () => 1 } />
     <TableColumn title="Response time" getter={ () => '12 SEC' } />
     <TableColumn title="Type" getter={ () => 'Database' } />
   </Table>;
@@ -53,18 +54,18 @@ const ServiceDetails = (props) => {
             <span className="text">Applications</span>
           </li>
         </ul>
-        <EmbeddedServiceApplicationTable></EmbeddedServiceApplicationTable>
+        <EmbeddedServiceApplicationTable items={ props.item._applications }></EmbeddedServiceApplicationTable>
       </div>
     </div>
   </td>;
 };
 
 const ServiceTable = (props) => <Table items={props.items} classes="table services">
-  <TableColumn title="Name" classes="name" getter={ () => 'MDL_Gateway' }/>
-  <TableColumn title="Uptime" classes="uptime" getter={ () => '12 hours 2 min' }/>
-  <TableColumn title="Owner" classes="owner" getter={ () => 'Jason Richards' }/>
-  <TableColumn title="Deployment" classes="deployment" getter={ () => 'Undeployed' }/>
-  <TableColumn title="Instances" classes="instances" getter={ () => 12 }/>
+  <TableColumn title="Name" classes="name" getter={ (item) => <EditInPlace value={ item.svcName } placeholder="Input name here" />  }/>
+  <TableColumn title="Uptime" classes="uptime" getter={ (item) => item.svcUptime }/>
+  <TableColumn title="Owner" classes="owner" getter={ (item) => item.svcOwner }/>
+  <TableColumn title="Deployment" classes="deployment" getter={ (item) => item.svcStatus }/>
+  <TableColumn title="Instances" classes="instances" getter={ () => <EditInPlace value={ 1 } placeholder="Input instance count" /> }/>
   <TableColumn title="Response time" classes="time" getter={ () => '12 sec' }/>
   <TableColumn title="Errors" classes="errors" getter={ () => <ErrorCount value={0} /> }/>
   <DetailsExtraRow>

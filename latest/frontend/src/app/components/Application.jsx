@@ -30,7 +30,7 @@ export default class Application extends React.Component {
     this.state = {
       currentTab: 'applications',
       currentViewType: 'cards',
-      isServiceCreationInProgress: false,
+      isApplicationSelectionInProgress: false,
       applications: [],
       services: []
     };
@@ -43,7 +43,7 @@ export default class Application extends React.Component {
   }
 
   _fetchServices() {
-    $.get(settings.apiBase + '/service_infos/apps').then((result) => {
+    $.get(settings.apiBase + '/service_infos').then((result) => {
       this.setState({services: result});
     });
   }
@@ -154,9 +154,7 @@ export default class Application extends React.Component {
                               onViewTypeClicked={(viewType) => { this._setCurrentViewType(viewType) }}/>
           </div>
 
-          <Panel title="Controls Test">
-            <EditInPlace value="My current value" placeholder="Click me" onApply={ (value) => { console.log(value) } }/>
-          </Panel>
+
 
           <Panel title="Application Overview">
             <ApplicationOverview/>
@@ -178,9 +176,10 @@ export default class Application extends React.Component {
       <div className="container ff">
         {
           (() => {
-            if (this.state.isServiceCreationInProgress) {
+            if (this.state.isApplicationSelectionInProgress) {
               return <ServiceCreationPanel applications={ this._applications() }
-                                           onCancel={() => { this.onCancelServiceCreation() } }/>;
+                                           onCancel={() => { this.onCancelServiceCreation() } }
+                                           onApply={ (selectedApplications) => { this.onContinueServiceCreation(selectedApplications) } }/>;
             } else if (this.currentTab() === 'applications') {
               return this._renderApplications();
             } else if (this.currentTab() === 'services') {
@@ -199,12 +198,28 @@ export default class Application extends React.Component {
   }
 
   onAddService() {
-    this.setState({isServiceCreationInProgress: true});
+    this.setState({isApplicationSelectionInProgress: true});
     //modalUtil.showModal(<AddServiceModal/>, {title: 'Service'});
   }
 
   onCancelServiceCreation() {
-    this.setState({isServiceCreationInProgress: false});
+    this.setState({isApplicationSelectionInProgress: false});
+  }
+
+  onContinueServiceCreation(selectedApplications) {
+    let newState = {
+      isApplicationSelectionInProgress: false,
+      currentTab: 'services',
+      currentViewType: 'rows',
+      services: _.clone(this.state.services)
+    };
+    newState.services.unshift({
+      _isNew: true,
+      svcName: '',
+      _applications: selectedApplications
+    });
+    this.setState(newState);
+
   }
 
   saveApplication(application) {
