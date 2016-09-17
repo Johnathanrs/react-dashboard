@@ -4,7 +4,7 @@ import modalUtil from '../common/modal/modalUtil';
 
 import ApplicationSelectionSummary from './ApplicationSelectionSummary.jsx';
 import ApplicationTable from './ApplicationTable.jsx';
-import AddServiceModal from './AddServiceModal.jsx';
+import ServiceCreationModal from './ServiceCreationModal.jsx';
 
 export default class ServiceCreationPanel extends React.Component {
   constructor(props) {
@@ -31,8 +31,11 @@ export default class ServiceCreationPanel extends React.Component {
   }
 
   onApplyApplicationSelection() {
-    const modalContent = <AddServiceModal applications={ this._selectedApplications() }/>;
-    const modalHandle = modalUtil.showModal(modalContent, {title: 'Service'});
+    let modalHandle;
+    const modalContent = <ServiceCreationModal applications={ this._selectedApplications() }
+      onCancel={ () => { modalHandle.close() } }
+      onApply={ () => { console.log('Creating the service...') } }/>;
+    modalHandle = modalUtil.showModal(modalContent, {title: 'Service'});
   }
 
 }

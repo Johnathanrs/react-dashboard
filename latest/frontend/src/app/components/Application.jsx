@@ -123,7 +123,6 @@ export default class Application extends React.Component {
 
   _renderApplicationRows() {
     return <div className="row-list">
-      <ApplicationSelectionSummary />
       <ApplicationTable ref="applicationTable"
                         items={ this._applications() }
                         onApplicationChange={ (application) => { this.saveApplication(application) } }/>
