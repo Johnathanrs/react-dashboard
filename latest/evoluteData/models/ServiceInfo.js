@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const services_schema = new mongoose.Schema({
+const serviceInfoSchema = new mongoose.Schema({
   _id: {
     type: mongoose.Schema.Types.ObjectId
   },
@@ -26,6 +26,6 @@ const services_schema = new mongoose.Schema({
 
 });
 
-var ServiceInfo = mongoose.model('service_infos', services_schema);
+var ServiceInfo = mongoose.model('service_infos', serviceInfoSchema);
 
 module.exports = ServiceInfo;
