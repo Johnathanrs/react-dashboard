@@ -1,3 +1,5 @@
+const request = require('request');
+
 const ContainerInfo = require('../models/ContainerInfo');
 const CurrentContainerInfo = require('../models/CurrentContainerInfo');
 
