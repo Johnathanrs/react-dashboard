@@ -4,7 +4,7 @@ const utils = require('../utils');
 const AppInfo = require('../models/AppInfo');
 
 function initialize(app) {
-  app.use('/api/app_infos', function (req, res) {
+  app.post('/api/app_infos', function (req, res) {
     console.log("generating id: ");
     var newId = utils.generateId();
     console.log("logging new id: " + newId);

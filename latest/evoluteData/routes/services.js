@@ -1,9 +1,34 @@
+const _ = require('lodash');
+
+const utils = require('../utils');
 const ServiceInfo = require('../models/ServiceInfo');
 
 function initialize(app) {
+
+  /**
+   * @api GET /api/service_infos
+   * Gets all the services
+   */
   app.get('/api/service_infos', function (req, res) {
     ServiceInfo.find(function (err, data) {
       res.json(data);
+    });
+  });
+
+  /**
+   * @api POST /api/service_infos
+   * Creates a new service
+   */
+  app.post('/api/service_infos', (req, res) => {
+    const serviceInfo = new ServiceInfo(_.extend({_id: utils.generateId()}, req.body));
+    // TODO make this logic reusable
+    serviceInfo.save((err) => {
+      if (err) {
+        console.log('ERROR: ', err);
+        res.sendStatus(500);
+      } else {
+        res.send(serviceInfo);
+      }
     });
   });
 
