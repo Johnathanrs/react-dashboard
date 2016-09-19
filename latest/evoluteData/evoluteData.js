@@ -1,8 +1,12 @@
+const _  = require('lodash');
 var express = require('express');
 var bodyParser = require('body-parser');
-var app = express();
 var mongoose = require('mongoose');
 var request = require('request');
+
+const ServiceInfo = require('./models/ServiceInfo');
+
+var app = express();
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -226,35 +230,6 @@ var stats_schema = new mongoose.Schema({
   }
 });
 
-var services_schema = new mongoose.Schema({
-  _id: {
-    type: mongoose.Schema.Types.ObjectId
-  },
-  svcName: {
-    type: String
-  },
-  svcStatus: {
-    type: String
-  },
-  svcOwner: {
-    type: String
-  },
-  svcHealth: {
-    type: String
-  },
-  svcUptime: {
-    type: String
-  },
-  //WORKS    svcApplications: {
-  //        type: Array,
-  //        "application": []
-  //    },
-  svcApplications: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'appInfos'
-  }]
-
-});
 
 var apps_schema = new mongoose.Schema({
   _id: {
@@ -289,7 +264,6 @@ var containerInfos = mongoose.model('container_infos', info_schema);
 var currentContainerInfos = mongoose.model('current_container_infos', info_schema);
 var containerStats = mongoose.model('container_stats', stats_schema);
 var currentContainerStats = mongoose.model('current_container_stats', stats_schema);
-var ServiceInfo = mongoose.model('service_infos', services_schema);
 var appInfos = mongoose.model('app_infos', apps_schema);
 //End Mongoose Models
 
@@ -584,13 +558,6 @@ app.get('/api/container_stats/test', function (req, res) {
 
 });
 
-
-app.get('/api/service_infos/', function (req, res) {
-  ServiceInfo.find(function (err, data) {
-    res.json(data);
-  });
-});
-
 app.get('/api/app_infos', function (req, res) {
   appInfos.find(function (err, data) {
     res.json(data);
@@ -844,55 +811,6 @@ app.use('/api/application/:app_id/count', function (req, res) {
 
 });
 
-app.get('/api/service_infos/apps', function (req, res) {
-
-  ServiceInfo.aggregate([
-
-    {
-      "$limit": 200
-    },
-    {
-      "$project": {
-        svcApplications: 1
-      }
-    }, {
-      "$unwind": '$svcApplications'
-    }, {
-      "$lookup": {
-        from: 'app_infos',
-        localField: 'svcApplications',
-        foreignField: '_id',
-        as: 'app_info'
-      }
-    }, {
-      "$group": {
-        _id: '$_id',
-        apps: {
-          "$push": '$app_info'
-        }
-
-      }
-    }, {
-      "$lookup": {
-        from: 'service_infos',
-        localField: '_id',
-        foreignField: '_id',
-        as: 'service_info'
-      }
-    }
-
-
-  ], function (err, result) {
-    if (err) {
-      console.log(err);
-      return;
-    }
-    console.log(result);
-
-    res.json(result);
-  });
-
-});
 
 
 app.use('/api/app_infos', function (req, res) {
@@ -986,4 +904,12 @@ db.once('open', function () {
   // we're connected!
 });
 
-require('./dataHandling/aggregation/aggregationApi').initialize(app, mongoose);
+const routes = {
+  services: require('./routes/services'),
+  aggregation: require('../dataHandling/aggregation/aggregationApi')
+};
+
+_.each(routes, (route) => {
+  route.initialize(app, mongoose);
+});
+
