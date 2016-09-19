@@ -1,13 +1,14 @@
 const _ = require('lodash');
-var express = require('express');
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-var request = require('request');
+const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const request = require('request');
 
 const utils = require('./utils');
 const ServiceInfo = require('./models/ServiceInfo');
+const AppInfo = require('./models/ServiceInfo');
 
-var app = express();
+const app = express();
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -174,11 +175,11 @@ mongoose.connect('mongodb://localhost:27017/evolute');
 //});
 
 
-var server = app.listen(3000);
+const server = app.listen(3000);
 
 
-var newId = utils.generateId();
-var CVX_DataLake3 = new ServiceInfo({
+const newId = utils.generateId();
+const CVX_DataLake3 = new ServiceInfo({
   _id: newId,
   svcName: 'CVX_DataLake3',
   svcStatus: 'Undeployed',
@@ -193,28 +194,22 @@ var CVX_DataLake3 = new ServiceInfo({
 });
 
 console.log(CVX_DataLake3);
-//console.log("saving CVX_DataLake3")
-//    CVX_DataLake3.save(function (err, newApp) {
-//    if (err) return console.error(err);
-//});
-
 
 console.log("starting nested query");
-var appIds = [];
 ServiceInfo.find().limit(50).exec(function (err, results) {
   console.log("inside nested query");
 
-  var ids = results.map(function (el) {
+  const ids = results.map(function (el) {
     return el._id
   });
   console.log("found the following service ids: " + ids);
-  var appids = results.map(function (el) {
-    return el.svcApplications
+  const appIds = results.map(function (el) {
+    return el.svcApplications;
   });
-  console.log("found the following application ids " + appids);
+  console.log("found the following application ids " + appIds);
 
-  console.log("maintained variable appids: " + appids);
-  appids.forEach(function (doc) {
+  console.log("maintained variable appIds: " + appIds);
+  appIds.forEach(function (doc) {
     AppInfo.find({
       "_id": {
         "$in": doc
@@ -227,9 +222,8 @@ ServiceInfo.find().limit(50).exec(function (err, results) {
 
 });
 
-
 console.log("Opening up connection to MongoDB");
-var db = mongoose.connection;
+const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
   // we're connected!
@@ -246,4 +240,3 @@ const routes = {
 _.each(routes, (route) => {
   route.initialize(app, mongoose);
 });
-
