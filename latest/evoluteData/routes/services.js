@@ -20,16 +20,7 @@ function initialize(app) {
    * Creates a new service
    */
   app.post('/api/service_infos', (req, res) => {
-    const serviceInfo = new ServiceInfo(_.extend({_id: utils.generateId()}, req.body));
-    // TODO make this logic reusable for all the models
-    serviceInfo.save((err) => {
-      if (err) {
-        console.log('ERROR: ', err);
-        res.sendStatus(500);
-      } else {
-        res.send(serviceInfo);
-      }
-    });
+    utils.crud.create(ServiceInfo, req, res);
   });
 
   /**
@@ -37,15 +28,7 @@ function initialize(app) {
    * Modifies given service
    */
   app.patch('/api/service_infos', (req, res) => {
-    // TODO make this logic reusable for all the models
-    ServiceInfo.findOneAndUpdate({_id: req.body._id}, req.body, {new: true}, (err, document) => {
-      if (err) {
-        console.log('ERROR: ', err);
-        res.sendStatus(500);
-      } else {
-        res.send(document);
-      }
-    });
+    utils.crud.modify(ServiceInfo, req, res);
   });
 
   app.get('/api/service_infos/apps', function (req, res) {
