@@ -240,7 +240,7 @@ const routes = {
   containers: require('./routes/containers'),
   containerStats: require('./routes/containerStats'),
   services: require('./routes/services'),
-  aggregation: require('../dataHandling/aggregation/aggregationApi')
+  aggregation: require('./routes/aggregation')
 };
 
 _.each(routes, (route) => {

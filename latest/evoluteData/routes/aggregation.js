@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 /*
 
  The API handles aggregated stats data requests, for example:
@@ -15,10 +17,9 @@
 
 /**
  * Creates container_stats_aggregated mongoose model class
- * @param mongoose Mongoose instance
  * @returns {class} Model class
  */
-function createModelClass(mongoose) {
+function createModelClass() {
   const containerStatsAggregatedSchema = new mongoose.Schema({
     _id: {
       type: String
@@ -38,8 +39,8 @@ function createModelClass(mongoose) {
   return mongoose.model('container_stats_aggregated', containerStatsAggregatedSchema, 'container_stats_aggregated');
 }
 
-function initialize(app, mongoose) {
-  const ContainerStatsAggregated = createModelClass(mongoose);
+function initialize(app) {
+  const ContainerStatsAggregated = createModelClass();
 
   app.get('/api/container_stats/aggregated/:time_from/:time_to/:period/:lxc_id/:value_type', (req, res) => {
     const timeFrom = req.params['time_from'];
