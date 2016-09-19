@@ -141,7 +141,7 @@ export default class Table extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const equals = (x, y) => (x === y) || (x._id === y._id);
+    const equals = (x, y) => (x === y) || (x && y && x._id === y._id);
     const newItemStates = _.map(nextProps.items, (item, itemIndex) => {
       if (equals(item, this.props.items[itemIndex])) {
         return this.state.itemStates[itemIndex];
