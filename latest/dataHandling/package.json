@@ -1,0 +1,14 @@
+{
+  "name": "evo-data-handling",
+  "version": "0.1.0",
+  "description": "Evolute Data Handling Tools",
+  "author": "Evolute",
+  "dependencies": {
+    "glob": "^7.0.6",
+    "lodash": "^4.15.0",
+    "mongodb": "^2.2.10",
+    "mongoose": "^4.5.8",
+    "q": "^1.4.1",
+    "request": "^2.74.0"
+  }
+}

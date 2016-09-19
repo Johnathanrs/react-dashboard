@@ -105,10 +105,3 @@ MongoClient.connect(configuration.mongo.url).then((db) => {
   });
 });
 
-
-
-
-
-
-
-

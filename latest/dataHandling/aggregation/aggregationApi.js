@@ -89,4 +89,3 @@ function initialize(app, mongoose) {
 module.exports = {
   initialize: initialize
 };
-
