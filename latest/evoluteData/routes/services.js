@@ -1,6 +1,6 @@
 const ServiceInfo = require('../models/ServiceInfo');
 
-function initialize(app, mongoose) {
+function initialize(app) {
   app.get('/api/service_infos', function (req, res) {
     ServiceInfo.find(function (err, data) {
       res.json(data);
@@ -49,7 +49,6 @@ function initialize(app, mongoose) {
   });
 
   console.log('Services API initialized.');
-
 }
 
 module.exports = {
