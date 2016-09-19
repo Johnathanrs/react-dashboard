@@ -289,7 +289,7 @@ var containerInfos = mongoose.model('container_infos', info_schema);
 var currentContainerInfos = mongoose.model('current_container_infos', info_schema);
 var containerStats = mongoose.model('container_stats', stats_schema);
 var currentContainerStats = mongoose.model('current_container_stats', stats_schema);
-var serviceInfos = mongoose.model('service_infos', services_schema);
+var ServiceInfo = mongoose.model('service_infos', services_schema);
 var appInfos = mongoose.model('app_infos', apps_schema);
 //End Mongoose Models
 
@@ -586,7 +586,7 @@ app.get('/api/container_stats/test', function (req, res) {
 
 
 app.get('/api/service_infos/', function (req, res) {
-  serviceInfos.find(function (err, data) {
+  ServiceInfo.find(function (err, data) {
     res.json(data);
   });
 });
@@ -846,7 +846,7 @@ app.use('/api/application/:app_id/count', function (req, res) {
 
 app.get('/api/service_infos/apps', function (req, res) {
 
-  serviceInfos.aggregate([
+  ServiceInfo.aggregate([
 
     {
       "$limit": 200
@@ -929,7 +929,7 @@ var server = app.listen(3000);
 
 
 var newid = generate_id();
-var CVX_DataLake3 = new serviceInfos({
+var CVX_DataLake3 = new ServiceInfo({
   _id: newid,
   svcName: 'CVX_DataLake3',
   svcStatus: 'Undeployed',
@@ -952,7 +952,7 @@ console.log(CVX_DataLake3);
 
 console.log("starting nested query");
 var appids = [];
-serviceInfos.find().limit(50).exec(function (err, results) {
+ServiceInfo.find().limit(50).exec(function (err, results) {
   console.log("inside nested query");
 
   var ids = results.map(function (el) {
