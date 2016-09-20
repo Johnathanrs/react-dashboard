@@ -27,7 +27,7 @@ class AddApplicationRow extends React.Component {
     if (this.props.item) {
       return <td colSpan="7" className="add-clone">
         <form action="#">
-          <div className="cols">
+          <div className="cols narrow">
             <div className="item">
               <select>
                 <option className="label-hide">Select Image</option>
@@ -54,6 +54,12 @@ class AddApplicationRow extends React.Component {
                      placeholder="Enter exec path here..."
                      value={ this.state.application.appExec }
                      onChange={ (evt) => { this.onExecChange(evt) } }/>
+            </div>
+            <div className="item">
+              <input type="text"
+                     placeholder="Enter instance number..."
+                     value={ this.state.application.appInstanceCount }
+                     onChange={ (evt) => { /*this.onInstanceNumberChange(evt)*/ } }/>
             </div>
             <div className="item">
               <button type="submit" className="btn btn-blue" onClick={ (evt) => {this.onApply(evt)} }>Create</button>
@@ -114,12 +120,13 @@ class ApplicationTable extends React.Component {
     return <Table ref="table"
                   items={ this.props.items }
                   supportsSelection={ this.props.supportsSelection }
-      onSelectionChange={ (items) => { this.props.onSelectionChange(items) } }>
+                  onSelectionChange={ (items) => { this.props.onSelectionChange(items) } }>
       <TableColumn title="Name" classes="name" getter="appName"/>
       <TableColumn title="Image" classes="image" getter={ () => image }/>
       <TableColumn title="Exec" classes="exec" getter={ () => exec }/>
       <TableColumn title="Status" classes="status" getter="appStatus"/>
-      <TableColumn title="Instances" classes="instances" getter={ () => <EditInPlace value={ 12 } onApply={ () => {} } /> }/>
+      <TableColumn title="Instances" classes="instances"
+                   getter={ () => <EditInPlace value={ 12 } onApply={ () => {} } /> }/>
       <TableColumn title="Uptime" classes="time" getter={ () => uptime }/>
       <TableColumn title="Errors"
                    classes="errors"

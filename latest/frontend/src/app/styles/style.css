@@ -1941,10 +1941,18 @@ img {
     padding-right: 30px;
 }
 
+.add-clone .cols.narrow .item:last-child {
+    width: 15%;
+}
+
 .add-clone .cols .item {
     float: left;
     width: 26%;
     padding-right: 20px;
+}
+
+.add-clone .cols.narrow .item {
+    width: 20%;
 }
 
 .add-clone.focus {
