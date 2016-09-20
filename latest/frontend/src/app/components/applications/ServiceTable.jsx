@@ -63,6 +63,13 @@ const ServiceDetails = (props) => {
         <EmbeddedServiceApplicationTable items={ applications }
                                          onApplicationChange={ (changedApplication) => { props.onApplicationChange(changedApplication) } }></EmbeddedServiceApplicationTable>
       </div>
+      <div className="service-details-bottom">
+        {
+          (() => ((props.item._isNew || props.item._hasUnsavedChanges) ?
+            <Button onClick={ () => { props.onServiceNeedsSaving(props.item) } }>Save</Button> :
+            null))()
+        }
+      </div>
     </div>
   </td>;
 };
@@ -72,11 +79,7 @@ const ServiceTable = (props) => {
     <EditInPlace value={ item.svcName }
                  placeholder="Input name here"
                  onApply={ (newValue) => { props.onServiceChange(_.defaultsDeep({svcName: newValue}, item)) } }/>
-    {
-      (() => ((item._isNew || item._hasUnsavedChanges) ?
-        <Button onClick={ () => { props.onServiceNeedsSaving(item) } }>Save</Button> :
-        null))()
-    }
+
   </div>;
 
   return <Table items={props.items} classes="table services">
@@ -89,7 +92,8 @@ const ServiceTable = (props) => {
     <TableColumn title="Errors" classes="errors" getter={ () => <ErrorCount value={0} /> }/>
     <DetailsExtraRow>
       <ServiceDetails allApplications={props.allApplications}
-                      onApplicationChange={ (application) => { props.onApplicationChange(application) } }/>
+                      onApplicationChange={ (application) => { props.onApplicationChange(application) } }
+                      onServiceNeedsSaving={ (service) => { props.onServiceNeedsSaving(service) } }/>
     </DetailsExtraRow>
   </Table>;
 };

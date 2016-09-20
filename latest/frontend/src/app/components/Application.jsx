@@ -94,7 +94,8 @@ export default class Application extends React.Component {
       <ServiceTable items={ this._services() }
                     allApplications={ this._applications() }
                     onServiceNeedsSaving={ (service) => { this.saveService(service) } }
-                    onServiceChange={ (changedService) => { this.onServiceChange(changedService) } }/>
+                    onServiceChange={ (changedService) => { this.onServiceChange(changedService) } }
+                    onApplicationChange={ (changedApplication) => { this.onApplicationChange(changedApplication) } }/>
     </div>;
   }
 

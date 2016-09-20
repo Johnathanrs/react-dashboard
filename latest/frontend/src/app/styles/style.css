@@ -2581,3 +2581,8 @@ img {
     padding: 15px 5px 15px 26px;
     text-align: center;
 }
+
+.service-details-bottom {
+    text-align: right;
+    padding-right: 10px;
+}
