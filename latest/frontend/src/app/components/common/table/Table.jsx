@@ -41,7 +41,8 @@ export default class Table extends React.Component {
   }
 
   _renderHeadCells() {
-    const headCells = this._columns().map((column, index) => <th key={'column' + index} className={column.props.classes}>
+    const headCells = this._columns().map((column, index) => <th key={'column' + index}
+                                                                 className={column.props.classes}>
       {column.props.title}
     </th>);
     const selectionHeadCell = () => <th key="column-selection" className="row-selection-cell">
@@ -114,6 +115,14 @@ export default class Table extends React.Component {
     return rows;
   }
 
+  _renderTablePagination() {
+    return this._pageCount() > 1 ?
+      <TablePagination pageCount={this._pageCount()}
+                       currentPage={this._currentPage()}
+                       onPageClicked={ (pageIndex) => { this._setCurrentPage(pageIndex) } }/> :
+      null;
+  }
+
   _currentPage() {
     return this.state.currentPage || 0;
   }
@@ -146,7 +155,7 @@ export default class Table extends React.Component {
       if (equals(item, this.props.items[itemIndex])) {
         return this.state.itemStates[itemIndex];
       }
-      const existingItemIndex = _.findIndex(this.props.items, (existingItem) => existingItem === item );
+      const existingItemIndex = _.findIndex(this.props.items, (existingItem) => existingItem === item);
       if (existingItemIndex) {
         return this.state.itemStates[existingItemIndex];
       }
@@ -159,7 +168,9 @@ export default class Table extends React.Component {
 
   render() {
     let classes = _.isString(this.props.classes) ? {} : {table: true};
-    _.each(_.filter((this.props.classes || '').split(/\s/)), (cls) => { classes[cls] = true });
+    _.each(_.filter((this.props.classes || '').split(/\s/)), (cls) => {
+      classes[cls] = true
+    });
     return <div className="table" className={classNames(classes)}>
       <table>
         <thead>
@@ -173,9 +184,7 @@ export default class Table extends React.Component {
         { this._renderLastExtraRow() }
         </tbody>
       </table>
-      <TablePagination pageCount={this._pageCount()}
-                       currentPage={this._currentPage()}
-                       onPageClicked={ (pageIndex) => { this._setCurrentPage(pageIndex) } }/>
+      { this._renderTablePagination() }
     </div>;
   }
 
@@ -200,7 +209,7 @@ export default class Table extends React.Component {
   }
 
   selectedItems() {
-    return _.filter(this.props.items, (item, itemIndex) => this.state.itemStates[itemIndex].selected );
+    return _.filter(this.props.items, (item, itemIndex) => this.state.itemStates[itemIndex].selected);
   }
 
   isItemSelected(item) {
