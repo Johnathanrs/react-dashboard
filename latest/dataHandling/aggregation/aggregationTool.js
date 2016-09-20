@@ -6,16 +6,34 @@ const configuration = {
     url: 'mongodb://localhost:27017/evolute'
   },
   dateRange: {
-    from: '2016-08-20',
-    to: '2016-08-25'
+    from: '2016-06-01',
+    to: '2016-09-21'
   },
-  aggregationPeriods: ['week', 'day', 'hour'],
+  aggregationPeriods: ['week', 'day', 'hour', 'minute'],
   aggregations: [
     {
       name: 'Container Stats',
       aggregatorFactory: require('./aggregatorFactory.containerStats'),
       sourceCollectionName: 'container_stats',
       targetCollectionName: 'container_stats_aggregated'
+    },
+    {
+      name: 'Availability Stats',
+      aggregatorFactory: require('./aggregatorFactory.availabilityStats'),
+      sourceCollectionName: 'availability_stats',
+      targetCollectionName: 'aggregated_availability_stats'
+    },
+    {
+      name: 'Network Stats',
+      aggregatorFactory: require('./aggregatorFactory.networkStats'),
+      sourceCollectionName: 'network_stats',
+      targetCollectionName: 'aggregated_network_stats'
+    },
+    {
+      name: 'Error Stats',
+      aggregatorFactory: require('./aggregatorFactory.errorStats'),
+      sourceCollectionName: 'error_stats',
+      targetCollectionName: 'aggregated_error_stats'
     }
   ]
 };
