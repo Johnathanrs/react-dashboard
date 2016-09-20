@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const mongoose = require('mongoose');
 
 function generateId() {
@@ -8,14 +9,14 @@ function generateId() {
 
 const crud = {
   create: function(modelClass, req, res) {
-    const newInstance = new modelClass(_.extend({_id: generateId()}, req.body));
+    console.log('crud.create: req.body = ', req.body);
+    const newInstance = new modelClass(_.defaults({_id: generateId()}, req.body));
     newInstance.save((err) => {
       if (err) {
         console.log('ERROR: ', err);
         res.sendStatus(500);
       } else {
-        res.sendStatus(201);
-        res.send(newInstance);
+        res.status(201).send(newInstance);
       }
     });
   },

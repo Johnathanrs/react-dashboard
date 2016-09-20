@@ -26,7 +26,7 @@ export default class ApplicationCardGrid extends React.Component {
     return (this.props.items || [])
       .map((item) => <ApplicationCard key={item._id}
                                       card={ item }
-                                      onApplicationChange={(application) => { this.onApplicationChange(application) }}/>);
+                                      onApplyChanges={(application) => { this.onApplicationNeedsSaving(application) }}/>);
   }
 
   render() {
@@ -35,7 +35,7 @@ export default class ApplicationCardGrid extends React.Component {
         (()=> this.state.applicationToAdd ?
           <ApplicationCard key="applicationToAdd"
                            card={ this.state.applicationToAdd }
-                           onApplicationChange={(application) => { this.onApplicationChange(application) }}
+                           onApplyChanges={(application) => { this.onApplicationNeedsSaving(application) }}
                            onCancelChanges={ () => { this.reset() } }/> :
           <AddApplicationCard onClick={ () => { this.onAddApplication() } }/>)()
       }

@@ -2,6 +2,9 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Router, Route, IndexRoute, Link, browserHistory, hashHistory } from 'react-router';
 
+import $ from 'jquery';
+window.$ = $;
+
 import settings from './app.settings';
 console.log('Frontend settings', settings);
 

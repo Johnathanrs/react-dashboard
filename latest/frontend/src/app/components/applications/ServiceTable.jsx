@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Button from '../common/button/Button.jsx';
 import EditInPlace from '../common/edit/EditInPlace.jsx';
 import Table from '../common/table/Table.jsx';
 import TableColumn from '../common/table/TableColumn.jsx';
@@ -22,15 +23,20 @@ const mockImageUrls = {
 
 const EmbeddedServiceApplicationTable = (props) => {
   return <Table classes="" items={ props.items }>
-    <TableColumn title="Name" getter={ (item) => <span><img src={ mockImageUrls['ico_se_1'] } alt=""/><a href="#">{ item.appName }</a></span> } />
-    <TableColumn title="Uptime" getter={ (item) => item.appUptime } />
-    <TableColumn title="Instances" getter={ () => 1 } />
-    <TableColumn title="Response time" getter={ () => '12 SEC' } />
-    <TableColumn title="Type" getter={ () => 'Database' } />
+    <TableColumn title="Name"
+                 getter={ (item) => <span><img src={ mockImageUrls['ico_se_1'] } alt=""/><a href="#">{ item.appName }</a></span> }/>
+    <TableColumn title="Uptime" getter={ (item) => item.appUptime }/>
+    <TableColumn title="Instances"
+                 getter={ (item) => <EditInPlace value={ item.appInstanceCount }
+                 placeholder="Click to edit"
+                 onApply={ (newValue) => { props.onApplicationChange(_.defaults({appInstanceCount: newValue}, item)) } } /> }/>
+    <TableColumn title="Response time" getter={ () => '12 SEC' }/>
+    <TableColumn title="Type" getter={ () => 'Database' }/>
   </Table>;
 };
 
 const ServiceDetails = (props) => {
+  const applications = props.item._applications || _.filter(props.allApplications, (application) => _.includes(props.item.svcApplications, application._id));
   return <td colSpan="7">
     <div className="service-card">
       <div className="graph">
@@ -54,24 +60,43 @@ const ServiceDetails = (props) => {
             <span className="text">Applications</span>
           </li>
         </ul>
-        <EmbeddedServiceApplicationTable items={ props.item._applications }></EmbeddedServiceApplicationTable>
+        <EmbeddedServiceApplicationTable items={ applications }
+                                         onApplicationChange={ (changedApplication) => { props.onApplicationChange(changedApplication) } }></EmbeddedServiceApplicationTable>
       </div>
     </div>
   </td>;
 };
 
-const ServiceTable = (props) => <Table items={props.items} classes="table services">
-  <TableColumn title="Name" classes="name" getter={ (item) => <EditInPlace value={ item.svcName } placeholder="Input name here" />  }/>
-  <TableColumn title="Uptime" classes="uptime" getter={ (item) => item.svcUptime }/>
-  <TableColumn title="Owner" classes="owner" getter={ (item) => item.svcOwner }/>
-  <TableColumn title="Deployment" classes="deployment" getter={ (item) => item.svcStatus }/>
-  <TableColumn title="Instances" classes="instances" getter={ () => <EditInPlace value={ 1 } placeholder="Input instance count" /> }/>
-  <TableColumn title="Response time" classes="time" getter={ () => '12 sec' }/>
-  <TableColumn title="Errors" classes="errors" getter={ () => <ErrorCount value={0} /> }/>
-  <DetailsExtraRow>
-    <ServiceDetails/>
-  </DetailsExtraRow>
-</Table>;
+const ServiceTable = (props) => {
+  const nameColumnGetter = (item) => <div>
+    <EditInPlace value={ item.svcName }
+                 placeholder="Input name here"
+                 onApply={ (newValue) => { props.onServiceChange(_.defaultsDeep({svcName: newValue}, item)) } }/>
+    {
+      (() => ((item._isNew || item._hasUnsavedChanges) ?
+        <Button onClick={ () => { props.onServiceNeedsSaving(item) } }>Save</Button> :
+        null))()
+    }
+  </div>;
+
+  return <Table items={props.items} classes="table services">
+    <TableColumn title="Name" classes="name"
+                 getter={ nameColumnGetter }/>
+    <TableColumn title="Uptime" classes="uptime" getter={ (item) => item.svcUptime }/>
+    <TableColumn title="Owner" classes="owner" getter={ (item) => item.svcOwner }/>
+    <TableColumn title="Deployment" classes="deployment" getter={ (item) => item.svcStatus }/>
+    <TableColumn title="Response time" classes="time" getter={ () => '' }/>
+    <TableColumn title="Errors" classes="errors" getter={ () => <ErrorCount value={0} /> }/>
+    <DetailsExtraRow>
+      <ServiceDetails allApplications={props.allApplications}
+                      onApplicationChange={ (application) => { props.onApplicationChange(application) } }/>
+    </DetailsExtraRow>
+  </Table>;
+};
+
+ServiceTable.defaultProps = {
+  onServiceChange: () => null
+};
 
 export default ServiceTable;
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import $ from 'jquery';
+import _ from 'lodash';
 
 import Panel from './common/panel/Panel.jsx';
 import Table from './common/table/Table.jsx';
@@ -90,7 +91,10 @@ export default class Application extends React.Component {
 
   _renderServiceRows() {
     return <div className="row-list">
-      <ServiceTable items={ this._services() }/>
+      <ServiceTable items={ this._services() }
+                    allApplications={ this._applications() }
+                    onServiceNeedsSaving={ (service) => { this.saveService(service) } }
+                    onServiceChange={ (changedService) => { this.onServiceChange(changedService) } }/>
     </div>;
   }
 
@@ -118,7 +122,7 @@ export default class Application extends React.Component {
       <ApplicationCardGrid ref="applicationCardGrid"
                            items={ this._applications() }
                            onAddApplication={ () => { this.onAddApplication() } }
-                           onApplicationChange={ (application) => { this.saveApplication(application) } }/>
+                           onApplicationNeedsSaving={ (application) => { this.saveApplication(application) } }/>
     </div>;
   }
 
@@ -126,7 +130,7 @@ export default class Application extends React.Component {
     return <div className="row-list">
       <ApplicationTable ref="applicationTable"
                         items={ this._applications() }
-                        onApplicationChange={ (application) => { this.saveApplication(application) } }/>
+                        onApplicationNeedsSaving={ (application) => { this.saveApplication(application) } }/>
     </div>;
   }
 
@@ -153,7 +157,6 @@ export default class Application extends React.Component {
             <ViewTypeSelector currentViewType={ this.currentViewType() }
                               onViewTypeClicked={(viewType) => { this._setCurrentViewType(viewType) }}/>
           </div>
-
 
 
           <Panel title="Application Overview">
@@ -222,9 +225,27 @@ export default class Application extends React.Component {
 
   }
 
+  onServiceChange(changedService) {
+    console.log('onServiceChange', changedService);
+    changedService._hasUnsavedChanges = true;
+    this.setState({
+      services: _.map(this.state.services, (service) => service._id === changedService._id ? changedService : service)
+    });
+  }
+
+  onApplicationChange(changedApplication) {
+    console.log('onApplicationChange', changedApplication);
+    // TODO handle this event
+    /*this.setState({
+      applications
+    });*/
+  }
+
   saveApplication(application) {
+    application._isNew && (delete application._id);
     delete application._isNew;
-    console.log('saveApplication application', application);
+    delete application._hasUnsavedChanges;
+    console.log('saveApplication application = ', application);
     $.ajax({
       type: application._id ? 'PUT' : 'POST',
       url: settings.apiBase + '/app_infos',
@@ -236,6 +257,25 @@ export default class Application extends React.Component {
     this._fetchApplications();
     this.refs.applicationCardGrid && this.refs.applicationCardGrid.reset();
     this.refs.applicationTable && this.refs.applicationTable.reset();
+  }
+
+  saveService(service) {
+    service.svcApplications = _.map(service._applications, (application) => ({
+      _id: application._id,
+      appInstanceCount: application.appInstanceCount
+    }));
+    service._isNew && (delete service._id);
+    delete service._applications;
+    delete service._isNew;
+    delete service._hasUnsavedChanges;
+    console.log('saveService service = ', service);
+    $.ajax({
+      type: service._id ? 'PUT' : 'POST',
+      url: settings.apiBase + '/service_infos',
+      data: JSON.stringify(service),
+      dataType: 'json',
+      contentType: 'application/json'
+    });
   }
 }
 

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Table from '../common/table/Table.jsx';
+import EditInPlace from '../common/edit/EditInPlace.jsx';
 import TableColumn from '../common/table/TableColumn.jsx';
 import FirstExtraRow from '../common/table/FirstExtraRow.jsx';
 import CustomRow from '../common/table/CustomRow.jsx';
@@ -113,12 +114,12 @@ class ApplicationTable extends React.Component {
     return <Table ref="table"
                   items={ this.props.items }
                   supportsSelection={ this.props.supportsSelection }
-      onSelectionChange={ (items) => { this.props.onSelectionChange && this.props.onSelectionChange(items) } }>
+      onSelectionChange={ (items) => { this.props.onSelectionChange(items) } }>
       <TableColumn title="Name" classes="name" getter="appName"/>
       <TableColumn title="Image" classes="image" getter={ () => image }/>
       <TableColumn title="Exec" classes="exec" getter={ () => exec }/>
       <TableColumn title="Status" classes="status" getter="appStatus"/>
-      <TableColumn title="Instances" classes="instances" getter={ () => instances }/>
+      <TableColumn title="Instances" classes="instances" getter={ () => <EditInPlace value={ 12 } onApply={ () => {} } /> }/>
       <TableColumn title="Uptime" classes="time" getter={ () => uptime }/>
       <TableColumn title="Errors"
                    classes="errors"
@@ -126,7 +127,7 @@ class ApplicationTable extends React.Component {
       <FirstExtraRow>
         <AddApplicationRow item={this.state.applicationToAdd}
                            onCancel={ () => { this.reset() } }
-                           onApply={ (application) => { this.props.onApplicationChange && this.props.onApplicationChange(application) } }/>
+                           onApply={ (application) => { this.props.onApplicationNeedsSaving(application) } }/>
       </FirstExtraRow>
     </Table>;
   }
@@ -141,7 +142,9 @@ class ApplicationTable extends React.Component {
 }
 
 ApplicationTable.defaultProps = {
-  supportsSelection: false
+  supportsSelection: false,
+  onApplicationNeedsSaving: () => null,
+  onSelectionChange: () => null
 };
 
 export default ApplicationTable;

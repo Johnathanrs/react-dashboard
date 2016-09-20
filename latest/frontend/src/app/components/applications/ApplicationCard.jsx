@@ -81,7 +81,7 @@ class ApplicationCard extends React.Component {
 
   onApplyChanges() {
     const changedApplication = _.defaultsDeep({}, this.state.dirty, this.props.card);
-    this.props.onApplicationChange && this.props.onApplicationChange(changedApplication);
+    this.props.onApplyChanges && this.props.onApplyChanges(changedApplication);
   }
 }
 

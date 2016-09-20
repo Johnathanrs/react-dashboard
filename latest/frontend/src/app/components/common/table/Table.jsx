@@ -84,9 +84,9 @@ export default class Table extends React.Component {
         if (!getter) {
           return '';
         } else if (_.isFunction(getter)) {
-          return getter(dataItem, dataItemIndex);
+          return getter(dataItem, dataItemIndex, this.state.itemStates[dataItemIndex]);
         } else {
-          return dataItem[getter];
+          return _.get(dataItem, getter);
         }
       };
       const cell = (column, index) => {
@@ -201,6 +201,11 @@ export default class Table extends React.Component {
 
   selectedItems() {
     return _.filter(this.props.items, (item, itemIndex) => this.state.itemStates[itemIndex].selected );
+  }
+
+  isItemSelected(item) {
+    const foundIndex = _.findIndex(this.props.items, (it) => it === item);
+    return foundIndex ? this.state.itemStates[foundIndex].selected : false;
   }
 }
 

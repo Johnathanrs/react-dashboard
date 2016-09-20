@@ -1119,6 +1119,11 @@ img {
     color: inherit;
 }
 
+.table td.name a.btn {
+    color: white;
+    float: right;
+}
+
 .table td.errors img {
     display: inline-block;
     margin-right: 11px;
