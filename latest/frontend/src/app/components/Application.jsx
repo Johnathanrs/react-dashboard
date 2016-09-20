@@ -248,7 +248,7 @@ export default class Application extends React.Component {
     delete application._hasUnsavedChanges;
     console.log('saveApplication application = ', application);
     $.ajax({
-      type: application._id ? 'PUT' : 'POST',
+      type: application._id ? 'PATCH' : 'POST',
       url: settings.apiBase + '/app_infos',
       data: application,
       dataType: 'json'
@@ -271,7 +271,7 @@ export default class Application extends React.Component {
     delete service._hasUnsavedChanges;
     console.log('saveService service = ', service);
     $.ajax({
-      type: service._id ? 'PUT' : 'POST',
+      type: service._id ? 'PATCH' : 'POST',
       url: settings.apiBase + '/service_infos',
       data: JSON.stringify(service),
       dataType: 'json',
