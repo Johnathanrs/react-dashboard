@@ -1,5 +1,10 @@
 const mongoose = require('mongoose');
 
+const AggregatedContainerStats = require('../models/AggregatedContainerStats');
+const AggregatedNetworkStats = require('../models/AggregatedNetworkStats');
+const AggregatedAvailabilityStats = require('../models/AggregatedAvailabilityStats');
+const AggregatedErrorStats = require('../models/AggregatedErrorStats');
+
 /*
 
  The API handles aggregated stats data requests, for example:
@@ -40,7 +45,7 @@ function createModelClass() {
 }
 
 function initialize(app) {
-  const ContainerStatsAggregated = createModelClass();
+  const AggregatedContainerStats = createModelClass();
 
   app.get('/api/container_stats/aggregated/:time_from/:time_to/:period/:lxc_id/:value_type', (req, res) => {
     const timeFrom = req.params['time_from'];
@@ -49,7 +54,7 @@ function initialize(app) {
     const lxcId = req.params['lxc_id'];
     const valueType = req.params['value_type'];
 
-    ContainerStatsAggregated.find({
+    AggregatedContainerStats.find({
       $and: [
         {'value.timeFrom': {$gte: timeFrom, $lte: timeTo}},
         {'value.period': period},
@@ -83,8 +88,83 @@ function initialize(app) {
 
   });
 
-  console.log('Aggregated Stats API initialized.');
 
+  app.get('/api/network_stats/aggregated/:time_from/:time_to/:period/:node', (req, res) => {
+    const timeFrom = req.params['time_from'];
+    const timeTo = req.params['time_to'];
+    const period = req.params['period'];
+    const node = req.params['node'];
+
+    AggregatedNetworkStats.find({
+      $and: [
+        {'value.timeFrom': {$gte: timeFrom, $lte: timeTo}},
+        {'value.period': period},
+        {'value.node': node === 'all_nodes' ? null : node}
+      ]
+    }, (err, models) => {
+      if (err) {
+        console.log('ERROR', err);
+        res.send({error: true});
+      } else {
+        models = models || [];
+        res.send(models);
+      }
+
+    });
+
+  });
+
+  app.get('/api/availability_stats/aggregated/:time_from/:time_to/:period/:node', (req, res) => {
+    const timeFrom = req.params['time_from'];
+    const timeTo = req.params['time_to'];
+    const period = req.params['period'];
+    const node = req.params['node'];
+
+    AggregatedAvailabilityStats.find({
+      $and: [
+        {'value.timeFrom': {$gte: timeFrom, $lte: timeTo}},
+        {'value.period': period},
+        {'value.node': node === 'all_nodes' ? null : node}
+      ]
+    }, (err, models) => {
+      if (err) {
+        console.log('ERROR', err);
+        res.send({error: true});
+      } else {
+        models = models || [];
+        res.send(models);
+      }
+
+    });
+
+  });
+
+
+  app.get('/api/error_stats/aggregated/:time_from/:time_to/:period/:lxc_id', (req, res) => {
+    const timeFrom = req.params['time_from'];
+    const timeTo = req.params['time_to'];
+    const period = req.params['period'];
+    const lxcId = req.params['lxc_id'];
+
+    AggregatedErrorStats.find({
+      $and: [
+        {'value.timeFrom': {$gte: timeFrom, $lte: timeTo}},
+        {'value.period': period},
+        {'value.lxcId': lxcId === 'all_containers' ? null : lxcId}
+      ]
+    }, (err, models) => {
+      if (err) {
+        console.log('ERROR', err);
+        res.send({error: true});
+      } else {
+        models = models || [];
+        res.send(models);
+      }
+
+    });
+  });
+
+  console.log('Aggregated Stats API initialized.');
 }
 
 module.exports = {
