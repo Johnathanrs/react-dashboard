@@ -4,6 +4,7 @@ const configuration = {
     url: 'mongodb://localhost:27017/evolute',
     targetCollectionName: 'availability_stats'
   },
+  healthApiBaseUrl: 'http://health-api.evolute.io:8500/v1/health/node/',
   pollingIntervalMillis: 3000,
   nodeListReloadIntervalMillis: 60000
 };
@@ -32,7 +33,7 @@ function loadNodeList() {
 }
 
 function pollSingleNode(node) {
-  const url = `http://health-api.evolute.io:8500/v1/health/node/${node}`;
+  const url = configuration.healthApiBaseUrl + node;
   //const url = `http://localhost:8500/v1/health/node/${node}`;
   request({
     method: 'GET',
