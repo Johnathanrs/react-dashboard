@@ -20,9 +20,6 @@ import ServiceTable from './applications/ServiceTable.jsx';
 import ServiceCardApplications from './applications/ServiceCardApplications.jsx';
 import ServiceCreationPanel from './applications/ServiceCreationPanel.jsx';
 
-
-
-
 import settings from '../app.settings';
 
 export default class Application extends React.Component {

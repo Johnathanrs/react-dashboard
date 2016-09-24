@@ -82,14 +82,15 @@ const ServiceTable = (props) => {
 
   </div>;
 
+  const owner = 'Jason Bourne';
+  const status = 'TODO'; // TODO show the weakest status from all the applications in the service
+  const errorCount = 0; // TODO sum of all the applications' errors
+
   return <Table items={props.items} classes="table services">
-    <TableColumn title="Name" classes="name"
-                 getter={ nameColumnGetter }/>
-    <TableColumn title="Uptime" classes="uptime" getter={ (item) => item.svcUptime }/>
-    <TableColumn title="Owner" classes="owner" getter={ (item) => item.svcOwner }/>
-    <TableColumn title="Deployment" classes="deployment" getter={ (item) => item.svcStatus }/>
-    <TableColumn title="Response time" classes="time" getter={ () => '' }/>
-    <TableColumn title="Errors" classes="errors" getter={ () => <ErrorCount value={0} /> }/>
+    <TableColumn title="Name" classes="name" getter={ nameColumnGetter }/>
+    <TableColumn title="Owner" classes="owner" getter={ (item) => owner }/>
+    <TableColumn title="Deployment" classes="deployment" getter={ (item) => status }/>
+    <TableColumn title="Errors" classes="errors" getter={ () => <ErrorCount value={ errorCount } /> }/>
     <DetailsExtraRow>
       <ServiceDetails allApplications={props.allApplications}
                       onApplicationChange={ (application) => { props.onApplicationChange(application) } }

@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
+import $ from 'jquery';
 
 import Button from './common/button/Button.jsx';
 import Panel from './common/panel/Panel.jsx';
@@ -8,6 +9,8 @@ import DashboardSummary from './dashboard/DashboardSummary.jsx';
 import ApplicationOverview from './visualizations/ApplicationOverview.jsx';
 import ApplicationAvailability from './visualizations/ApplicationAvailability.jsx';
 import ContainerUtilization from './visualizations/ContainerUtilization.jsx';
+
+import settings from '../app.settings';
 
 const imageUrls = {
   g: require('../img/g.png'),
@@ -45,6 +48,35 @@ const applicationAvailabilityMockData = () => {
 
 
 export default class Dashboard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      utilizationData: containerUtilizationMockData()
+    };
+  }
+
+  _fetchUtilizationData() {
+    $.ajax({
+      type: 'GET',
+      url: settings.apiBase + '/stats/aggregated/utilization/top5'
+    }).then((result) => {
+      this.setState({utilizationData: result});
+    });
+  }
+
+  _fetchAvailabilityData() {
+    // TODO
+  }
+
+  _fetchData() {
+    this._fetchUtilizationData();
+    this._fetchAvailabilityData();
+  }
+
+  componentDidMount() {
+    this._fetchData();
+  }
+
   render() {
     return <div className="container">
 

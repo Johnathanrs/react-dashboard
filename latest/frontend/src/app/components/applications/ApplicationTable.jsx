@@ -111,12 +111,13 @@ class ApplicationTable extends React.Component {
 
   render() {
     //const owner = 'Jason Richards';
-    const image = 'app-image';
-    const exec = '/usr/sbin/application';
-    const instances = 12;
-    const responseTime = '15 sec';
-    const errorCount = 0;
-    const uptime = '2h 30min';
+    const image = 'app-image'; // from the collection
+    const exec = '/usr/sbin/application'; // from the collection
+    //const instances = 12; // from felicity API
+    //const responseTime = '15 sec';
+    const status = ''; // Deployed/Undeployed from felicity API (being confirmed now)
+    const errorCount = 0; // From Health API, can be green, yellow or green (0, 1, 2)
+    const uptime = '2h 30min'; // get from container_stats_current
     return <Table ref="table"
                   items={ this.props.items }
                   supportsSelection={ this.props.supportsSelection }
@@ -126,7 +127,7 @@ class ApplicationTable extends React.Component {
       <TableColumn title="Exec" classes="exec" getter={ () => exec }/>
       <TableColumn title="Status" classes="status" getter="appStatus"/>
       <TableColumn title="Instances" classes="instances"
-                   getter={ () => <EditInPlace value={ 12 } onApply={ () => {} } /> }/>
+                   getter={ (item) => <EditInPlace value={ item.felicity.instances } onApply={ () => {} } /> }/>
       <TableColumn title="Uptime" classes="time" getter={ () => uptime }/>
       <TableColumn title="Errors"
                    classes="errors"

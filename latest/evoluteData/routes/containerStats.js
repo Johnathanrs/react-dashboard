@@ -2,7 +2,7 @@ const ContainerStat = require('../models/ContainerStat');
 const CurrentContainerStat = require('../models/CurrentContainerStat');
 
 function initialize(app) {
-  app.get('/api/container_stats/test', function (req, res) {
+  app.get('/api/container_stats/test', (req, res) => {
     ContainerStat.aggregate([
       //        { "$limit": 10000 },
       {

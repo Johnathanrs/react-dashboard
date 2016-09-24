@@ -1,6 +1,8 @@
 const request = require('request');
+const _ = require('lodash');
 
 const utils = require('../utils');
+const felicityApi = require('../external/felicityApi');
 const AppInfo = require('../models/AppInfo');
 
 function initialize(app) {
@@ -80,8 +82,15 @@ function initialize(app) {
   });
 
   app.get('/api/app_infos', function (req, res) {
-    AppInfo.find(function (err, data) {
-      res.json(data);
+    AppInfo.find(function (err, applications) {
+      felicityApi.getAllApplications().then((felicities) => {
+        _.each(applications, (application) => {
+          // NOTE the algorithm is full scan here, it can be optimized
+          application.felicity = _.find(felicities, (felicity) => felicity.id === application.appName);
+        });
+        res.json(applications);
+      });
+
     });
   });
 

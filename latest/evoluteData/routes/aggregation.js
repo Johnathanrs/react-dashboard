@@ -1,4 +1,6 @@
+const _ = require('lodash');
 const mongoose = require('mongoose');
+const moment = require('moment');
 
 const AggregatedContainerStats = require('../models/AggregatedContainerStats');
 const AggregatedNetworkStats = require('../models/AggregatedNetworkStats');
@@ -162,6 +164,68 @@ function initialize(app) {
       }
 
     });
+  });
+
+  app.get('/api/stats/aggregated/utilization/top5', (req, res) => {
+    const now = moment();
+    let maxNetwork;
+    let maxBlkio;
+
+    function maxForThreeMonths(paramName, paramNameIn, paramNameOut) {
+      return AggregatedContainerStats.aggregate([
+        {
+          $match: {
+            $and: [
+              {'value.timeFrom': {$gte: now.subtract(3, 'months').format()}},
+              {'value.period': 'day'}
+            ]
+          }
+        },
+        {
+          $project: {
+            calculatedValue: {$add: [`$value.${paramNameIn}`, `$value.${paramNameOut}`]}
+          }
+        },
+        {
+          $group: {
+            _id: paramName,
+            value: {
+              $max: '$calculatedValue'
+            }
+          }
+        }
+      ]);
+    }
+
+    maxForThreeMonths('network', 'networkRx', 'networkTx').then((result) => {
+      maxNetwork = result;
+    }).then(maxForThreeMonths('blkio', 'blkioRead', 'blkioWrite').then((result) => {
+      maxBlkio = result;
+    })).then(() => {
+      AggregatedContainerStats.find({
+        $and: [
+          {'value.timeFrom': {$gte: now.subtract(1, 'days').format()}},
+          {'value.period': 'day'}
+        ]
+      }).sort('-value.cpu').limit(5).exec((err, models) => {
+        const resultModels = _.map(models, (model) => {
+          const blkio = maxBlkio > 0 ? (model.value.blkioRead + model.value.blkioWrite) / maxBlkio : 1;
+          const network = maxNetwork > 0 ? (model.value.networkRx + model.value.networkTx) / maxNetwork : 1;
+          return {
+            cpu: model.value.cpu,
+            memory: model.value.memory,
+            blkio: blkio > 1 ? 1 : blkio,
+            network: network > 1 ? 1 : network
+          };
+        });
+        res.send(resultModels);
+      });
+    });
+
+  });
+
+  app.get('/api/stats/aggregated/availability/bottom5', (req, res) => {
+
   });
 
   console.log('Aggregated Stats API initialized.');
