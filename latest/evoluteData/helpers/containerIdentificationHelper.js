@@ -7,6 +7,7 @@ let lxcIdToContainerName = {};
 let containerNameToLxcId = {};
 
 function initialize() {
+  // TODO Names and lxc_id are not one-to-one
   return CurrentContainerInfo.aggregate([
     {
       $group: {

@@ -24,30 +24,62 @@ function currentTime() {
 
 function loadNodeList() {
   const deferred = q.defer();
-  mongoDatabase.collection('current_container_infos').distinct('Names').then((result) => {
+  //console.log('TEST', mongoDatabase.collection('current_container_infos').aggregate);
+  mongoDatabase.collection('current_container_infos').aggregate([
+    {
+      $group: {
+        _id: '$lxc_id',
+        containerName: {$first: '$Names'}
+      }
+    },
+    {
+      $project: {
+        _id: '$_id',
+        containerName: {$arrayElemAt: ['$containerName', 0]}
+      }
+    }
+  ]).toArray((error, result) => {
     console.log('Node list reloaded: ', result);
     nodeList = result;
     deferred.resolve(nodeList);
   });
+
   return deferred.promise;
 }
 
 function pollSingleNode(node) {
-  const url = configuration.healthApiBaseUrl + node;
+  const url = configuration.healthApiBaseUrl + node.containerName;
   //const url = `http://localhost:8500/v1/health/node/${node}`;
   request({
     method: 'GET',
     url: url
   }, (error, response, body) => {
-    const parsedBody = JSON.parse(body);
-    const status = parsedBody.Status;
-    const documentToInsert = {
-      node,
-      time: currentTime(),
-      status,
-      availability: status === 'passing' ? 1 : 0
-    };
-    targetMongoCollection.insert(documentToInsert);
+    if (error) {
+      console.warn('ERROR', error);
+    } else {
+      const parsedBody = JSON.parse(body);
+      const status1 = parsedBody[0].Status;
+      const status2 = parsedBody[1].Status;
+      const availability = (() => {
+        const okStatus = 'passing';
+        if (status1 === okStatus && status2 === okStatus) {
+          return 1;
+        } else if (status1 === okStatus || status2 === okStatus) {
+          return 0.5;
+        } else {
+          return 0;
+        }
+      })();
+      const documentToInsert = {
+        lxcId: node._id,
+        containerName: node.containerName,
+        time: currentTime(),
+        status1,
+        status2,
+        availability: availability
+      };
+      targetMongoCollection.insert(documentToInsert);
+    }
   });
 
 }
