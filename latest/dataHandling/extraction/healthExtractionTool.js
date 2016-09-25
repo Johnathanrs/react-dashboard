@@ -2,7 +2,7 @@ const configuration = {
   debug: false,
   mongo: {
     url: 'mongodb://localhost:27017/evolute',
-    targetCollectionName: 'availability_stats'
+    targetCollectionName: 'health_stats'
   },
   healthApiBaseUrl: 'http://health-api.evolute.io:8500/v1/health/node/',
   pollingIntervalMillis: 3000,
@@ -60,7 +60,7 @@ function pollSingleNode(node) {
       const parsedBody = JSON.parse(body);
       const status1 = parsedBody[0].Status;
       const status2 = parsedBody[1].Status;
-      const availability = (() => {
+      const health = (() => {
         const okStatus = 'passing';
         if (status1 === okStatus && status2 === okStatus) {
           return 1;
@@ -76,7 +76,7 @@ function pollSingleNode(node) {
         time: currentTime(),
         status1,
         status2,
-        availability: availability
+        health: health
       };
       targetMongoCollection.insert(documentToInsert);
     }
@@ -109,7 +109,7 @@ MongoClient.connect(configuration.mongo.url).then((db) => {
     loadNodeList().then(() => {
       startApiPolling();
       startNodeListReloading();
-      console.log('Availability Data Extraction Tool started.');
+      console.log('Health Data Extraction Tool started.');
     });
   });
 });

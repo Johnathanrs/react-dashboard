@@ -1,17 +1,17 @@
 const mongoose = require('mongoose');
 
-const aggregatedAvailabilityStatsSchema = new mongoose.Schema({
+const aggregatedHealthStatsSchema = new mongoose.Schema({
   _id: {
     type: String
   },
   value: {
-    availability: Number,
+    health: Number,
     period: String,
     node: String,
     timeFrom: String
   }
 });
 
-const AggregatedAvailabilityStats = mongoose.model('aggregated_availability_stats', aggregatedAvailabilityStatsSchema);
+const AggregatedHealthStats = mongoose.model('aggregated_health_stats', aggregatedHealthStatsSchema);
 
-module.exports = AggregatedAvailabilityStats;
+module.exports = AggregatedHealthStats;

@@ -18,10 +18,10 @@ const configuration = {
       targetCollectionName: 'container_stats_aggregated'
     },
     {
-      name: 'Availability Stats',
-      aggregatorFactory: require('./aggregatorFactory.availabilityStats'),
-      sourceCollectionName: 'availability_stats',
-      targetCollectionName: 'aggregated_availability_stats'
+      name: 'Health Stats',
+      aggregatorFactory: require('./aggregatorFactory.healthStats'),
+      sourceCollectionName: 'health_stats',
+      targetCollectionName: 'aggregated_health_stats'
     },
     {
       name: 'Network Stats',

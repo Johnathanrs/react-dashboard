@@ -4,7 +4,7 @@ const moment = require('moment');
 
 const AggregatedContainerStats = require('../models/AggregatedContainerStats');
 const AggregatedNetworkStats = require('../models/AggregatedNetworkStats');
-const AggregatedAvailabilityStats = require('../models/AggregatedAvailabilityStats');
+const AggregatedHealthStats = require('../models/AggregatedHealthStats');
 const AggregatedErrorStats = require('../models/AggregatedErrorStats');
 
 /*
@@ -116,13 +116,13 @@ function initialize(app) {
 
   });
 
-  app.get('/api/availability_stats/aggregated/:time_from/:time_to/:period/:node', (req, res) => {
+  app.get('/api/health_stats/aggregated/:time_from/:time_to/:period/:node', (req, res) => {
     const timeFrom = req.params['time_from'];
     const timeTo = req.params['time_to'];
     const period = req.params['period'];
     const node = req.params['node'];
 
-    AggregatedAvailabilityStats.find({
+    AggregatedHealthStats.find({
       $and: [
         {'value.timeFrom': {$gte: timeFrom, $lte: timeTo}},
         {'value.period': period},

@@ -18,7 +18,7 @@ const aggregatorFactory = function (sourceCollection, targetCollectionName) {
   }
 
   /**
-   * Performs MongoDB map-reduce aggregation for availability stats data.
+   * Performs MongoDB map-reduce aggregation for health stats data.
    * @param aggregationPeriod {string} Aggregation period, value can be 'month', 'week', 'day', 'hour', 'minute'
    * @param timeFrom {Date} Start date
    * @param timeTo {Date} Finish date
@@ -56,7 +56,7 @@ const aggregatorFactory = function (sourceCollection, targetCollectionName) {
       }
 
       emit(key(aggregationPeriod)(this.time), {
-        availability: this.availability
+        health: this.health
       });
     }
 
@@ -66,7 +66,7 @@ const aggregatorFactory = function (sourceCollection, targetCollectionName) {
       }
 
       return {
-        availability: mappedAverage(values, (item) => item.availability)
+        health: mappedAverage(values, (item) => item.health)
       };
     }
 
