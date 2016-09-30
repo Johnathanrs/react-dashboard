@@ -24,8 +24,7 @@ function currentTime() {
 
 function loadNodeList() {
   const deferred = q.defer();
-  //console.log('TEST', mongoDatabase.collection('current_container_infos').aggregate);
-  mongoDatabase.collection('current_container_infos').aggregate([
+  mongoDatabase.collection('container_stats_current').aggregate([
     {
       $group: {
         _id: '$lxc_id',
