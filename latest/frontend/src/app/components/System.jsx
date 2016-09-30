@@ -50,16 +50,19 @@ export default class System extends React.Component {
         </div>
       </div>
 
-      <Table items={ this.state.containers }>
-        <TableColumn title="Container name" classes="name"
-                     getter={(item) => (_.isArray(item.Names) ? item.Names[0] : item.Names)}/>
-        <TableColumn title="Host" getter="host_dns"/>
-        <TableColumn title="Host ring" getter={ () => 'HOST_RING_123' }/>
-        <TableColumn title="Owner" getter={ () => 'Jason Richards' }/>
-        <TableColumn title="CPU"
-                     getter={ (item) => (Math.round((item.cpu_stats[0].cpu_usage[0].total_usage / item.cpu_stats[0].system_cpu_usage) * 100 * 100) / 100)+'%' }/>
-        <TableColumn title="Network" getter={ (item) => `${item.network.tx_bytes}b / ${item.network.rx_bytes}b`}/>
-        <TableColumn title="Memory" getter={
+      <div className="container ff v6">
+        <div className="tab-content active" id="top">
+
+          <Table items={ this.state.containers }>
+            <TableColumn title="Container name" classes="name"
+                         getter={(item) => (_.isArray(item.Names) ? item.Names[0] : item.Names)}/>
+            <TableColumn title="Host" getter="host_dns"/>
+            <TableColumn title="Host ring" getter={ () => 'HOST_RING_123' }/>
+            <TableColumn title="Owner" getter={ () => 'Jason Richards' }/>
+            <TableColumn title="CPU"
+                         getter={ (item) => (Math.round((item.cpu_stats[0].cpu_usage[0].total_usage / item.cpu_stats[0].system_cpu_usage) * 100 * 100) / 100)+'%' }/>
+            <TableColumn title="Network" getter={ (item) => `${item.network.tx_bytes}b / ${item.network.rx_bytes}b`}/>
+            <TableColumn title="Memory" getter={
             (item) => {
               const stat = item.memory_stats[0];
               const memUsage = stat.usage;
@@ -67,52 +70,45 @@ export default class System extends React.Component {
               return (Math.round((memUsage / memLimit) * 100 * 100) / 100) + '%';
             }
           }/>
-        <TableColumn title="Disk" getter={ () => 145}/>
+            <TableColumn title="Disk" getter={ () => 145}/>
+          </Table>
 
-        <div className="container ff v6">
-          <div className="tab-content active" id="top">
-            <div className="row row-4">
-              <div className="col">
+          <div className="row row-4">
+            <div className="col">
 
-                <Panel title="CPU Utilization">
-                  <CpuUtilization items={ this.state.cpuUtilizationItems }/>
-                </Panel>
+              <Panel title="CPU Utilization">
+                <CpuUtilization items={ this.state.cpuUtilizationItems }/>
+              </Panel>
 
-              </div>
-              <div className="col">
+            </div>
+            <div className="col">
 
-                <Panel title="Memory Utilization">
-                  <MemoryUtilization/>
-                </Panel>
+              <Panel title="Memory Utilization">
+                <MemoryUtilization/>
+              </Panel>
 
-              </div>
-              <div className="col">
+            </div>
+            <div className="col">
 
-                <Panel title="Network">
-                  <Network />
-                </Panel>
+              <Panel title="Network">
+                <Network />
+              </Panel>
 
-              </div>
-              <div className="col">
+            </div>
+            <div className="col">
 
-                <Panel title="Disk">
-                  <Disk />
-                </Panel>
+              <Panel title="Disk">
+                <Disk />
+              </Panel>
 
-              </div>
             </div>
           </div>
+        </div>
 
-          <div className="tab-content" id="bot">
-            <Panel title="Tab2"></Panel>
-          </div>
+        <div className="tab-content" id="bot">
+          <Panel title="Tab2"></Panel>
+        </div>
 
-          <Panel title="Trending Utilization">
-            <TrendingUtilization/>
-          </Panel>
-
-
-        </Table>
       </div>
     </div>;
   }
