@@ -72,8 +72,7 @@ export default class ServiceCreationPanel extends React.Component {
   }
 
   onApply(preparedServiceData) {
-    // TODO
-    console.log('preparedServiceData', preparedServiceData);
+    this.props.onApply && this.props.onApply(preparedServiceData);
   }
 
   onContinueServiceCreation() {

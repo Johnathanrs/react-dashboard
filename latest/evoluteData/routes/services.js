@@ -20,7 +20,20 @@ function initialize(app) {
    * Creates a new service
    */
   app.post('/api/service_infos', (req, res) => {
-    utils.crud.create(ServiceInfo, req, res);
+    const serviceData = {
+      _id: utils.generateId(),
+      svcName: req.body.svcName,
+      svcApplications: _.map(req.body.svcApplications, (application) => application._id)
+    };
+    const newInstance = new ServiceInfo(serviceData);
+    newInstance.save((err) => {
+      if (err) {
+        console.log('ERROR: ', err);
+        res.sendStatus(500);
+      } else {
+        res.status(201).send(newInstance);
+      }
+    });
   });
 
   /**

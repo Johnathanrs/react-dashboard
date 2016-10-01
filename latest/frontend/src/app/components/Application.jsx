@@ -180,7 +180,7 @@ export default class Application extends React.Component {
             if (this.state.isApplicationSelectionInProgress) {
               return <ServiceCreationPanel applications={ this._applications() }
                                            onCancel={() => { this.onCancelServiceCreation() } }
-                                           onApply={ (selectedApplications) => { this.onContinueServiceCreation(selectedApplications) } }/>;
+                                           onApply={ (preparedServiceData) => { this.saveService(preparedServiceData) } }/>;
             } else if (this.currentTab() === 'applications') {
               return this._renderApplications();
             } else if (this.currentTab() === 'services') {
@@ -207,7 +207,8 @@ export default class Application extends React.Component {
     this.setState({isApplicationSelectionInProgress: false});
   }
 
-  onContinueServiceCreation(selectedApplications) {
+  // TODO remove this
+  /*onContinueServiceCreation(selectedApplications) {
     let newState = {
       isApplicationSelectionInProgress: false,
       currentTab: 'services',
@@ -221,7 +222,7 @@ export default class Application extends React.Component {
     });
     this.setState(newState);
 
-  }
+  }*/
 
   onServiceChange(changedService) {
     console.log('onServiceChange', changedService);
@@ -258,10 +259,10 @@ export default class Application extends React.Component {
   }
 
   saveService(service) {
-    service.svcApplications = _.map(service._applications, (application) => ({
+    /*service.svcApplications = _.map(service._applications, (application) => ({
       _id: application._id,
       appInstanceCount: application.appInstanceCount
-    }));
+    }));*/
     service._isNew && (delete service._id);
     delete service._applications;
     delete service._isNew;

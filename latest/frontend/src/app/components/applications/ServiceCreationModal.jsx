@@ -72,13 +72,13 @@ class ServiceCreationModal extends React.Component {
           <input type="text"
                  placeholder="Enter name here..."
                  value={ this.state.service.svcName }
-                 onChange={ (evt)=> { this.setState({service: _.defaults({srcName: evt.target.value}, this.state.service)}) } }/>
+                 onChange={ (evt)=> { this.setState({service: _.defaults({svcName: evt.target.value}, this.state.service)}) } }/>
         </fieldset>
         <fieldset>
           <label>Owner</label>
           <input type="text"
                  value={ this.state.service.svcOwner }
-                 onChange={ (evt)=> { this.setState({service: _.defaults({srcOwner: evt.target.value}, this.state.service)}) } }/>
+                 onChange={ (evt)=> { this.setState({service: _.defaults({svcOwner: evt.target.value}, this.state.service)}) } }/>
         </fieldset>
 
         { this._renderApplications() }
