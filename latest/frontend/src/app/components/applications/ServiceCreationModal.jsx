@@ -29,8 +29,8 @@ const ServiceApplication = (props) => <div className="application">
   <fieldset>
     <label>Instances</label>
     <input type="number"
-           value={ props.item.instanceCount || 0 }
-           onChange={ (evt) => { props.onInstanceCountChange(evt.target.value) } }/>
+           value={ props.item.newInstanceCount || 0 }
+           onChange={ (evt) => { props.onNewInstanceCountChange(evt.target.value) } }/>
   </fieldset>
   <fieldset>
     <label>Type</label>
@@ -46,9 +46,7 @@ const ServiceApplication = (props) => <div className="application">
   </fieldset>
 </div>;
 
-/**
- * @deprecated
- */
+
 class ServiceCreationModal extends React.Component {
   constructor(props) {
     super(props);
@@ -63,7 +61,7 @@ class ServiceCreationModal extends React.Component {
       <ServiceApplication key={ `application-${application._id}` }
                           item={ application }
                           onDelete={ () => { this.setState({ applications: _.without(this.state.applications, application) }) } }
-                          onInstanceCountChange={ (newValue) => { this.onInstanceCountChange(application, newValue) } } />);
+                          onNewInstanceCountChange={ (newValue) => { this.onNewInstanceCountChange(application, newValue) } } />);
   }
 
   render() {
@@ -90,24 +88,35 @@ class ServiceCreationModal extends React.Component {
 
           <div className="right">
             <Button type="grey" onClick={ () => { this.props.onCancel && this.props.onCancel() } }>Cancel</Button>
-            <Button onClick={ () => { this.props.onApply && this.props.onApply() } }>Create</Button>
+            <Button onClick={ () => { this.onApply() } }>Create</Button>
           </div>
         </div>
       </form>
     </div>;
   }
 
-  onInstanceCountChange(applicationBeingChanged, newInstanceCount) {
+  onNewInstanceCountChange(applicationBeingChanged, newInstanceCount) {
     if (newInstanceCount < 0) {
       return;
     }
     this.setState({applications: _.map(this.state.applications, (application) => {
       if (application === applicationBeingChanged) {
-        return _.defaults({instanceCount: newInstanceCount}, application);
+        return _.defaults({newInstanceCount: newInstanceCount}, application);
       } else {
         return application;
       }
     })});
+  }
+
+  onApply() {
+    const preparedServiceData = _.defaultsDeep({}, this.state.service, {
+      svcApplications: _.map(this.state.applications, (application) => ({
+        _id: application._id,
+        newInstanceCount: application.newInstanceCount,
+        newType: 'unknown'
+      }))
+    });
+    this.props.onApply && this.props.onApply(preparedServiceData);
   }
 }
 
