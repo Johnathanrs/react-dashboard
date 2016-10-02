@@ -89,12 +89,6 @@ class ServiceCreationModal extends React.Component {
                  value={ this.state.service.svcName }
                  onChange={ (evt)=> { this.setState({service: _.defaults({svcName: evt.target.value}, this.state.service)}) } }/>
         </fieldset>
-        <fieldset>
-          <label>Owner</label>
-          <input type="text"
-                 value={ this.state.service.svcOwner }
-                 onChange={ (evt)=> { this.setState({service: _.defaults({svcOwner: evt.target.value}, this.state.service)}) } }/>
-        </fieldset>
 
         { this._renderApplications() }
 
