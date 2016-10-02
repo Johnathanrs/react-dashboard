@@ -127,7 +127,7 @@ class ApplicationTable extends React.Component {
       <TableColumn title="Exec" classes="exec" getter={ () => exec }/>
       <TableColumn title="Status" classes="status" getter="appStatus"/>
       <TableColumn title="Instances" classes="instances"
-                   getter={ (item) => <EditInPlace value={ item.felicity.instances } onApply={ () => {} } /> }/>
+                   getter={ (item) => <EditInPlace value={ item.felicity ? item.felicity.instances : 0 } onApply={ () => {} } /> }/>
       <TableColumn title="Uptime" classes="time" getter={ () => uptime }/>
       <TableColumn title="Errors"
                    classes="errors"
