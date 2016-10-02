@@ -274,7 +274,10 @@ export default class Application extends React.Component {
       data: JSON.stringify(service),
       dataType: 'json',
       contentType: 'application/json'
+    }).then(() => {
+      this._fetchServices();
     });
+    this.setState({isApplicationSelectionInProgress: false});
   }
 }
 

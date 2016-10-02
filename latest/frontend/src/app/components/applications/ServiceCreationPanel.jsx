@@ -67,12 +67,13 @@ export default class ServiceCreationPanel extends React.Component {
     let modalHandle;
     const modalContent = <ServiceCreationModal applications={ this._selectedItems() }
                                                onCancel={ () => { modalHandle.close() } }
-                                               onApply={ (preparedServiceData) => { this.onApply(preparedServiceData) } }/>;
+                                               onApply={ (preparedServiceData) => { this.onApply(preparedServiceData, modalHandle) } }/>;
     modalHandle = modalUtil.showModal(modalContent, {title: 'Service'});
   }
 
-  onApply(preparedServiceData) {
+  onApply(preparedServiceData, modalHandle) {
     this.props.onApply && this.props.onApply(preparedServiceData);
+    modalHandle.close();
   }
 
   onContinueServiceCreation() {

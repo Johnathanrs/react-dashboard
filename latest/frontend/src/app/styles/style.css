@@ -909,6 +909,10 @@ img {
     background: #f7f9fa;
 }
 
+.table.services tr.details-extra-row td {
+    background: white;
+}
+
 .table.services .details td {
     padding-top: 2px;
     padding-bottom: 2px;
