@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import Button from '../common/button/Button.jsx';
 
@@ -14,37 +15,49 @@ const mockImageUrls = {
   'ico_close': require('../../img/ico_close.png')
 };
 
-const ApplicationType = (props) => <label className="crf">
-  <input type="radio" id="crf-input-17" className="crf-i"
-         style={ {display: 'none'} }/>
-  <img src={ mockImageUrls[props.icon] } alt=""/>
-</label>;
+const serviceTypeImageUrls = {
+  application: mockImageUrls['ico_s_1'],
+  webEngine: mockImageUrls['ico_s_2'],
+  database: mockImageUrls['ico_s_3']
+};
 
-const ServiceApplication = (props) => <div className="application">
-  <a href="javascript:void(0)"
-     className="delete"
-     onClick={ () => { props.onDelete() } }><img src={ mockImageUrls['ico_close'] } alt=""/></a>
+const ApplicationType = (props) => {
+  const classes = {crf: true, checked: props.selected};
+  return <label className={ classNames(classes) } onClick={ () => { props.onClick && props.onClick() } }>
+    <input type="radio" id="crf-input-17" className="crf-i"
+           style={ {display: 'none'} }/>
+    <img src={ serviceTypeImageUrls[props.type] } alt=""/>
+  </label>;
+};
 
-  <h3>{ props.item.appName }</h3>
-  <fieldset>
-    <label>Instances</label>
-    <input type="number"
-           value={ props.item.newInstanceCount || 0 }
-           onChange={ (evt) => { props.onNewInstanceCountChange(evt.target.value) } }/>
-  </fieldset>
-  <fieldset>
-    <label>Type</label>
+const ServiceApplication = (props) => {
+  const serviceTypes = ['application', 'webEngine', 'database'];
+  return <div className="application">
+    <a href="javascript:void(0)"
+       className="delete"
+       onClick={ () => { props.onDelete() } }><img src={ mockImageUrls['ico_close'] } alt=""/></a>
 
-    <div className="radios">
-      <ApplicationType icon="ico_s_1"/>
-      <ApplicationType icon="ico_s_2"/>
-      <ApplicationType icon="ico_s_3"/>
-      <ApplicationType icon="ico_s_1"/>
-      <ApplicationType icon="ico_s_2"/>
-      <ApplicationType icon="ico_s_3"/>
-    </div>
-  </fieldset>
-</div>;
+    <h3>{ props.item.appName }</h3>
+    <fieldset>
+      <label>Instances</label>
+      <input type="number"
+             value={ props.item.newInstanceCount || 0 }
+             onChange={ (evt) => { props.onNewInstanceCountChange(evt.target.value) } }/>
+    </fieldset>
+    <fieldset>
+      <label>Type</label>
+
+      <div className="radios">
+        {
+          serviceTypes.map((type) => <ApplicationType key={ `type-${ type }` }
+                                                      type={ type }
+                                                      selected={ type === props.item.newType }
+                                                      onClick={ () => { props.onNewTypeChange(type) } }/>)
+        }
+      </div>
+    </fieldset>
+  </div>;
+};
 
 
 class ServiceCreationModal extends React.Component {
@@ -58,10 +71,12 @@ class ServiceCreationModal extends React.Component {
 
   _renderApplications() {
     return this.state.applications.map((application) =>
-      <ServiceApplication key={ `application-${application._id}` }
-                          item={ application }
-                          onDelete={ () => { this.setState({ applications: _.without(this.state.applications, application) }) } }
-                          onNewInstanceCountChange={ (newValue) => { this.onNewInstanceCountChange(application, newValue) } } />);
+        <ServiceApplication key={ `application-${application._id}` }
+                            item={ application }
+                            onDelete={ () => { this.setState({ applications: _.without(this.state.applications, application) }) } }
+                            onNewInstanceCountChange={ (newValue) => { this.onNewInstanceCountChange(application, newValue) } }
+                            onNewTypeChange={ (newType) => { this.onNewTypeChange(application, newType) } }/>
+    );
   }
 
   render() {
@@ -99,13 +114,27 @@ class ServiceCreationModal extends React.Component {
     if (newInstanceCount < 0) {
       return;
     }
-    this.setState({applications: _.map(this.state.applications, (application) => {
-      if (application === applicationBeingChanged) {
-        return _.defaults({newInstanceCount: newInstanceCount}, application);
-      } else {
-        return application;
-      }
-    })});
+    this.setState({
+      applications: _.map(this.state.applications, (application) => {
+        if (application === applicationBeingChanged) {
+          return _.defaults({newInstanceCount: newInstanceCount}, application);
+        } else {
+          return application;
+        }
+      })
+    });
+  }
+
+  onNewTypeChange(applicationBeingChanged, newType) {
+    this.setState({
+      applications: _.map(this.state.applications, (application) => {
+        if (application === applicationBeingChanged) {
+          return _.defaults({newType: newType}, application);
+        } else {
+          return application;
+        }
+      })
+    });
   }
 
   onApply() {
@@ -113,7 +142,7 @@ class ServiceCreationModal extends React.Component {
       svcApplications: _.map(this.state.applications, (application) => ({
         _id: application._id,
         newInstanceCount: application.newInstanceCount,
-        newType: 'unknown'
+        newType: application.newType
       }))
     });
     this.props.onApply && this.props.onApply(preparedServiceData);

@@ -73,6 +73,10 @@ input[type=checkbox], input[type=radio] {
     cursor: pointer;
 }
 
+label.crf {
+    cursor: pointer;
+}
+
 button, input[type=button], input[type=image],
 input[type=reset], input[type=submit] {
     overflow: visible;
