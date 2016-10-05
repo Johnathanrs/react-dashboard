@@ -132,6 +132,10 @@ class ApplicationTable extends React.Component {
     const status = ''; // Deployed/Undeployed from felicity API (being confirmed now)
     const errorCount = 0; // From Health API, can be green, yellow or green (0, 1, 2)
     const uptime = '2h 30min'; // get from container_stats_current
+
+    // TODO this is EditInPlace to edit instance count. We should decide if we really need it
+    // <EditInPlace value={ item.felicity ? item.felicity.instances : 0 } onApply={ () => {} } />
+
     return <Table ref="table"
                   items={ this.props.items }
                   supportsSelection={ this.props.supportsSelection }
@@ -141,7 +145,7 @@ class ApplicationTable extends React.Component {
       <TableColumn title="Exec" classes="exec" getter={ () => exec }/>
       <TableColumn title="Status" classes="status" getter="appStatus"/>
       <TableColumn title="Instances" classes="instances"
-                   getter={ (item) => <EditInPlace value={ item.felicity ? item.felicity.instances : 0 } onApply={ () => {} } /> }/>
+                   getter={ (item) => item.felicity ? item.felicity.instances : ''  }/>
       <TableColumn title="Uptime" classes="time" getter={ () => uptime }/>
       <TableColumn title="Errors"
                    classes="errors"
