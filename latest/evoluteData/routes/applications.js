@@ -7,28 +7,33 @@ const AppInfo = require('../models/AppInfo');
 
 function initialize(app) {
   app.post('/api/app_infos', function (req, res) {
-    console.log("generating id: ");
+    //console.log("generating id: ");
     var newId = utils.generateId();
-    console.log("logging new id: " + newId);
+    //console.log("logging new id: " + newId);
 
-    res.setHeader('Content-Type', 'text/plain');
-    res.write('you posted:\n');
-    res.end(JSON.stringify(req.body, null, 2));
-    console.log("Request body plain");
-    console.log(req.body);
-    console.log("Parsing received JSON");
-    console.log(req.body.appName);
+    //res.setHeader('Content-Type', 'text/plain');
+    //res.write('you posted:\n');
+    //res.end(JSON.stringify(req.body, null, 2));
+    //console.log("Request body plain");
+    //console.log(req.body);
+    //console.log("Parsing received JSON");
+    //console.log(req.body.appName);
 
-    var newApp = new AppInfo({
-      _id: newId,
-      appName: req.body.appName,
-      appStatus: req.body.appStatus,
-      appHealth: req.body.appHealth,
-      appUptime: req.body.appUptime
-    });
-    console.log(newApp.appName);
-    newApp.save(function (err, newApp) {
-      if (err) return console.error(err);
+    felicityApi.createApplication(req.body).then((felicityResult) => {
+      //console.log('felicityResult', felicityResult);
+      const newAppInfo = new AppInfo({
+        _id: newId,
+        appName: req.body.appName
+        //appStatus: req.body.appStatus,
+        //appHealth: req.body.appHealth,
+        //appUptime: req.body.appUptime
+      });
+      newAppInfo.save(function (err, createdApp) {
+        res.send(createdApp);
+      });
+    }, (error) => {
+      // Felicity error handler
+      console.error('Felicity error occured', error);
     });
 
   });
@@ -83,12 +88,17 @@ function initialize(app) {
 
   app.get('/api/app_infos', function (req, res) {
     AppInfo.find(function (err, applications) {
-      felicityApi.getAllApplications().then((felicities) => {
-        _.each(applications, (application) => {
+      felicityApi.getAllApplications().then((felicityResult) => {
+        const felicities = felicityResult.data.apps;
+        const result = _.map(applications, (application) => {
           // NOTE the algorithm is full scan here, it can be optimized
-          application.felicity = _.find(felicities, (felicity) => felicity.id === application.appName);
+          const felicity = _.find(felicities, (felicity) => felicity.id === '/' + application.appName);
+          return felicity ? _.defaults({
+            _id: application._id,
+            appName: application.appName
+          }, {felicity}) : application;
         });
-        res.json(applications);
+        res.json(result);
       });
 
     });

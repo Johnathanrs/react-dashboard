@@ -29,7 +29,8 @@ class AddApplicationRow extends React.Component {
         <form action="#">
           <div className="cols narrow">
             <div className="item">
-              <select>
+              <select value={ this.state.application.appImage }
+                      onChange={ (evt) => { console.log('test', evt) || this.onImageChange(evt) } }>
                 <option className="label-hide">Select Image</option>
                 <option className="label-hide">cassandra-seed</option>
                 <option className="label-hide">cassandra-peer</option>
@@ -56,10 +57,10 @@ class AddApplicationRow extends React.Component {
                      onChange={ (evt) => { this.onExecChange(evt) } }/>
             </div>
             <div className="item">
-              <input type="text"
+              <input type="number"
                      placeholder="Enter instance number..."
                      value={ this.state.application.appInstanceCount }
-                     onChange={ (evt) => { /*this.onInstanceNumberChange(evt)*/ } }/>
+                     onChange={ (evt) => { this.onInstanceCountChange(evt) } }/>
             </div>
             <div className="item">
               <button type="submit" className="btn btn-blue" onClick={ (evt) => {this.onApply(evt)} }>Create</button>
@@ -87,6 +88,19 @@ class AddApplicationRow extends React.Component {
       application: _.defaults({appExec: evt.target.value}, this.state.application)
     });
   }
+
+  onImageChange(evt) {
+    this.setState({
+      application: _.defaults({appImage: evt.target.value}, this.state.application)
+    });
+  }
+
+  onInstanceCountChange(evt) {
+    this.setState({
+      application: _.defaults({appInstanceCount: evt.target.value}, this.state.application)
+    });
+  }
+
 
   onApply(evt) {
     evt.preventDefault();

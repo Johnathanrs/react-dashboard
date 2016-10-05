@@ -248,7 +248,8 @@ export default class Application extends React.Component {
     $.ajax({
       type: application._id ? 'PATCH' : 'POST',
       url: settings.apiBase + '/app_infos',
-      data: application,
+      data: JSON.stringify(application),
+      contentType: 'application/json',
       dataType: 'json'
     });
 
