@@ -52,8 +52,9 @@ export default class ApplicationCardGrid extends React.Component {
     this.setState({applicationToAdd: {}});
   }
 
-
-
+  onApplicationNeedsSaving(application) {
+    this.props.onApplicationNeedsSaving && this.props.onApplicationNeedsSaving(application);
+  }
 
   onApplicationChange(application) {
     this.props.onApplicationChange && this.props.onApplicationChange(application);
