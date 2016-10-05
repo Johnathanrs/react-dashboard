@@ -26,8 +26,10 @@ export default class EditInPlace extends React.Component {
   render() {
     if (this.state.editing) {
       const classes = {'edit-in-place': true, block: this.props.block};
+      const styles = this.props.styles ? this.props.styles : {};
       return <span className={ classNames(classes) }>
         <textarea ref="textarea"
+                  style={ styles }
                   value={ this.state.value }
                   onChange={ (evt) => { this.onInputValueChange(evt) } }
                   onKeyDown={ (evt) => { this.onKeyDown(evt) } }></textarea>
@@ -38,8 +40,9 @@ export default class EditInPlace extends React.Component {
       </span>;
     } else {
       const text = this.state.value ? this.state.value : this.props.placeholder;
+      const decoratedText = this.props.decorator ? this.props.decorator(text) : text;
       const classes = {'edit-in-place': true, block: this.props.block, placeholder: !this.state.value};
-      return <span className={ classNames(classes) } onClick={ () => { this.onClick() }}>{ text }</span>;
+      return <span className={ classNames(classes) } onClick={ () => { this.onClick() }}>{ decoratedText }</span>;
     }
 
   }

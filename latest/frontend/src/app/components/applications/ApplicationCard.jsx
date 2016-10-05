@@ -42,14 +42,17 @@ class ApplicationCard extends React.Component {
                          onChange={ (newValue) => { this.onAppNameChange(newValue) } }/></h4>
 
         <div className="tags">
-          <a href="#" className="stat">
+          <div href="#" className="stat">
             <img src={ mockImageUrls['ico_flag'] } width="12" alt=""/>
             <span>{ errorCount  } ERRORS</span>
-          </a>
-          <a href="javascript:void(0)" className="stat ins">
+          </div>
+          <div href="javascript:void(0)" className="stat ins">
             <img src={ mockImageUrls['ico_green'] } width="13" alt=""/>
-            <span>{ instanceCount } INSTANCES</span>
-          </a>
+            <span><EditInPlace value={ instanceCount }
+                               decorator={ (value) => value + ' INSTANCES' }
+                               styles={ {width: '60px'} }
+                               onApply={ (value) => { this.onAppInstanceCountChange(value) } }/> </span>
+          </div>
         </div>
       </div>
       <ul>
@@ -72,7 +75,15 @@ class ApplicationCard extends React.Component {
   }
 
   onAppNameChange(newAppName) {
-    this.setState({dirty: {appName: newAppName}});
+    const dirtyData = this.state.dirty;
+    const newDirtyData = dirtyData ? _.defaults({appName: newAppName}, dirtyData) : {appName: newAppName};
+    this.setState({dirty: newDirtyData});
+  }
+
+  onAppInstanceCountChange(newInstanceCount) {
+    const dirtyData = this.state.dirty;
+    const newDirtyData = dirtyData ? _.defaults({appInstanceCount: newInstanceCount}, dirtyData) : {appInstanceCount: newInstanceCount};
+    this.setState({dirty: newDirtyData});
   }
 
   onCancelChanges() {
@@ -82,7 +93,7 @@ class ApplicationCard extends React.Component {
   }
 
   onApplyChanges() {
-    const changedApplication = _.defaultsDeep({}, this.state.dirty, this.props.card);
+    const changedApplication = _.defaultsDeep({}, this.state.dirty, { _id: this.props.card._id });
     this.props.onApplyChanges && this.props.onApplyChanges(changedApplication);
   }
 }
