@@ -30,7 +30,6 @@ const EmbeddedServiceApplicationTable = (props) => {
                  getter={ (item) => <EditInPlace value={ item.appInstanceCount }
                  placeholder="Click to edit"
                  onApply={ (newValue) => { props.onApplicationChange(_.defaults({appInstanceCount: newValue}, item)) } } /> }/>
-    <TableColumn title="Response time" getter={ () => '12 SEC' }/>
     <TableColumn title="Type" getter={ () => 'Database' }/>
   </Table>;
 };

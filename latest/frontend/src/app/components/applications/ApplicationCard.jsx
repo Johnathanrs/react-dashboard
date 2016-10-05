@@ -21,10 +21,12 @@ class ApplicationCard extends React.Component {
   }
 
   render() {
+    // TODO render real data
     const card = this.props.card;
     const errorCount = 0;
     const instanceCount = 12;
     const responseTime = '12 sec';
+    const status = 'Deployed';
     const image = 'container-image';
     const exec = '/usr/sbin/application';
     const classes = {
@@ -54,7 +56,7 @@ class ApplicationCard extends React.Component {
         <li><strong>Image</strong><span>{ image }</span></li>
         <li><strong>Exec</strong><span>{ exec }</span></li>
         <li><strong>Uptime</strong><span>{ card.appUptime }</span></li>
-        <li><strong>Response time</strong><span>{ responseTime }</span></li>
+        <li><strong>Status</strong><span>{ status }</span></li>
       </ul>
       {
         (() => {

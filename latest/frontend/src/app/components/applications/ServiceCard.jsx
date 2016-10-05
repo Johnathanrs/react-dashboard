@@ -17,6 +17,7 @@ class ServiceCard extends React.Component {
     const errorCount = 0;
     const instances = 12;
     const responseTime = '12 sec';
+    const owner = '';
     const databaseCount = 7;
     const webEngineCount = 12;
     const applicationCount = 19;
@@ -39,7 +40,7 @@ class ServiceCard extends React.Component {
         </div>
         <ul>
           <li><strong>Deployment</strong><span>{ service.svcStatus }</span></li>
-          <li><strong>Response time</strong><span>{ responseTime }</span></li>
+          <li><strong>Owner</strong><span>{ owner }</span></li>
           <li><strong>Service</strong><span>None</span></li>
           <li><strong>Uptime</strong><span>{ service.svcUptime }</span></li>
         </ul>
