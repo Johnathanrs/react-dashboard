@@ -1,5 +1,6 @@
 const request = require('request');
 const _ = require('lodash');
+const q = require('q');
 
 const utils = require('../utils');
 const felicityApi = require('../external/felicityApi');
@@ -7,20 +8,8 @@ const AppInfo = require('../models/AppInfo');
 
 function initialize(app) {
   app.post('/api/app_infos', function (req, res) {
-    //console.log("generating id: ");
     var newId = utils.generateId();
-    //console.log("logging new id: " + newId);
-
-    //res.setHeader('Content-Type', 'text/plain');
-    //res.write('you posted:\n');
-    //res.end(JSON.stringify(req.body, null, 2));
-    //console.log("Request body plain");
-    //console.log(req.body);
-    //console.log("Parsing received JSON");
-    //console.log(req.body.appName);
-
     felicityApi.createApplication(req.body).then((felicityResult) => {
-      //console.log('felicityResult', felicityResult);
       const newAppInfo = new AppInfo({
         _id: newId,
         appName: req.body.appName
@@ -90,7 +79,7 @@ function initialize(app) {
     AppInfo.find(function (err, applications) {
       felicityApi.getAllApplications().then((felicityResult) => {
         const felicities = felicityResult.data.apps;
-        const result = _.map(applications, (application) => {
+        const applicationsWithFelicity = _.map(applications, (application) => {
           // NOTE the algorithm is full scan here, it can be optimized
           const felicity = _.find(felicities, (felicity) => felicity.id === '/' + application.appName);
           return felicity ? _.defaults({
@@ -98,10 +87,30 @@ function initialize(app) {
             appName: application.appName
           }, {felicity}) : application;
         });
-        res.json(result);
+        res.send(applicationsWithFelicity);
       });
 
     });
+  });
+
+  app.patch('/api/app_infos', function (req, res) {
+    AppInfo.findOne({_id: req.body._id}).then((currentAppInfo) => {
+      const appInstanceCount = req.body.appInstanceCount;
+      if (appInstanceCount) {
+        // TODO cleanup the code
+        console.log('+++ Before felicity call', appInstanceCount);
+        // We need to update instance count via Felicity API call
+        felicityApi.scaleApplication(currentAppInfo.appName, appInstanceCount).then((felicityResult) => {
+          console.log('+++ Got result from felicity', felicityResult);
+          // TODO improve call result
+          res.send({});
+        }, (error) => {
+          // Felicity error handler
+          console.error('Felicity error occured', error);
+        });
+      }
+    });
+
   });
 
   console.log('Applications API initialized.');
