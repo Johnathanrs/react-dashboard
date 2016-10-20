@@ -1,7 +1,7 @@
 {
-  "name": "evolute-frontend",
+  "name": "evolute-service-mocks",
   "version": "0.0.1",
-  "description": "Evolute Frontend SPA Application",
+  "description": "Evolute Service Mocks",
   "main": "index.js",
   "author": "Sergey Shakhov <svshakhov@gmail.com>",
   "contributors": [
