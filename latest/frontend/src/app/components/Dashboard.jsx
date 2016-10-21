@@ -89,11 +89,17 @@ export default class Dashboard extends React.Component {
         <Panel title="System Utilization Overview"
                headingAside={ <Button type="grey">More Details</Button> }>
           <img src={ imageUrls.g } alt=""/>
+            
+            
         </Panel>
 
         <Panel title="Application Overview"
                headingAside={ <Button type="grey">More Details</Button> }>
+        
+            
           <ApplicationOverview />
+                
+               
         </Panel>
 
         <div className="row">
