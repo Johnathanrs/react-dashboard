@@ -1,19 +1,22 @@
 import React from 'react';
+import _ from 'lodash';
 import * as d3 from "d3";
-
+import ReactFauxDOM from 'react-faux-dom';
+import ReactDOM from 'react-dom';
 
 var parseTime2 = d3.timeParse("%Y-%m-%dT%H:%M:%SZ");
 console.log("parsing date string")
 console.log(parseTime2("2016-10-05T00:00:00Z"))
 
 
-function initGraph4(container, data) {
+function initGraph4(container, boundingClientRect, data) {
   console.log("logging container")
   console.log(container)
   console.log("logging data")
   console.log(data)
-  container.html("");
-  var containerSize = container.node().getBoundingClientRect();
+  //container.html("");
+  //var containerSize = container.node().getBoundingClientRect();
+  const containerSize = boundingClientRect;
 
   var margin = {top: 20, right: 20, bottom: 40, left: 170},
     subMargin = {top: 20, bottom: 10},
@@ -204,18 +207,22 @@ function initGraph4(container, data) {
 
 
 //        d3.json("../../../../../../thesharpcoder/data40.json", function (error, json) {
-d3.json("http://localhost:31338/thesharpcoder/data40.json", function (error, json) {
 
-  const data4 = json;
+// TODO move data-handling logic to top-layer components
+/*d3.json("http://localhost:31338/thesharpcoder/data40.json", function (error, json) {
 
-  data4.samples.forEach(function (d) {
-    d.t = parseTime2(d.time);
-  });
+ const data4 = json;
 
-  initGraph4(d3.select(".app-over"), data4);
-//            initGraph4(d3.select(".app-over"), data4);
+ data4.samples.forEach(function (d) {
+ d.t = parseTime2(d.time);
+ });
 
-});
+ initGraph4(d3.select(".app-over"), data4);
+ //            initGraph4(d3.select(".app-over"), data4);
+
+ });*/
+
+
 //const mockImageUrls = {
 //  g1: require('../../img/g1.png'),
 //  g2: require('../../img/g2.png'),
@@ -275,7 +282,75 @@ d3.json("http://localhost:31338/thesharpcoder/data40.json", function (error, jso
 //</section>;
 
 
-const ApplicationOverview = () => <section className="app-over">
+class ApplicationOverview extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      visualization: null
+    };
+  }
 
-</section>;
+  render() {
+    return <div className="application-overview-visualization">
+      { this.state.visualization }
+    </div>;
+  }
+
+  componentDidMount() {
+    const containerElement = ReactFauxDOM.createElement('section');
+    setTimeout(() => {
+      this._buildVisualization(containerElement);
+    }, 0);
+  }
+
+  _buildVisualization(containerElement) {
+    const mockData = {
+      summary: {
+        errorCount: 100,
+        errorDeviation: 13.6,
+        responseTime: 12.5,
+        health: 89
+      },
+      samples: [
+        {
+          "time": "2016-10-05T00:00:00Z",
+          "health": 0.25,
+          "errorCount": 80,
+          "errorDeviation": 14.5,
+          "responseTime": 110
+        },
+        {
+          "time": "2016-10-05T01:00:00Z",
+          "health": 0.65,
+          "errorCount": 50,
+          "errorDeviation": 20,
+          "responseTime": 70
+        },
+        {
+          "time": "2016-10-05T02:00:00Z",
+          "health": 0.25,
+          "errorCount": 80,
+          "errorDeviation": 14.5,
+          "responseTime": 110
+        },
+        {
+          "time": "2016-10-05T03:00:00Z",
+          "health": 0.65,
+          "errorCount": 50,
+          "errorDeviation": 20,
+          "responseTime": 70
+        }
+      ]
+    };
+    mockData.samples.forEach(function (d) {
+      d.t = parseTime2(d.time);
+    });
+    const componentDomNode = ReactDOM.findDOMNode(this);
+    initGraph4(d3.select(containerElement), componentDomNode.getBoundingClientRect(), mockData);
+    this.setState({
+      visualization: containerElement.toReact()
+    });
+  }
+}
+
 export default ApplicationOverview;
