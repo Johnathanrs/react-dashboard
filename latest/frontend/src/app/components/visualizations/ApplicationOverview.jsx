@@ -394,24 +394,6 @@ function buildVisualization(container, boundingClientRect, data) {
     .attr("y", margin.top + 55 + (height + subMargin.top + subMargin.bottom) * 3);
 }
 
-
-//        d3.json("../../../../../../thesharpcoder/data40.json", function (error, json) {
-
-// TODO move data-handling logic to top-layer components
-/*d3.json("http://localhost:31338/thesharpcoder/data40.json", function (error, json) {
-
- const data4 = json;
-
- data4.samples.forEach(function (d) {
- d.t = parseTime2(d.time);
- });
-
- initGraph4(d3.select(".app-over"), data4);
- //            initGraph4(d3.select(".app-over"), data4);
-
- });*/
-
-
 class ApplicationOverview extends React.Component {
   constructor(props) {
     super(props);
