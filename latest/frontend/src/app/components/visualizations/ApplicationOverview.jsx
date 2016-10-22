@@ -92,7 +92,9 @@ function initGraph4(container, boundingClientRect, data) {
     color.append("stop").attr("offset", "100%").attr("stop-color", "#FFFFFF");
   });
 
-  var clipRect = defs.append("clipPath").attr("id", "rectClip").append("rect").attr("width", 0).attr("height", containerSize.height);
+  var clipRect = defs.append("clipPath").attr("id", "rectClip").append("rect")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", containerSize.height);
 
   var svg = svgRoot.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")").attr("clip-path", "url(#rectClip)");
 
@@ -202,7 +204,7 @@ function initGraph4(container, boundingClientRect, data) {
   svgRoot.append("text").attr("class", "info-title").text("Sample Response Time").attr("x", 20).attr("y", margin.top + 25 + (height + subMargin.top + subMargin.bottom) * 3);
   svgRoot.append("text").attr("class", "info-value").text(data.summary.responseTime).attr("x", 20).attr("y", margin.top + 55 + (height + subMargin.top + subMargin.bottom) * 3);
 
-  clipRect.transition().duration(2000).attr("width", width + margin.left + margin.right);
+  //clipRect.transition().duration(2000).attr("width", width + margin.left + margin.right);
 }
 
 
@@ -305,13 +307,13 @@ class ApplicationOverview extends React.Component {
 
   _buildVisualization(containerElement) {
     const mockData = {
-      summary: {
-        errorCount: 100,
-        errorDeviation: 13.6,
-        responseTime: 12.5,
-        health: 89
+      "summary": {
+        "health": 0.65,
+        "errorCount": 130,
+        "errorDeviation": 24.5,
+        "responseTime": 250
       },
-      samples: [
+      "samples": [
         {
           "time": "2016-10-05T00:00:00Z",
           "health": 0.25,
@@ -335,6 +337,118 @@ class ApplicationOverview extends React.Component {
         },
         {
           "time": "2016-10-05T03:00:00Z",
+          "health": 0.65,
+          "errorCount": 50,
+          "errorDeviation": 20,
+          "responseTime": 70
+        },
+        {
+          "time": "2016-10-05T04:00:00Z",
+          "health": 0.25,
+          "errorCount": 80,
+          "errorDeviation": 14.5,
+          "responseTime": 110
+        },
+        {
+          "time": "2016-10-05T05:00:00Z",
+          "health": 0.65,
+          "errorCount": 50,
+          "errorDeviation": 20,
+          "responseTime": 70
+        },
+        {
+          "time": "2016-10-05T06:00:00Z",
+          "health": 0.25,
+          "errorCount": 80,
+          "errorDeviation": 14.5,
+          "responseTime": 110
+        },
+        {
+          "time": "2016-10-05T07:00:00Z",
+          "health": 0.65,
+          "errorCount": 50,
+          "errorDeviation": 20,
+          "responseTime": 70
+        },
+        {
+          "time": "2016-10-05T08:00:00Z",
+          "health": 0.25,
+          "errorCount": 80,
+          "errorDeviation": 14.5,
+          "responseTime": 110
+        },
+        {
+          "time": "2016-10-05T09:00:00Z",
+          "health": 0.65,
+          "errorCount": 50,
+          "errorDeviation": 20,
+          "responseTime": 70
+        },
+        {
+          "time": "2016-10-05T10:00:00Z",
+          "health": 0.25,
+          "errorCount": 80,
+          "errorDeviation": 14.5,
+          "responseTime": 110
+        },
+        {
+          "time": "2016-10-05T11:00:00Z",
+          "health": 0.65,
+          "errorCount": 50,
+          "errorDeviation": 20,
+          "responseTime": 70
+        },
+        {
+          "time": "2016-10-05T12:00:00Z",
+          "health": 0.25,
+          "errorCount": 80,
+          "errorDeviation": 14.5,
+          "responseTime": 110
+        },
+        {
+          "time": "2016-10-05T13:00:00Z",
+          "health": 0.65,
+          "errorCount": 50,
+          "errorDeviation": 20,
+          "responseTime": 70
+        },
+        {
+          "time": "2016-10-05T14:00:00Z",
+          "health": 0.25,
+          "errorCount": 80,
+          "errorDeviation": 14.5,
+          "responseTime": 110
+        },
+        {
+          "time": "2016-10-05T15:00:00Z",
+          "health": 0.65,
+          "errorCount": 50,
+          "errorDeviation": 20,
+          "responseTime": 70
+        },
+        {
+          "time": "2016-10-05T16:00:00Z",
+          "health": 0.25,
+          "errorCount": 80,
+          "errorDeviation": 14.5,
+          "responseTime": 110
+        },
+        {
+          "time": "2016-10-05T17:00:00Z",
+          "health": 0.65,
+          "errorCount": 50,
+          "errorDeviation": 20,
+          "responseTime": 70
+        },
+        {
+          "time": "2016-10-05T18:00:00Z",
+          "health": 0.25,
+          "errorCount": 80,
+          "errorDeviation": 14.5,
+          "responseTime": 110
+        },
+        {
+          "time": "2016-10-05T19:00:00Z",
           "health": 0.65,
           "errorCount": 50,
           "errorDeviation": 20,
