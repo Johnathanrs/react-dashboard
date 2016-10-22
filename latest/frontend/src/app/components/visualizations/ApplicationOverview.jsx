@@ -4,6 +4,12 @@ import * as d3 from "d3";
 import ReactFauxDOM from 'react-faux-dom';
 import ReactDOM from 'react-dom';
 
+/**
+ * Prepares data for D3 visualization building.
+ * Performs all the necessary conversions etc.
+ * @param data {object} raw visualization data
+ * @returns prepared visualization data
+ */
 const prepareData = (() => {
   const parseTime = d3.timeParse("%Y-%m-%dT%H:%M:%SZ");
   return function (data) {
@@ -18,6 +24,12 @@ const prepareData = (() => {
   }
 })();
 
+/**
+ * Builds D3 visualization
+ * @param container {object} fake Faux-based DOM node to put visualization's markup in
+ * @param boundingClientRect {object} a given rectangle where we need to build visualization
+ * @param data {object} visualization data
+ */
 function buildVisualization(container, boundingClientRect, data) {
   const containerSize = boundingClientRect;
   const margin = {top: 20, right: 20, bottom: 40, left: 170},
@@ -394,6 +406,10 @@ function buildVisualization(container, boundingClientRect, data) {
     .attr("y", margin.top + 55 + (height + subMargin.top + subMargin.bottom) * 3);
 }
 
+/**
+ * @class ApplicationOverview
+ * Renders Application Overview visualization (error, response time, health statistics).
+ */
 class ApplicationOverview extends React.Component {
   constructor(props) {
     super(props);
@@ -408,6 +424,9 @@ class ApplicationOverview extends React.Component {
     </div>;
   }
 
+  /**
+   * Performs initial D3 diagram building
+   */
   componentDidMount() {
     const containerElement = ReactFauxDOM.createElement('section');
     setTimeout(() => {
@@ -415,6 +434,11 @@ class ApplicationOverview extends React.Component {
     }, 0);
   }
 
+  /**
+   * Performs D3 diagram rebuilding each time when component's properties are updated
+   * @param prevProps
+   * @param prevState
+   */
   componentDidUpdate(prevProps, prevState) {
     const containerElement = ReactFauxDOM.createElement('section');
     setTimeout(() => {
