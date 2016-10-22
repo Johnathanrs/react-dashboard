@@ -5,25 +5,14 @@ import ReactFauxDOM from 'react-faux-dom';
 import ReactDOM from 'react-dom';
 
 var parseTime2 = d3.timeParse("%Y-%m-%dT%H:%M:%SZ");
-console.log("parsing date string")
-console.log(parseTime2("2016-10-05T00:00:00Z"))
-
 
 function initGraph4(container, boundingClientRect, data) {
-  console.log("logging container")
-  console.log(container)
-  console.log("logging data")
-  console.log(data)
-  //container.html("");
-  //var containerSize = container.node().getBoundingClientRect();
   const containerSize = boundingClientRect;
 
   var margin = {top: 20, right: 20, bottom: 40, left: 170},
     subMargin = {top: 20, bottom: 10},
     width = containerSize.width - margin.left - margin.right,
     height = (containerSize.height - margin.top - margin.bottom) / 4 - (subMargin.top + subMargin.bottom);
-  console.log(width)
-  console.log(height)
 
   var x = d3.scaleTime().range([0, width]);
   var y = d3.scaleLinear().range([height, 0]),
@@ -35,8 +24,6 @@ function initGraph4(container, boundingClientRect, data) {
   var xFormat = d3.timeFormat("%I %p");
   x.tickFormat(xFormat);
 
-
-//    var xAxis = d3.svg.axis().scale(x).orient("bottom");
   var xAxis = d3.axisBottom().scale(x);
 
   var area1 = d3.area().x(function (d) {
@@ -203,8 +190,6 @@ function initGraph4(container, boundingClientRect, data) {
   svgRoot.append("text").attr("class", "info-value").text(data.summary.errorDeviation).attr("x", 20).attr("y", margin.top + 55 + (height + subMargin.top + subMargin.bottom) * 2);
   svgRoot.append("text").attr("class", "info-title").text("Sample Response Time").attr("x", 20).attr("y", margin.top + 25 + (height + subMargin.top + subMargin.bottom) * 3);
   svgRoot.append("text").attr("class", "info-value").text(data.summary.responseTime).attr("x", 20).attr("y", margin.top + 55 + (height + subMargin.top + subMargin.bottom) * 3);
-
-  //clipRect.transition().duration(2000).attr("width", width + margin.left + margin.right);
 }
 
 
@@ -223,65 +208,6 @@ function initGraph4(container, boundingClientRect, data) {
  //            initGraph4(d3.select(".app-over"), data4);
 
  });*/
-
-
-//const mockImageUrls = {
-//  g1: require('../../img/g1.png'),
-//  g2: require('../../img/g2.png'),
-//  g3: require('../../img/g3.png'),
-//  g4: require('../../img/g4.png'),
-//  g5: require('../../img/g5.png')
-//};
-
-//const ApplicationOverview = () => <section className="app-over">
-//  <article>
-//    <div className="left">
-//      <h4>Reported Availability</h4>
-//
-//      <p>24%</p>
-//    </div>
-//    <div className="right">
-//      <img src={ mockImageUrls.g1 } alt=""/>
-//    </div>
-//  </article>
-//  <article>
-//    <div className="left">
-//      <h4>Error Count</h4>
-//
-//      <p>124</p>
-//    </div>
-//    <div className="right">
-//      <img src={ mockImageUrls.g2 } alt=""/>
-//    </div>
-//  </article>
-//  <article>
-//    <div className="left">
-//      <h4>Deviation Errors</h4>
-//
-//      <p>48%</p>
-//    </div>
-//    <div className="right">
-//      <img src={ mockImageUrls.g3 } alt=""/>
-//    </div>
-//  </article>
-//  <article>
-//    <div className="left">
-//      <h4>Sample Response Time</h4>
-//
-//      <p>102</p>
-//    </div>
-//    <div className="right">
-//      <img src={ mockImageUrls.g4 } alt=""/>
-//    </div>
-//  </article>
-//  <article className="label">
-//    <div className="left">
-//    </div>
-//    <div className="right">
-//      <img src={ mockImageUrls.g5 } alt=""/>
-//    </div>
-//  </article>
-//</section>;
 
 
 class ApplicationOverview extends React.Component {
