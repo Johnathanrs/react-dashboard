@@ -235,7 +235,8 @@ const routes = {
   containers: require('./routes/containers'),
   containerStats: require('./routes/containerStats'),
   services: require('./routes/services'),
-  aggregation: require('./routes/aggregation')
+  aggregation: require('./routes/aggregation'),
+  visualizations: require('./routes/visualizations')
 };
 
 _.each(routes, (route) => {
