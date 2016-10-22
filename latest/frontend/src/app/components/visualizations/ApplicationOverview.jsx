@@ -7,9 +7,14 @@ import ReactDOM from 'react-dom';
 const prepareData = (() => {
   const parseTime = d3.timeParse("%Y-%m-%dT%H:%M:%SZ");
   return function (data) {
-    data.samples.forEach((d) => {
-      d.t = parseTime(d.time);
-    });
+    return {
+      samples: data.samples.map((sample) => {
+        const cloneOfSample = _.clone(sample);
+        cloneOfSample.t = parseTime(cloneOfSample.time);
+        return cloneOfSample;
+      }),
+      summary: data.summary
+    };
   }
 })();
 
@@ -428,163 +433,24 @@ class ApplicationOverview extends React.Component {
     }, 0);
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const containerElement = ReactFauxDOM.createElement('section');
+    setTimeout(() => {
+      this._buildVisualization(containerElement);
+    }, 0);
+  }
+
   _buildVisualization(containerElement) {
-    const mockData = {
-      "summary": {
-        "health": 0.65,
-        "errorCount": 130,
-        "errorDeviation": 24.5,
-        "responseTime": 250
-      },
-      "samples": [
-        {
-          "time": "2016-10-05T00:00:00Z",
-          "health": 0.25,
-          "errorCount": 80,
-          "errorDeviation": 14.5,
-          "responseTime": 110
-        },
-        {
-          "time": "2016-10-05T01:00:00Z",
-          "health": 0.65,
-          "errorCount": 50,
-          "errorDeviation": 20,
-          "responseTime": 70
-        },
-        {
-          "time": "2016-10-05T02:00:00Z",
-          "health": 0.25,
-          "errorCount": 80,
-          "errorDeviation": 14.5,
-          "responseTime": 110
-        },
-        {
-          "time": "2016-10-05T03:00:00Z",
-          "health": 0.65,
-          "errorCount": 50,
-          "errorDeviation": 20,
-          "responseTime": 70
-        },
-        {
-          "time": "2016-10-05T04:00:00Z",
-          "health": 0.25,
-          "errorCount": 80,
-          "errorDeviation": 14.5,
-          "responseTime": 110
-        },
-        {
-          "time": "2016-10-05T05:00:00Z",
-          "health": 0.65,
-          "errorCount": 50,
-          "errorDeviation": 20,
-          "responseTime": 70
-        },
-        {
-          "time": "2016-10-05T06:00:00Z",
-          "health": 0.25,
-          "errorCount": 80,
-          "errorDeviation": 14.5,
-          "responseTime": 110
-        },
-        {
-          "time": "2016-10-05T07:00:00Z",
-          "health": 0.65,
-          "errorCount": 50,
-          "errorDeviation": 20,
-          "responseTime": 70
-        },
-        {
-          "time": "2016-10-05T08:00:00Z",
-          "health": 0.25,
-          "errorCount": 80,
-          "errorDeviation": 14.5,
-          "responseTime": 110
-        },
-        {
-          "time": "2016-10-05T09:00:00Z",
-          "health": 0.65,
-          "errorCount": 50,
-          "errorDeviation": 20,
-          "responseTime": 70
-        },
-        {
-          "time": "2016-10-05T10:00:00Z",
-          "health": 0.25,
-          "errorCount": 80,
-          "errorDeviation": 14.5,
-          "responseTime": 110
-        },
-        {
-          "time": "2016-10-05T11:00:00Z",
-          "health": 0.65,
-          "errorCount": 50,
-          "errorDeviation": 20,
-          "responseTime": 70
-        },
-        {
-          "time": "2016-10-05T12:00:00Z",
-          "health": 0.25,
-          "errorCount": 80,
-          "errorDeviation": 14.5,
-          "responseTime": 110
-        },
-        {
-          "time": "2016-10-05T13:00:00Z",
-          "health": 0.65,
-          "errorCount": 50,
-          "errorDeviation": 20,
-          "responseTime": 70
-        },
-        {
-          "time": "2016-10-05T14:00:00Z",
-          "health": 0.25,
-          "errorCount": 80,
-          "errorDeviation": 14.5,
-          "responseTime": 110
-        },
-        {
-          "time": "2016-10-05T15:00:00Z",
-          "health": 0.65,
-          "errorCount": 50,
-          "errorDeviation": 20,
-          "responseTime": 70
-        },
-        {
-          "time": "2016-10-05T16:00:00Z",
-          "health": 0.25,
-          "errorCount": 80,
-          "errorDeviation": 14.5,
-          "responseTime": 110
-        },
-        {
-          "time": "2016-10-05T17:00:00Z",
-          "health": 0.65,
-          "errorCount": 50,
-          "errorDeviation": 20,
-          "responseTime": 70
-        },
-        {
-          "time": "2016-10-05T18:00:00Z",
-          "health": 0.25,
-          "errorCount": 80,
-          "errorDeviation": 14.5,
-          "responseTime": 110
-        },
-        {
-          "time": "2016-10-05T19:00:00Z",
-          "health": 0.65,
-          "errorCount": 50,
-          "errorDeviation": 20,
-          "responseTime": 70
-        }
-      ]
-    };
-    prepareData(mockData);
-    const componentDomNode = ReactDOM.findDOMNode(this);
-    buildVisualization(d3.select(containerElement), componentDomNode.getBoundingClientRect(), mockData);
-    this.setState({
-      visualization: containerElement.toReact()
-    });
+    if (this.props.visualizationData) {
+      const preparedData = prepareData(this.props.visualizationData);
+      const componentDomNode = ReactDOM.findDOMNode(this);
+      buildVisualization(d3.select(containerElement), componentDomNode.getBoundingClientRect(), preparedData);
+      this.setState({
+        visualization: containerElement.toReact()
+      });
+    } else {
+      // We can render loading spinner here if necessary
+    }
   }
 }
 

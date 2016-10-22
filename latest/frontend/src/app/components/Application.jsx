@@ -30,7 +30,8 @@ export default class Application extends React.Component {
       currentViewType: 'cards',
       isApplicationSelectionInProgress: false,
       applications: [],
-      services: []
+      services: [],
+      applicationOverview: null
     };
   }
 
@@ -46,9 +47,16 @@ export default class Application extends React.Component {
     });
   }
 
+  _fetchApplicationOverview() {
+    $.get(settings.apiBase + '/visualizations/applicationOverview').then((result) => {
+      this.setState({applicationOverview: result});
+    });
+  }
+
   _fetchData() {
     this._fetchApplications();
     this._fetchServices();
+    this._fetchApplicationOverview();
   }
 
   componentDidMount() {
@@ -158,7 +166,7 @@ export default class Application extends React.Component {
 
 
           <Panel title="Application Overview">
-            <ApplicationOverview/>
+            <ApplicationOverview visualizationData={ this.state.applicationOverview }/>
           </Panel>
 
           <SimpleTabs items={ ['Applications', 'Services'] }
