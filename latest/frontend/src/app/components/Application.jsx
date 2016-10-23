@@ -9,7 +9,6 @@ import ViewTypeSelector from './common/viewType/ViewTypeSelector.jsx';
 import SimpleTabs from './common/tabs/SimpleTabs.jsx';
 import EditInPlace from './common/edit/EditInPlace.jsx';
 
-import ApplicationOverview from './visualizations/ApplicationOverview.jsx';
 import ApplicationSelectionSummary from './applications/ApplicationSelectionSummary.jsx';
 import ApplicationCard from './applications/ApplicationCard.jsx';
 import ApplicationCardGrid from './applications/ApplicationCardGrid.jsx';
@@ -47,16 +46,10 @@ export default class Application extends React.Component {
     });
   }
 
-  _fetchApplicationOverview() {
-    $.get(settings.apiBase + '/visualizations/applicationOverview').then((result) => {
-      this.setState({applicationOverview: result});
-    });
-  }
 
   _fetchData() {
     this._fetchApplications();
     this._fetchServices();
-    this._fetchApplicationOverview();
   }
 
   componentDidMount() {
@@ -164,11 +157,6 @@ export default class Application extends React.Component {
                               onViewTypeClicked={(viewType) => { this._setCurrentViewType(viewType) }}/>
           </div>
 
-
-          <Panel title="Application Overview">
-            <ApplicationOverview visualizationData={ this.state.applicationOverview }/>
-          </Panel>
-
           <SimpleTabs items={ ['Applications', 'Services'] }
                       onItemClicked={ (tab) => { this._setCurrentTab(tab) } }
                       currentValue={ this.currentTab() }>
@@ -217,20 +205,20 @@ export default class Application extends React.Component {
 
   // TODO remove this
   /*onContinueServiceCreation(selectedApplications) {
-    let newState = {
-      isApplicationSelectionInProgress: false,
-      currentTab: 'services',
-      currentViewType: 'rows',
-      services: _.clone(this.state.services)
-    };
-    newState.services.unshift({
-      _isNew: true,
-      svcName: '',
-      _applications: selectedApplications
-    });
-    this.setState(newState);
+   let newState = {
+   isApplicationSelectionInProgress: false,
+   currentTab: 'services',
+   currentViewType: 'rows',
+   services: _.clone(this.state.services)
+   };
+   newState.services.unshift({
+   _isNew: true,
+   svcName: '',
+   _applications: selectedApplications
+   });
+   this.setState(newState);
 
-  }*/
+   }*/
 
   onServiceChange(changedService) {
     console.log('onServiceChange', changedService);
@@ -244,8 +232,8 @@ export default class Application extends React.Component {
     console.log('onApplicationChange', changedApplication);
     // TODO handle this event
     /*this.setState({
-      applications
-    });*/
+     applications
+     });*/
   }
 
   saveApplication(application) {
@@ -269,9 +257,9 @@ export default class Application extends React.Component {
 
   saveService(service) {
     /*service.svcApplications = _.map(service._applications, (application) => ({
-      _id: application._id,
-      appInstanceCount: application.appInstanceCount
-    }));*/
+     _id: application._id,
+     appInstanceCount: application.appInstanceCount
+     }));*/
     service._isNew && (delete service._id);
     delete service._applications;
     delete service._isNew;

@@ -51,7 +51,8 @@ export default class Dashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      utilizationData: containerUtilizationMockData()
+      utilizationData: containerUtilizationMockData(),
+      applicationOverview: null
     };
   }
 
@@ -64,6 +65,12 @@ export default class Dashboard extends React.Component {
     });
   }
 
+  _fetchApplicationOverview() {
+    $.get(settings.apiBase + '/visualizations/applicationOverview').then((result) => {
+      this.setState({applicationOverview: result});
+    });
+  }
+
   _fetchAvailabilityData() {
     // TODO
   }
@@ -71,6 +78,7 @@ export default class Dashboard extends React.Component {
   _fetchData() {
     this._fetchUtilizationData();
     this._fetchAvailabilityData();
+    this._fetchApplicationOverview();
   }
 
   componentDidMount() {
@@ -89,17 +97,13 @@ export default class Dashboard extends React.Component {
         <Panel title="System Utilization Overview"
                headingAside={ <Button type="grey">More Details</Button> }>
           <img src={ imageUrls.g } alt=""/>
-            
-            
+
+
         </Panel>
 
         <Panel title="Application Overview"
                headingAside={ <Button type="grey">More Details</Button> }>
-        
-            
-          <ApplicationOverview />
-                
-               
+          <ApplicationOverview visualizationData={ this.state.applicationOverview }/>
         </Panel>
 
         <div className="row">
