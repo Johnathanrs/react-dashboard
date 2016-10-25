@@ -7,6 +7,10 @@ function initialize(app) {
     res.send(require('./mockData/visualizations-applicationOverview.json'));
   });
 
+  app.get('/api/visualizations/systemUtilizationOverview', (req, res) => {
+    res.send(require('./mockData/visualizations-systemUtilizationOverview.json'));
+  });
+
   console.log('Visualizations API initialized.');
 }
 

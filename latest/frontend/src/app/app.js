@@ -13,6 +13,7 @@ console.log('Frontend settings', settings);
 require('./styles/fonts.css');
 require('./styles/style.css');
 require('./styles/style-applicationOverview.css');
+require('./styles/style-systemUtilizationOverview.css');
 
 
 import Main from './components/Main.jsx';

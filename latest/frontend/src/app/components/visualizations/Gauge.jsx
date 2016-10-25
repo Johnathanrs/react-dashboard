@@ -8,8 +8,8 @@ const gaugeInactiveColor = '#e8eef0';
 const gaugeActiveColor = '#4fb1e2';
 const gaugeTextColor = '#3b4f53';
 const letterSpacing = '1.4';
-const arcScale = d3.scaleLinear().domain([0, 100]).range([0, Math.PI * 2]);
-const sideScale = d3.scaleLinear().domain([0, 100]).range([0, gaugeContainerSideLength]);
+const arcScale = d3.scale.linear().domain([0, 100]).range([0, Math.PI * 2]);
+const sideScale = d3.scale.linear().domain([0, 100]).range([0, gaugeContainerSideLength]);
 const fullArc = Math.PI * 2;
 const fontSize = sideScale(30);
 const fontFamily = 'San Francisco';
@@ -28,13 +28,13 @@ const Gauge = (props) => {
   const group = svg.append("g")
     .attr("transform", gaugeTransform);
 
-  const arcActive = d3.arc()
+  const arcActive = d3.svg.arc()
     .innerRadius(sideScale(40))
     .outerRadius(sideScale(48))
     .startAngle(0)
     .endAngle(arcScale(Math.ceil(props.value)));
 
-  const arcInactive = d3.arc()
+  const arcInactive = d3.svg.arc()
     .innerRadius(sideScale(41))
     .outerRadius(sideScale(46))
     .startAngle(0)

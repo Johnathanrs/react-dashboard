@@ -7,6 +7,7 @@ import Panel from './common/panel/Panel.jsx';
 import Events from './dashboard/Events.jsx';
 import DashboardSummary from './dashboard/DashboardSummary.jsx';
 import ApplicationOverview from './visualizations/ApplicationOverview.jsx';
+import SystemUtilizationOverview from './visualizations/SystemUtilizationOverview.jsx';
 import ApplicationAvailability from './visualizations/ApplicationAvailability.jsx';
 import ContainerUtilization from './visualizations/ContainerUtilization.jsx';
 
@@ -52,7 +53,8 @@ export default class Dashboard extends React.Component {
     super(props);
     this.state = {
       utilizationData: containerUtilizationMockData(),
-      applicationOverview: null
+      applicationOverview: null,
+      systemUtilizationOverview: null
     };
   }
 
@@ -71,6 +73,12 @@ export default class Dashboard extends React.Component {
     });
   }
 
+  _fetchSystemUtilizationOverview() {
+    $.get(settings.apiBase + '/visualizations/systemUtilizationOverview').then((result) => {
+      this.setState({systemUtilizationOverview: result});
+    });
+  }
+
   _fetchAvailabilityData() {
     // TODO
   }
@@ -79,6 +87,7 @@ export default class Dashboard extends React.Component {
     this._fetchUtilizationData();
     this._fetchAvailabilityData();
     this._fetchApplicationOverview();
+    this._fetchSystemUtilizationOverview();
   }
 
   componentDidMount() {
@@ -96,8 +105,7 @@ export default class Dashboard extends React.Component {
 
         <Panel title="System Utilization Overview"
                headingAside={ <Button type="grey">More Details</Button> }>
-          <img src={ imageUrls.g } alt=""/>
-
+          <SystemUtilizationOverview visualizationData={ this.state.systemUtilizationOverview }></SystemUtilizationOverview>
 
         </Panel>
 

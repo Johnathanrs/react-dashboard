@@ -11,7 +11,7 @@ import ReactDOM from 'react-dom';
  * @returns prepared visualization data
  */
 const prepareData = (() => {
-  const parseTime = d3.timeParse("%Y-%m-%dT%H:%M:%SZ");
+  const parseTime = d3.time.format("%Y-%m-%dT%H:%M:%SZ").parse;
   return function (data) {
     return {
       samples: data.samples.map((sample) => {
@@ -37,61 +37,61 @@ function buildVisualization(container, boundingClientRect, data) {
     width = containerSize.width - margin.left - margin.right,
     height = (containerSize.height - margin.top - margin.bottom) / 4 - (subMargin.top + subMargin.bottom);
 
-  const x = d3.scaleTime().range([0, width]);
-  const y = d3.scaleLinear().range([height, 0]),
-    y1 = d3.scaleLinear().range([height, 0]),
-    y2 = d3.scaleLinear().range([height, 0]),
-    y3 = d3.scaleLinear().range([height, 0]),
-    y4 = d3.scaleLinear().range([height, 0]);
+  const x = d3.time.scale().range([0, width]);
+  const y = d3.scale.linear().range([height, 0]),
+    y1 = d3.scale.linear().range([height, 0]),
+    y2 = d3.scale.linear().range([height, 0]),
+    y3 = d3.scale.linear().range([height, 0]),
+    y4 = d3.scale.linear().range([height, 0]);
 
-  const xFormat = d3.timeFormat("%I %p");
+  const xFormat = d3.time.format("%I %p");
   x.tickFormat(xFormat);
 
-  const xAxis = d3.axisBottom().scale(x);
+  const xAxis = d3.svg.axis().scale(x).orient("bottom");
 
-  const area1 = d3.area().x((d) => {
+  const area1 = d3.svg.area().x((d) => {
     return x(d.t);
   }).y0(height).y1((d) => {
     return y1(d.health);
   });
 
-  const area2 = d3.area().x((d) => {
+  const area2 = d3.svg.area().x((d) => {
     return x(d.t);
   }).y0(height).y1((d) => {
     return y2(d.errorCount);
   });
 
-  const area3 = d3.area().x((d) => {
+  const area3 = d3.svg.area().x((d) => {
     return x(d.t);
   }).y0(height).y1((d) => {
     return y3(d.errorDeviation);
   });
 
-  const area4 = d3.area().x((d) => {
+  const area4 = d3.svg.area().x((d) => {
     return x(d.t);
   }).y0(height).y1((d) => {
     return y4(d.responseTime);
   });
 
-  const line1 = d3.line().x((d) => {
+  const line1 = d3.svg.line().x((d) => {
     return x(d.t);
   }).y((d) => {
     return y1(d.health);
   });
 
-  const line2 = d3.line().x((d) => {
+  const line2 = d3.svg.line().x((d) => {
     return x(d.t);
   }).y((d) => {
     return y2(d.errorCount);
   });
 
-  const line3 = d3.line().x((d) => {
+  const line3 = d3.svg.line().x((d) => {
     return x(d.t);
   }).y((d) => {
     return y3(d.errorDeviation);
   });
 
-  const line4 = d3.line().x((d) => {
+  const line4 = d3.svg.line().x((d) => {
     return x(d.t);
   }).y((d) => {
     return y4(d.responseTime);

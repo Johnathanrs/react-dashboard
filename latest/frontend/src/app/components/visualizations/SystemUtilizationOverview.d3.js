@@ -1,3 +1,5 @@
+import * as d3 from "d3";
+
 /**
  * Builds System Utilization Overview diagram
  * @param container

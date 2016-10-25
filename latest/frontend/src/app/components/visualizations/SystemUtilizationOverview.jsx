@@ -7,11 +7,11 @@ import ReactFauxDOM from 'react-faux-dom';
 import ReactDOM from 'react-dom';
 
 const prepareData = (() => {
-  const parseTime = d3.timeParse("%Y-%m-%dT%H:%M:%SZ");
+  const parseTime = d3.time.format("%Y-%m-%dT%H").parse;
   return function (data) {
     let preparedData = { avg: { cpu: 0, memory: 0, disk: 0, network: 0 }, days: [] };
 
-    json.forEach(function (d) {
+    data.forEach(function (d) {
       if (d.value.period == "hour" && d.value.lxcId == null) {
         preparedData.days.push({
           time: parseTime(d.value.timeFrom),
@@ -46,7 +46,7 @@ const prepareData = (() => {
  * @class SystemUtilizationOverview
  * Renders System Utilization Overview visualization (CPU, Memory, Disk, Network statistics).
  */
-class SystemUtilizationOverview extends React.Component {
+export default class SystemUtilizationOverview extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
