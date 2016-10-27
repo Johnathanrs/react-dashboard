@@ -10,8 +10,13 @@ const prepareData = (() => {
   const parseTime = d3.time.format("%Y-%m-%dT%H").parse;
   return function (data) {
     let preparedData = { avg: { cpu: 0, memory: 0, disk: 0, network: 0 }, days: [] };
-
-    data.forEach(function (d) {
+console.log("logging data")
+      console.log(data);
+      console.log(data.toString());
+      var parsedJSON = JSON.parse(data);
+      console.log("parsed json")
+      console.log(parsedJSON)
+    parsedJSON.forEach(function (d) {
       if (d.value.period == "hour" && d.value.lxcId == null) {
         preparedData.days.push({
           time: parseTime(d.value.timeFrom),
