@@ -49,7 +49,7 @@ class ApplicationCard extends React.Component {
           <div href="javascript:void(0)" className="stat ins">
             <img src={ mockImageUrls['ico_green'] } width="13" alt=""/>
             <span><EditInPlace value={ card.felicity ? card.felicity.instances : '' }
-                               decorator={ (value) => value + ' INSTANCES' }
+                               decorator={ (value) => ( value ? value : 0 ) + ' INSTANCES' }
                                styles={ {width: '60px'} }
                                onApply={ (value) => { this.onAppInstanceCountChange(value) } }/> </span>
           </div>
