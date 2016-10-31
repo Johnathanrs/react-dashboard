@@ -21,9 +21,9 @@ function getApplicationErrors(appName) {
     if (err) {
       deferred.reject(err);
     } else {
-      const preparedAppName = '/' + appName;
+      const containerNamePrefix = '/evo-' + appName;
       const applicationContainersStats = _.filter(currentContainerStats,
-        (stat) => stat.container && _.startsWith(stat.container.name, preparedAppName));
+        (stat) => stat.container && _.startsWith(stat.container.name, containerNamePrefix));
       const deferredHealthRequests = _.map(applicationContainersStats,
         (containerStats) => healthApi.getContainerHealth(containerStats.container.name.substring(1)));
       q.all(deferredHealthRequests).then((results) => {
