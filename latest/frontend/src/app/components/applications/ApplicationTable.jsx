@@ -150,7 +150,7 @@ class ApplicationTable extends React.Component {
       <TableColumn title="Uptime" classes="time" getter={ () => uptime }/>
       <TableColumn title="Errors"
                    classes="errors"
-                   getter={ () => <ErrorCount value={errorCount} /> }/>
+                   getter={ (item) => <ErrorCount value={ item.errorCount ? item.errorCount : 0 } /> }/>
       <FirstExtraRow>
         <AddApplicationRow item={this.state.applicationToAdd}
                            onCancel={ () => { this.reset() } }

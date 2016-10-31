@@ -23,7 +23,7 @@ class ApplicationCard extends React.Component {
   render() {
     // TODO render real data
     const card = this.props.card;
-    const errorCount = 0;
+    //const errorCount = 0;
     const instanceCount = 12;
     const responseTime = '12 sec';
     const status = 'Deployed';
@@ -44,7 +44,7 @@ class ApplicationCard extends React.Component {
         <div className="tags">
           <div href="#" className="stat">
             <img src={ mockImageUrls['ico_flag'] } width="12" alt=""/>
-            <span>{ errorCount  } ERRORS</span>
+            <span>{ card.errorCount ? card.errorCount : 0 } ERRORS</span>
           </div>
           <div href="javascript:void(0)" className="stat ins">
             <img src={ mockImageUrls['ico_green'] } width="13" alt=""/>
