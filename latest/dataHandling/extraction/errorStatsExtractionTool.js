@@ -12,6 +12,9 @@ const configuration = {
   }
 };
 
+var express = require('express');
+var app = express();
+const request = require('request');
 const readline = require('readline');
 const fs = require('fs');
 const path = require('path');
@@ -19,6 +22,11 @@ const _ = require('lodash');
 const q = require('q');
 const glob = require('glob');
 const MongoClient = require('mongodb').MongoClient;
+
+
+
+
+const server = app.listen(3001);
 
 // Import error matching rules
 const rules = require('./errorStatsExtractionTool.rules');
