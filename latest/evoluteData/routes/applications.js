@@ -4,10 +4,52 @@ const q = require('q');
 
 const utils = require('../utils');
 const felicityApi = require('../external/felicityApi');
+const healthApi = require('../external/healthApi');
 const AppInfo = require('../models/AppInfo');
+const CurrentContainerStat = require('../models/CurrentContainerStat');
+
+function getApplicationErrors(appName) {
+  function extractHealthResult(healthApiResult) {
+    if (healthApiResult) {
+      return _.filter(healthApiResult, (item) => item.Status !== 'passing').length;
+    } else {
+      return 0;
+    }
+  }
+  const deferred = q.defer();
+  CurrentContainerStat.find({}, 'container.name', (err, currentContainerStats) => {
+    if (err) {
+      deferred.reject(err);
+    } else {
+      const preparedAppName = '/' + appName;
+      const applicationContainersStats = _.filter(currentContainerStats,
+        (stat) => stat.container && _.startsWith(stat.container.name, preparedAppName));
+      const deferredHealthRequests = _.map(applicationContainersStats,
+        (containerStats) => healthApi.getContainerHealth(containerStats.container.name.substring(1)));
+      q.all(deferredHealthRequests).then((results) => {
+        const sum = _.reduce(results, (total, x) => total + extractHealthResult(x.data), 0);
+        deferred.resolve(sum);
+      }, (healthApiError) => {
+        deferred.reject(healthApiError);
+      });
+    }
+  });
+  return deferred.promise;
+}
 
 function initialize(app) {
-  app.post('/api/app_infos', function (req, res) {
+
+  // TODO remove this later
+  app.get('/api/applications/test', (req, res) => {
+    getApplicationErrors('evo-cassandra-seed').then((result) => {
+      res.send({errorCount: result});
+    }, (error) => {
+      console.error('Error', error);
+      res.send({error: true});
+    });
+  });
+
+  app.post('/api/app_infos', (req, res) => {
     var newId = utils.generateId();
     felicityApi.createApplication(req.body).then((felicityResult) => {
       const newAppInfo = new AppInfo({
@@ -75,7 +117,7 @@ function initialize(app) {
     });
   });
 
-  app.get('/api/app_infos', function (req, res) {
+  app.get('/api/app_infos', (req, res) => {
     AppInfo.find(function (err, applications) {
       felicityApi.getAllApplications().then((felicityResult) => {
         const felicities = felicityResult.data.apps;
@@ -87,26 +129,34 @@ function initialize(app) {
             appName: application.appName
           }, {felicity}) : application;
         });
-        res.send(applicationsWithFelicity);
+        const applicationErrorRequests = _.map(applicationsWithFelicity,
+          (application) => getApplicationErrors(application.appName));
+        q.all(applicationErrorRequests).then((errorCounts) => {
+          _.each(applicationsWithFelicity, (application, index) => {
+            const errorCount = errorCounts[index];
+            _.isNumber(errorCount) && (application.errorCount = errorCount);
+          });
+          res.send(applicationsWithFelicity);
+        }, (error) => {
+          res.send(applicationsWithFelicity);
+        });
+
       });
 
     });
   });
 
-  app.patch('/api/app_infos', function (req, res) {
+  app.patch('/api/app_infos', (req, res) => {
     AppInfo.findOne({_id: req.body._id}).then((currentAppInfo) => {
       const appInstanceCount = req.body.appInstanceCount;
       if (appInstanceCount) {
-        // TODO cleanup the code
-        console.log('+++ Before felicity call', appInstanceCount);
         // We need to update instance count via Felicity API call
         felicityApi.scaleApplication(currentAppInfo.appName, appInstanceCount).then((felicityResult) => {
-          console.log('+++ Got result from felicity', felicityResult);
           // TODO improve call result
           res.send({});
         }, (error) => {
           // Felicity error handler
-          console.error('Felicity error occured', error);
+          console.error('Felicity error occurred', error);
         });
       }
     });

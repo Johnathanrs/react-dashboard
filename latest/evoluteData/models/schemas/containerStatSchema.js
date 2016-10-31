@@ -152,13 +152,17 @@ const containerStatSchema = new mongoose.Schema({
       type: Array
     }
   }],
-  Host_DNS: {
-    type: String
+  host: {
+    node: String,
+    address: String
   },
-  Host_IP: {
-    type: String
+  container: {
+    id: String,
+    name: String,
+    image: String,
+    command: String
   },
-  LXC_Id: {
+  lxc_id: {
     type: String
   }
 });

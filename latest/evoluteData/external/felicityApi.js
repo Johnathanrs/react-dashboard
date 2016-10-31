@@ -1,8 +1,8 @@
 const _ = require('lodash');
 const axios = require('axios');
 
-//const baseUrl = 'http://felicity.evolute.io';
-const baseUrl = 'http://localhost:8001';
+const baseUrl = 'http://felicity.evolute.io';
+//const baseUrl = 'http://localhost:8001';
 
 function paramsToString(params) {
   // TODO escape values as they come from user input
