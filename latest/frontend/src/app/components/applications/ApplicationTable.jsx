@@ -25,6 +25,7 @@ class AddApplicationRow extends React.Component {
 
   render() {
     if (this.props.item) {
+      // TODO get image list from API in the future?
       return <td colSpan="7" className="add-clone">
         <form action="#">
           <div className="cols narrow">
@@ -32,16 +33,16 @@ class AddApplicationRow extends React.Component {
               <select value={ this.state.application.appImage }
                       onChange={ (evt) => { console.log('test', evt) || this.onImageChange(evt) } }>
                 <option className="label-hide">Select Image</option>
-                <option className="label-hide">cassandra-seed</option>
-                <option className="label-hide">cassandra-peer</option>
-                <option className="label-hide">redis</option>
-                <option className="label-hide">hadoop-nn</option>
-                <option className="label-hide">oracle-db12</option>
-                <option className="label-hide">nginx</option>
-                <option className="label-hide">lb-proxy</option>
-                <option className="label-hide">web-backend</option>
-                <option className="label-hide">evo-rhel</option>
-                <option className="label-hide">evo-rhel-secure</option>
+                <option className="label-hide" value="images.evolute.io:5000/evo-cassandra-seed">cassandra-seed</option>
+                <option className="label-hide" value="images.evolute.io:5000/evo-cassandra-peer">cassandra-peer</option>
+                <option className="label-hide" value="images.evolute.io:5000/evo-redis">redis</option>
+                <option className="label-hide" value="images.evolute.io:5000/evo-hadoop-nn">hadoop-nn</option>
+                <option className="label-hide" value="images.evolute.io:5000/evo-oracle-db12">oracle-db12</option>
+                <option className="label-hide" value="images.evolute.io:5000/evo-nginx">nginx</option>
+                <option className="label-hide" value="images.evolute.io:5000/evo-lb-proxy">lb-proxy</option>
+                <option className="label-hide" value="images.evolute.io:5000/evo-web-backend">web-backend</option>
+                <option className="label-hide" value="images.evolute.io:5000/evo-rhel">evo-rhel</option>
+                <option className="label-hide" value="images.evolute.io:5000/evo-rhel-secure">evo-rhel-secure</option>
               </select>
             </div>
             <div className="item">
