@@ -13,6 +13,7 @@ console.log('Frontend settings', settings);
 require('./styles/fonts.css');
 require('./styles/style.css');
 require('./styles/style-applicationOverview.css');
+require('./styles/style-appsWheel.css');
 require('./styles/style-systemUtilizationOverview.css');
 
 

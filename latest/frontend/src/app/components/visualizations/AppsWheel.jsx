@@ -7,8 +7,24 @@ import ReactFauxDOM from 'react-faux-dom';
 import ReactDOM from 'react-dom';
 
 function prepareData(data) {
-  // Prepare data for visualization if needed
-  return data;
+  var idata = [[], [], []];
+  data.forEach(function (d) {
+    if (d.apps != null) {
+      d.apps.forEach(function (d1) {
+        if (d1 != null && d1.length == 1) {
+          var appObj = d1[0];
+          if (appObj.appType == 'Database') {
+            idata[0][idata[0].length] = appObj;
+          } else if (appObj.appType == 'Web Engine') {
+            idata[1][idata[1].length] = appObj;
+          } else {
+            idata[2][idata[2].length] = appObj;
+          }
+        }
+      });
+    }
+  });
+  return idata;
 }
 
 export default class AppsWheel extends React.Component {
@@ -48,7 +64,7 @@ export default class AppsWheel extends React.Component {
   }
 
   _buildVisualization(containerElement) {
-    if (this.props.visualizationData) {
+    if (this.props.visualizationData && this.props.visualizationData.length > 0) {
       const preparedData = prepareData(this.props.visualizationData);
       const componentDomNode = ReactDOM.findDOMNode(this);
       buildVisualization(d3.select(containerElement), componentDomNode.getBoundingClientRect(), preparedData, 'Apps Wheel');

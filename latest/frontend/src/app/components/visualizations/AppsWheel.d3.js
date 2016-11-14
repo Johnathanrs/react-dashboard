@@ -25,7 +25,7 @@ function buildVisualization(container, boundingClientRect, data, title) {
   var svg = container.append("svg")
     .attr("width", (radius + margin) * 2)
     .attr("height", (radius + margin) * 2)
-    .append("g").attr("opacity", 0)
+    .append("g").attr("opacity", 1)
     .attr("transform", "translate(" + (margin + radius) + "," + (margin + radius) + ")");
 
   var iconSize = 13;
@@ -78,5 +78,7 @@ function buildVisualization(container, boundingClientRect, data, title) {
     svg.append("text").attr("text-anchor", "middle").attr("x", 0).attr("y", 4).style("font-size", "12px").text(title);
   }
 
-  svg.transition().duration(1000).attr("opacity", 1);
+  //svg.transition().duration(1000).attr("opacity", 1);
 }
+
+export default buildVisualization;

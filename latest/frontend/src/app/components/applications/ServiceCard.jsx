@@ -1,4 +1,9 @@
 import React from 'react';
+import AppsWheel from '../visualizations/AppsWheel.jsx';
+
+import appsWheelMockData from '../../data/visualizations-appsWheel.js';
+
+console.log('appsWheelMockData', appsWheelMockData );
 
 const mockImageUrls = {
   '2': require('../../img/2.png'),
@@ -66,7 +71,7 @@ class ServiceCard extends React.Component {
           </ul>
         </div>
         <div className="graph">
-          <img src={ mockImageUrls['3'] } alt=""/>
+          <AppsWheel visualizationData={ appsWheelMockData } />
         </div>
       </div>
     </div>;
