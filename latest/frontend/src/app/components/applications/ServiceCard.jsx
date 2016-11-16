@@ -17,8 +17,10 @@ const mockImageUrls = {
 };
 
 class ServiceCard extends React.Component {
+    
   render() {
     const service = this.props.card;
+      const serviceAppsWheelData = this.props.data
     const errorCount = 0;
     const instances = 12;
     const responseTime = '12 sec';
@@ -71,7 +73,7 @@ class ServiceCard extends React.Component {
           </ul>
         </div>
         <div className="graph">
-          <AppsWheel visualizationData={ appsWheelMockData } />
+               <AppsWheel visualizationData={ serviceAppsWheelData }></AppsWheel>
         </div>
       </div>
     </div>;

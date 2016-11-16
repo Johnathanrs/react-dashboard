@@ -46,6 +46,45 @@ res.send(body);
     
 });
 
+    
+    
+    app.get('/api/visualizations/serviceAppsWheel', function(req, res) {
+     request({
+        method: 'GET',
+        url: 'http://localhost:3000/api/service_infos/apps'
+    }, function(error, response, body) {
+        if (error) {
+            console.log("Error on /api/visualizations/serviceApps")
+            res.json(502, {
+                error: "bad_gateway",
+                reason: err.code
+            });
+            return;
+        }
+        if (!error && response.statusCode == 200) {
+res.send(body);
+     
+
+        
+            
+
+
+
+        } else {
+            console.log("something else happened when querying /api/health/container brother")
+            console.log(response)
+            console.log(body)
+            res.send(body);
+        }
+
+    });
+   
+    
+    
+});
+
+    
+    
   console.log('Visualizations API initialized.');
 }
 

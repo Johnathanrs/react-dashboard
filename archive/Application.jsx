@@ -153,6 +153,8 @@ export default class Application extends React.Component {
       _fetchServiceAppsWheel() {
     $.get(settings.apiBase + '/visualizations/serviceAppsWheel').then((result) => {
       this.setState({serviceAppsWheel: result}, function() {
+          console.log("Logging State serviceAppsWheel")
+          console.log(this.state.serviceAppsWheel)
           });
     });
       

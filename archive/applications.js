@@ -52,6 +52,8 @@ function initialize(app) {
   app.post('/api/app_infos', (req, res) => {
     var newId = utils.generateId();
     felicityApi.createApplication(req.body).then((felicityResult) => {
+        console.log("logging felicityResult")
+        console.log(felicityResult)
       const newAppInfo = new AppInfo({
         _id: newId,
         appName: req.body.appName,
@@ -131,7 +133,7 @@ function initialize(app) {
           const felicity = _.find(felicities, (felicity) => felicity.id === '/' + application.appName);
           return felicity ? _.defaults({
             _id: application._id,
-            appName: application.appName
+            appName: application.appName,
           }, {felicity}) : application;
         });
         const applicationErrorRequests = _.map(applicationsWithFelicity,

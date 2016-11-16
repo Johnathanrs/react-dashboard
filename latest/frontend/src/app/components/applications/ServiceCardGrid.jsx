@@ -10,7 +10,7 @@ export default class ServiceCardGrid extends React.Component {
 
   _renderCards() {
     return (this.props.items || []).map((item) => <div key={item._id}>
-      <ServiceCard card={ item } />
+      <ServiceCard card={ item } data={this.props.data}/>
       <ServiceCardApplications />
     </div>);
   }

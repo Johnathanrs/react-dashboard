@@ -7,6 +7,12 @@ const appInfoSchema = new mongoose.Schema({
   appName: {
     type: String
   },
+      appExec: {
+    type: String
+  },
+      appType: {
+    type: String
+  },
   appStatus: {
     type: String
   },

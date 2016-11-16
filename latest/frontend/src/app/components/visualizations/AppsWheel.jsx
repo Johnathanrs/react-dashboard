@@ -8,7 +8,15 @@ import ReactDOM from 'react-dom';
 
 function prepareData(data) {
   var idata = [[], [], []];
-  data.forEach(function (d) {
+    console.log("logging data passed to prepareData")
+    console.log(data)
+    console.log("toString prepareData ")
+    console.log(data.toString());
+    var parsedJSON= JSON.parse(data);
+     console.log("parsed json")
+      console.log(parsedJSON);
+  parsedJSON.forEach(function (d) {
+//      data.forEach(function (d) {
     if (d.apps != null) {
       d.apps.forEach(function (d1) {
         if (d1 != null && d1.length == 1) {

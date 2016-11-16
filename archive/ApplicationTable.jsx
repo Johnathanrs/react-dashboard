@@ -143,7 +143,7 @@ class ApplicationTable extends React.Component {
                   onSelectionChange={ (items) => { this.props.onSelectionChange(items) } }>
       <TableColumn title="Name" classes="name" getter="appName"/>
       <TableColumn title="Image" classes="image" getter={ () => image }/>
-        <TableColumn title="Exec" classes="exec" getter={ () => exec }/>
+        <TableColumn title="Exec" classes="exec" getter="appExec"/>
       <TableColumn title="Status" classes="status" getter="appStatus"/>
       <TableColumn title="Instances" classes="instances"
                    getter={ (item) => item.felicity ? item.felicity.instances : ''  }/>
