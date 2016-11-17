@@ -11,6 +11,10 @@ function initialize(app) {
     res.send(require('./mockData/visualizations-systemUtilizationOverview.json'));
   });
     
+    app.get('/api/visualizations/containerUtilizationOverviewMock', (req, res) => {
+    res.send(require('./mockData/visualizations-containerUtilizationOverview.json'));
+  });
+    
     app.get('/api/visualizations/systemUtilizationOverview', function(req, res) {
      request({
         method: 'GET',

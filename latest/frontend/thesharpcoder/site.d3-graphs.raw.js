@@ -1,4 +1,4 @@
-﻿function initGraph1(container, data) {
+function initGraph1(container, data) {
     container.html("");
     var containerSize = container.node().getBoundingClientRect();
 
@@ -325,7 +325,10 @@ function initGraph1b(container, data, options) {
     if (options.appId != null && options.appId != "" && data != null && data.length > 0) {
         for (var i = 0; i < data.length; i++) {
             if (data[i].appId == options.appId) {
+                
                 dataItem = data[i];
+                console.log(i)
+                console.log(dataItem)
                 break;
             }
         }

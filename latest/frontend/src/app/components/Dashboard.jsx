@@ -35,6 +35,8 @@ const containerUtilizationMockData = () => {
   }));
 };
 
+
+
 // TODO replace with real data
 const applicationAvailabilityMockData = () => {
   return _.range(0, 5).map((i) => ({
@@ -54,7 +56,8 @@ export default class Dashboard extends React.Component {
     this.state = {
       utilizationData: containerUtilizationMockData(),
       applicationOverview: null,
-      systemUtilizationOverview: null
+      systemUtilizationOverview: null,
+      containerUtilizationOverview: null
     };
   }
 
@@ -78,6 +81,12 @@ export default class Dashboard extends React.Component {
       this.setState({systemUtilizationOverview: result});
     });
   }
+    
+      _fetchContainerUtilizationOverview() {
+    $.get(settings.apiBase + '/visualizations/containerUtilizationOverviewMock').then((result) => {
+      this.setState({containerUtilizationOverview: result});
+    });
+  }
 
   _fetchAvailabilityData() {
     // TODO
@@ -88,6 +97,7 @@ export default class Dashboard extends React.Component {
     this._fetchAvailabilityData();
     this._fetchApplicationOverview();
     this._fetchSystemUtilizationOverview();
+    this._fetchContainerUtilizationOverview();
   }
 
   componentDidMount() {
@@ -119,13 +129,15 @@ export default class Dashboard extends React.Component {
 
             <Panel title="Highest Overall Utilization"
                    headingAside={ <Button type="grey">Full List</Button> }>
-              <ContainerUtilization items={ containerUtilizationMockData() }/>
+		   {/*<ContainerUtilization visualizationData={ this.state.containerUtilizationOverview }/> */}
+              <ContainerUtilization items={ containerUtilizationMockData() } />
+
             </Panel>
 
           </div>
           <div className="col">
 
-            <Panel title="Highest Overall Utilization"
+            <Panel title="Lowest Overall Availability"
                    headingAside={ <Button type="grey">Full List</Button> }>
               <ApplicationAvailability items={ applicationAvailabilityMockData() }/>
             </Panel>
