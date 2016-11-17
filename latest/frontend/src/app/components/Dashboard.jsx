@@ -129,8 +129,8 @@ export default class Dashboard extends React.Component {
 
             <Panel title="Highest Overall Utilization"
                    headingAside={ <Button type="grey">Full List</Button> }>
-		   {/*<ContainerUtilization visualizationData={ this.state.containerUtilizationOverview }/> */}
-              <ContainerUtilization items={ containerUtilizationMockData() } />
+		   <ContainerUtilization visualizationData={ this.state.containerUtilizationOverview }/> 
+             {/* <ContainerUtilization items={ containerUtilizationMockData() } />*/}
 
             </Panel>
 

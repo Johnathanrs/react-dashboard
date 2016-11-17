@@ -7,17 +7,21 @@ console.log("ContainerUtilization.d3 started")
  * @param data
  */
 function buildVisualization(container, boundingClientRect, data) {
+    console.log("logging container passed into build visualization")
+    console.log(container)
+    console.log("logging boundClientRect passed into build visualization")
+    console.log(boundingClientRect)
     console.log("logging data passed into build visualization")
     console.log(data)
   //container.html("");
   //var containerSize = container.node().getBoundingClientRect();
   var containerSize = boundingClientRect;
 
-  var height3 = 90;
-  var height1 = containerSize.height * 0.4, height2 = containerSize.height * 0.6 - height3;
-
-  var width2 = 150;
-  var width1 = containerSize.width - width2;
+//  var height3 = 90;
+//  var height1 = containerSize.height * 0.4, height2 = containerSize.height * 0.6 - height3;
+//
+//  var width2 = 150;
+//  var width1 = containerSize.width - width2;
     var options = { appId: "f2193d3beeb8da439485436c183a55dbb9382ed8125afaab7f6c781b8eefcff5" }
     var dataItem = null;
     if (options.appId != null && options.appId != "" && data != null && data.length > 0) {
