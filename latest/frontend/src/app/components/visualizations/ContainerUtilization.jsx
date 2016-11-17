@@ -9,12 +9,7 @@ import ReactFauxDOM from 'react-faux-dom';
 import ReactDOM from 'react-dom';
 
 
-const divStyle = {
-  float: 'left', 
-  width: '120px',
-    lineHeight: '60px',
-    paddingLeft: '30px'
-    }
+
 function prepareData(data) {
     const parseTime = d3.time.format("%Y-%m-%dT%H").parse;
     console.log("data passed to prepareData")
@@ -93,6 +88,7 @@ export default class ContainerUtilization extends React.Component {
     return <div className="container-utilization-visualization">
       { this.state.visualization }
     </div>;
+        
   }
 
   /**
@@ -117,9 +113,9 @@ export default class ContainerUtilization extends React.Component {
     console.log(containerElement)
 //    console.log('logging childDiv')
 //    console.log(childDiv)
-//    setTimeout(() => {
-//      this._buildVisualization(containerElement);
-//    }, 0);
+    setTimeout(() => {
+      this._buildVisualization(containerElement);
+    }, 0);
   }
 
   _buildVisualization(containerElement) {
