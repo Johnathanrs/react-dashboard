@@ -73,6 +73,7 @@ function pollSingleNode(node) {
         if (error) {
             console.warn('ERROR', error);
         } else {
+            const logs = body;
             const parsedBody = body;
             match = logs.match(/(20[0-9][0-9].* no .*)$/gmi);
             console.log("logging no")
