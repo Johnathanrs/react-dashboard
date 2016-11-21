@@ -12,8 +12,8 @@ import ReactDOM from 'react-dom';
 
 function prepareData(data) {
     const parseTime = d3.time.format("%Y-%m-%dT%H").parse;
-    console.log("data passed to prepareData")
-    console.log(data)
+//    console.log("data passed to prepareData")
+//    console.log(data)
 //     d3.json(data, function (error, json) {
     
             var data3 = [];
@@ -62,8 +62,8 @@ function prepareData(data) {
                 }
             });
     
-    console.log("logging data3")
-    console.log(data3)
+//    console.log("logging data3")
+//    console.log(data3)
     return data3;
 // // init graph 1B
 //            var graph1BLines = d3.selectAll("#graph1b .graph-container")[0];
@@ -80,13 +80,14 @@ export default class ContainerUtilization extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      visualization: null
+      visualization3: null
     };
   }
 
   render() {
     return <div className="container-utilization-visualization">
-      { this.state.visualization }
+
+        { this.state.visualization3 }
     </div>;
         
   }
@@ -95,10 +96,10 @@ export default class ContainerUtilization extends React.Component {
    * Performs initial D3 diagram building
    */
   componentDidMount() {
-    const containerElement = ReactFauxDOM.createElement('section');
-    setTimeout(() => {
-      this._buildVisualization(containerElement);
-    }, 0);
+//    const containerElement2 = ReactFauxDOM.createElement('section');
+//    setTimeout(() => {
+//      this._buildVisualization(containerElement2);
+//    }, 0);
   }
 
   /**
@@ -107,32 +108,41 @@ export default class ContainerUtilization extends React.Component {
    * @param prevState
    */
   componentDidUpdate(prevProps, prevState) {
-    const containerElement = ReactFauxDOM.createElement('section');
-//    const childDiv = ReactFauxDOM.createElement('div', containerElement)
-    console.log('logging containerElement')
-    console.log(containerElement)
-//    console.log('logging childDiv')
-//    console.log(childDiv)
+
+      const containerElement = ReactFauxDOM.createElement('div');
+
+      containerElement.style.setProperty('height', 60)
+
     setTimeout(() => {
-      this._buildVisualization(containerElement);
+        this._buildVisualization(containerElement);
+        this._buildVisualization(containerElement);
+        this._buildVisualization(containerElement);
+        this._buildVisualization(containerElement);
+        this._buildVisualization(containerElement);
     }, 0);
   }
 
-  _buildVisualization(containerElement) {
-      console.log("_buildVisualization executed")
+    
+      _buildVisualization(containerElement) {
+//      console.log("_buildVisualization executed")
     if (this.props.visualizationData && this.props.visualizationData.length > 0) {
       const preparedData = prepareData(this.props.visualizationData);
 //        console.log("logging prepareData")
 //        console.log(prepareData)
-        
-        console.log("logging preparedData")
-        console.log(preparedData)
+//        
+//        console.log("logging preparedData")
+//        console.log(preparedData)
         
       const componentDomNode = ReactDOM.findDOMNode(this);
+//        console.log("what the fuck is this")
+//        console.log(this)
       buildVisualization(d3.select(containerElement), componentDomNode.getBoundingClientRect(), preparedData);
       this.setState({
-        visualization: containerElement.toReact()
+        visualization3: containerElement.toReact()
       });
+//        console.log("logging react containerElement")
+//        console.log(containerElement.toReact())
+//        console.log(containerElement.toReact().toString())
     } else {
       // We can render loading spinner here if necessary
     }

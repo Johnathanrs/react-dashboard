@@ -7,12 +7,12 @@ console.log("ContainerUtilization.d3 started")
  * @param data
  */
 function buildVisualization(container, boundingClientRect, data) {
-    console.log("logging container passed into build visualization")
-    console.log(container)
-    console.log("logging boundClientRect passed into build visualization")
-    console.log(boundingClientRect)
-    console.log("logging data passed into build visualization")
-    console.log(data)
+//    console.log("logging container passed into build visualization")
+//    console.log(container)
+//    console.log("logging boundClientRect passed into build visualization")
+//    console.log(boundingClientRect)
+//    console.log("logging data passed into build visualization")
+//    console.log(data)
   //container.html("");
   //var containerSize = container.node().getBoundingClientRect();
   var containerSize = boundingClientRect;
@@ -29,8 +29,8 @@ function buildVisualization(container, boundingClientRect, data) {
             if (data[i].appId == options.appId) {
                 
                 dataItem = data[i];
-                console.log(i)
-                console.log(dataItem)
+//                console.log(i)
+//                console.log(dataItem)
                 break;
             }
         }
@@ -41,7 +41,9 @@ if (dataItem == null) return;
     var rightTextWidth = 50, bottomTextHeight = 20;
 
     var svg = container.append("svg").attr("width", containerSize.width).attr("height", containerSize.height);
-    
+//    console.log("logging containerSize height and width")
+//    console.log(containerSize.height)
+//    console.log(containerSize.width)
     var defs = svg.append("defs");
 
     var color1 = defs.append("linearGradient").attr("id", "color1b_1").attr("x1", "50%").attr("y1", "0%").attr("x2", "50%").attr("y2", "100%");
