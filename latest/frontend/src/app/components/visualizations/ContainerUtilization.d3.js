@@ -84,7 +84,7 @@ if (dataItem == null) return;
     var svg2 = svg.append("g").attr("transform", "translate(" + (containerSize.width - rightTextWidth) * 0.65 + "," + containerSize.height * 0.65 + ")");
     
     svg1.append("path").datum(dataItem.days).attr("class", "line").style("stroke", "#18BEEF").attr("d", line1);
-    svg2.append("path").datum(dataItem.days).attr("class", "line").style("stroke", "#7C81A8").attr("d", line2);
+    svg2.append("path").datum(dataItem.days).attr("class", "line").style("stroke", "#7C81A8").attr("d", line2).style("fill","none");
 
     svg.append("text").attr("class", "title").text("N: " + Math.round(dataItem.avg.network * 100) / 100 + "%").attr("x", (containerSize.width - rightTextWidth)).attr("y", containerSize.height * 0.4);
     svg.append("text").attr("class", "title").text("D: " + Math.round(dataItem.avg.disk)).attr("x", (containerSize.width - rightTextWidth)).attr("y", containerSize.height * 0.75);
