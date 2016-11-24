@@ -31,7 +31,8 @@ export default class Application extends React.Component {
       applications: [],
       services: [],
       applicationOverview: null,
-      serviceAppsWheel: null
+      serviceAppsWheel: null,
+      selectedId: null
     };
   }
 
@@ -43,6 +44,7 @@ export default class Application extends React.Component {
 
   _fetchServices() {
     $.get(settings.apiBase + '/service_infos').then((result) => {
+      this.setState({services: []});
       this.setState({services: result});
     });
   }
@@ -85,16 +87,23 @@ export default class Application extends React.Component {
 
   _renderServiceCards() {
     return <div className="cols-list">
-      <ServiceCardGrid items={ this._services() } data={this.state.serviceAppsWheel}/>
+      <ServiceCardGrid  items={ this._services() } 
+                        data={ this.state.serviceAppsWheel }
+                        selectedId={ this.state.selectedId }
+                        onSelectService={ (id) => { this.onSelectService(id) } }
+                        onServiceNeedsDeleting={ (service) => { this.deleteService(service) } }/>
     </div>;
   }
 
   _renderServiceRows() {
     return <div className="row-list">
       <ServiceTable items={ this._services() }
+                    selectedId={ this.state.selectedId }
                     allApplications={ this._applications() }
                     onServiceNeedsSaving={ (service) => { this.saveService(service) } }
+                    onServiceNeedsDeleting={ (service) => { this.deleteService(service) } }
                     onServiceChange={ (changedService) => { this.onServiceChange(changedService) } }
+                    onSelectService={ (id) => { this.onSelectService(id) } }
                     onApplicationChange={ (changedApplication) => { this.onApplicationChange(changedApplication) } }/>
     </div>;
   }
@@ -246,6 +255,10 @@ export default class Application extends React.Component {
      });*/
   }
 
+  onSelectService(id) {
+    this.setState({'selectedId' : id});
+  }
+
   saveApplication(application) {
     application._isNew && (delete application._id);
     delete application._isNew;
@@ -285,6 +298,17 @@ export default class Application extends React.Component {
       this._fetchServices();
     });
     this.setState({isApplicationSelectionInProgress: false});
+  }
+
+  deleteService(service) {
+    $.ajax({
+      type: 'DELETE',
+      url: settings.apiBase + '/service_infos/' + service._id,
+      dataType: 'json',
+      contentType: 'application/json'
+    }).then(() => {
+      this._fetchServices();
+    });
   }
 }
 

@@ -37,6 +37,27 @@ function initialize(app) {
   });
 
   /**
+   * @api DELETE /api/service_infos
+   * Creates a new service
+   */
+  app.delete('/api/service_infos/:id', (req, res) => {
+    ServiceInfo.findByIdAndRemove(new Object(req.params.id), function(err, service_info) {
+      if(err) {
+        res.status(500);
+        res.json({
+          type: false,
+          data: "Error occured: " + err
+        });
+      }else{
+        res.json({
+          type: true,
+          data: 'Service info: ' + req.params.id + " deleted successfully"
+        });
+      }
+    });    
+  });
+
+  /**
    * @api PATCH /api/service_infos
    * Modifies given service
    */
