@@ -40,7 +40,7 @@ if (dataItem == null) return;
     
     var rightTextWidth = 50, bottomTextHeight = 20;
 
-    var svg = container.append("svg").attr("width", containerSize.width).attr("height", containerSize.height);
+    var svg = container.append("svg").attr("width", containerSize.width).attr("height", containerSize.height).style("background", "#fff");
 //    console.log("logging containerSize height and width")
 //    console.log(containerSize.height)
 //    console.log(containerSize.width)
