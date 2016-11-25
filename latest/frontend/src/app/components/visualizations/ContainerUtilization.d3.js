@@ -6,7 +6,7 @@ console.log("ContainerUtilization.d3 started")
  * @param boundingClientRect
  * @param data
  */
-function buildVisualization(container, boundingClientRect, data) {
+function buildVisualization(container, boundingClientRect, data, options) {
 //    console.log("logging container passed into build visualization")
 //    console.log(container)
 //    console.log("logging boundClientRect passed into build visualization")
@@ -22,7 +22,7 @@ function buildVisualization(container, boundingClientRect, data) {
 //
 //  var width2 = 150;
 //  var width1 = containerSize.width - width2;
-    var options = { appId: "f2193d3beeb8da439485436c183a55dbb9382ed8125afaab7f6c781b8eefcff5" }
+    // var options = { appId: "f2193d3beeb8da439485436c183a55dbb9382ed8125afaab7f6c781b8eefcff5" }
     var dataItem = null;
     if (options.appId != null && options.appId != "" && data != null && data.length > 0) {
         for (var i = 0; i < data.length; i++) {

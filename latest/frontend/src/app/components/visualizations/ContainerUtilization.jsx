@@ -114,16 +114,16 @@ export default class ContainerUtilization extends React.Component {
       containerElement.style.setProperty('height', 60)
 
     setTimeout(() => {
-        this._buildVisualization(containerElement);
-        this._buildVisualization(containerElement);
-        this._buildVisualization(containerElement);
-        this._buildVisualization(containerElement);
-        this._buildVisualization(containerElement);
+        this._buildVisualization(containerElement, { appId: "f2193d3beeb8da439485436c183a55dbb9382ed8125afaab7f6c781b8eefcff5" });
+        this._buildVisualization(containerElement, { appId: "f1085e71b11b6657a7d3fe462611dc5d79dd2e015035ca570ec244eebd03866e" });
+        this._buildVisualization(containerElement, { appId: "c21ba840cc179339eca174deee4b669aade9c801dbe9406d6eb02ab889cdf7df" });
+        this._buildVisualization(containerElement, { appId: "4e87c0a643626201999d67c5bccb7ea43a3e0636d80ad1a2ee4fce41319fc444" });
+        this._buildVisualization(containerElement, { appId: "480e6c8ae9b0959123253e93b230bdb3e48eeba2ee62b96f463bc578e40208e2" });
     }, 0);
   }
 
     
-      _buildVisualization(containerElement) {
+      _buildVisualization(containerElement, options) {
 //      console.log("_buildVisualization executed")
     if (this.props.visualizationData && this.props.visualizationData.length > 0) {
       const preparedData = prepareData(this.props.visualizationData);
@@ -136,7 +136,7 @@ export default class ContainerUtilization extends React.Component {
       const componentDomNode = ReactDOM.findDOMNode(this);
 //        console.log("what the fuck is this")
 //        console.log(this)
-      buildVisualization(d3.select(containerElement), componentDomNode.getBoundingClientRect(), preparedData);
+      buildVisualization(d3.select(containerElement), componentDomNode.getBoundingClientRect(), preparedData, options);
       this.setState({
         visualization3: containerElement.toReact()
       });
