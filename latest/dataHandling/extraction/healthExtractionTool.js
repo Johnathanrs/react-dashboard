@@ -22,67 +22,119 @@ function currentTime() {
   return new Date();
 }
 
-function loadNodeList() {
-  const deferred = q.defer();
-  mongoDatabase.collection('container_stats_current').aggregate([
-    {
-      $group: {
-        _id: '$lxc_id',
-        containerName: {$first: '$Names'}
-      }
-    },
-    {
-      $project: {
-        _id: '$_id',
-        containerName: {$arrayElemAt: ['$containerName', 0]}
-      }
-    }
-  ]).toArray((error, result) => {
-    console.log('Node list reloaded: ', result);
-    nodeList = result;
-    deferred.resolve(nodeList);
-  });
 
-  return deferred.promise;
+//
+//function loadNodeList() {
+//  const deferred = q.defer();
+//  mongoDatabase.collection('container_stats_current').aggregate([
+//    {
+//      $group: {
+//        _id: '$lxc_id',
+//        containerName: {$first: '$Names'}
+//      }
+//    },
+//    {
+//      $project: {
+//        _id: '$_id',
+//        containerName: {$arrayElemAt: ['$containerName', 0]}
+//      }
+//    }
+//  ]).toArray((error, result) => {
+//    console.log('Node list reloaded: ', result);
+//    nodeList = result;
+//    deferred.resolve(nodeList);
+//  });
+//
+//  return deferred.promise;
+//}
+
+
+function loadNodeList() {
+    const deferred = q.defer();
+    mongoDatabase.collection('current_container_stats').aggregate([{
+        $group: {
+            _id: '$container.id',
+            containerName: {
+                $push: '$container.name'
+            },
+            host: {
+                $push: '$host.node'
+            }
+        }
+    }, {
+        $project: {
+            _id: '$_id',
+            containerName: {
+                $arrayElemAt: ['$containerName', 0]
+            },
+            host: {
+                $arrayElemAt: ['$host', 0]
+            }
+        }
+    }]).toArray((error, result) => {
+        console.log('Node list reloaded: ', result);
+        nodeList = result;
+        deferred.resolve(nodeList);
+    });
+
+    return deferred.promise;
 }
 
 function pollSingleNode(node) {
-  const url = configuration.healthApiBaseUrl + node.containerName;
-  //const url = `http://localhost:8500/v1/health/node/${node}`;
-  request({
-    method: 'GET',
-    url: url
-  }, (error, response, body) => {
-    if (error) {
-      console.warn('ERROR', error);
-    } else {
-      const parsedBody = JSON.parse(body);
-      const status1 = parsedBody[0].Status;
-      const status2 = parsedBody[1].Status;
-      const health = (() => {
-        const okStatus = 'passing';
-        if (status1 === okStatus && status2 === okStatus) {
-          return 1;
-        } else if (status1 === okStatus || status2 === okStatus) {
-          return 0.5;
+    const url = configuration.healthApiBaseUrl + node.containerName;
+    //const url = `http://localhost:8500/v1/health/node/${node}`;
+    request({
+        method: 'GET',
+        url: url
+    }, (error, response, body) => {
+        if (error) {
+            console.warn('ERROR', error);
         } else {
-          return 0;
+            console.log("logging body")
+            console.log(body)
+            const parsedBody = JSON.parse(body);
+            
+            var status1
+            var status2
+
+            try {
+                if (parsedBody[0].Status) {
+                    status1 = parsedBody[0].Status;
+                    status2 = parsedBody[1].Status;
+                    console.log("logging status in if")
+                    console.log(status1)
+                    console.log(status2)
+                }
+            } catch (err) {
+                console.log("error detected")
+            }
+            console.log("logging status")
+            console.log(status1)
+            console.log(status2)
+
+            const health = (() => {
+                const okStatus = 'passing';
+                if (status1 === okStatus && status2 === okStatus) {
+                    return 1;
+                } else if (status1 === okStatus || status2 === okStatus) {
+                    return 0.5;
+                } else {
+                    return 0;
+                }
+            })();
+            const documentToInsert = {
+                lxcId: node._id,
+                containerName: node.containerName,
+                time: currentTime(),
+                status1,
+                status2,
+                health: health
+            };
+            targetMongoCollection.insert(documentToInsert);
         }
-      })();
-      const documentToInsert = {
-        lxcId: node._id,
-        containerName: node.containerName,
-        time: currentTime(),
-        status1,
-        status2,
-        health: health
-      };
-      targetMongoCollection.insert(documentToInsert);
-    }
-  });
+    });
 
 }
-
 function pollAllNodes() {
   nodeList.forEach((node) => {
     pollSingleNode(node);
