@@ -45,12 +45,12 @@ const ServiceDetails = (props) => {
   return <td colSpan="7">
     <div className={className} onClick={ () => { props.onSelectService(serviceId) } }>
       <div className="graph">
-        <div className="delete-service-btn">
-          <CloseButton onClick={ () => { props.onServiceNeedsDeleting(props.item) } } />
-        </div>
         <img src={ mockImageUrls['3'] } alt=""/>
       </div>
       <div className="stats">
+        <div className="delete-service-btn">
+          <CloseButton onClick={ () => { props.onServiceNeedsDeleting(props.item) } } />
+        </div>
         <ul>
           <li className="orange">
             <strong>2</strong>

@@ -548,8 +548,9 @@ a:hover {
     margin: -20px 20px;
     right: 0;
 }
-.service-card .graph .delete-service-btn {
+.service-card .stats .delete-service-btn {
     margin: -10px 0;
+    right: 0;
 }
 
 .service-card .left-side .avatar img {
