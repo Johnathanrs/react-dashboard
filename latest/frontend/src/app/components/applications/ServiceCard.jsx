@@ -1,6 +1,6 @@
 import React from 'react';
 import AppsWheel from '../visualizations/AppsWheel.jsx';
-import CloseButton from '../common/button/CloseButton.jsx';
+import CloseRedButton from '../common/button/CloseRedButton.jsx';
 import appsWheelMockData from '../../data/visualizations-appsWheel.js';
 
 console.log('appsWheelMockData', appsWheelMockData );
@@ -36,7 +36,7 @@ class ServiceCard extends React.Component {
     return <div className={className} onClick={ () => { this.props.onSelectService(serviceId) } }>
       <div className="left-side">
         <div className="delete-service-btn">
-          <CloseButton onClick={ () => { this.props.onServiceNeedsDeleting(service) } } />
+          <CloseRedButton onClick={ () => { this.props.onServiceNeedsDeleting(service) } } />
         </div>
         <div className="avatar">
           <img src={ mockImageUrls['2'] } alt=""/>

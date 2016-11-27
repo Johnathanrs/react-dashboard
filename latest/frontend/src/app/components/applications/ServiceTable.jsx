@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Button from '../common/button/Button.jsx';
-import CloseButton from '../common/button/CloseButton.jsx';
+import CloseRedButton from '../common/button/CloseRedButton.jsx';
 import EditInPlace from '../common/edit/EditInPlace.jsx';
 import Table from '../common/table/Table.jsx';
 import TableColumn from '../common/table/TableColumn.jsx';
@@ -49,7 +49,7 @@ const ServiceDetails = (props) => {
       </div>
       <div className="stats">
         <div className="delete-service-btn">
-          <CloseButton onClick={ () => { props.onServiceNeedsDeleting(props.item) } } />
+          <CloseRedButton onClick={ () => { props.onServiceNeedsDeleting(props.item) } } />
         </div>
         <ul>
           <li className="orange">
