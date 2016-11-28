@@ -8,7 +8,7 @@ const mockImageUrl = require('../../img/odal.png');
 const renderItems = (items) => _.map(items, (item, index)  => {
   return <article key={index}>
     <div className="left1">
-      <h4>{index + 1}. {item.Names[0]} </h4>
+      <h4>{index + 1}. {item.container.name.substr(5)} </h4>
     </div>
     <div className="right1">
       <Gauge value={item.percent}/>

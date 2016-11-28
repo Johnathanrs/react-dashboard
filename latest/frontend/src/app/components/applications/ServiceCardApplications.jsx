@@ -31,7 +31,10 @@ class ServiceCardApplications extends React.Component {
   }
 
   render() {
-    const serviceName = 'MDL_Gateway';
+      const service = this.props.card;
+      console.log("logging service")
+      console.log(service)
+    const serviceName = service.svcName;
     return <div className="gate-apl">
       <h3 className={classNames({active: this.state.active})} onClick={ () => { this._toggleActive() } }>
         {serviceName} Applications

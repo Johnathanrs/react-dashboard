@@ -66,14 +66,14 @@ function initialize(app) {
     CurrentContainerStat.aggregate({
       $project: {
         _id: 0,
-        Names: 1,
+        "container.name": 1,
         ratio: {
           $divide: ["$cpu_stats.cpu_usage.total_usage", "$cpu_stats.system_cpu_usage"]
         }
       }
     }, {
       $project: {
-        Names: 1,
+        "container.name": 1,
         percent: {
           $multiply: ["$ratio", 100]
         }
@@ -91,18 +91,50 @@ function initialize(app) {
 
   });
 
+    
+      app.get('/api/container_stats/current/top5/network', function (req, res) {
+    CurrentContainerStat.aggregate({
+      $project: {
+        _id: 0,
+        "container.name": 1,
+          total: {
+          $sum: ["$networks.cali0.rx_bytes", "$networks.cali0.tx_bytes"]
+        },
+          "networks.cali0.rx_bytes":1,
+          "networks.cali0.tx_bytes":1
+        
+      }
+    }, {
+      $project: {
+        "container.name": 1,
+          "networks.cali0.rx_bytes":1,
+          "networks.cali0.tx_bytes":1
+      }
+    }, {
+      $sort: {
+        total: -1
+      }
+    }, {
+      $limit: 5
+    }, function (err, data) {
+      res.json(data);
+
+    });
+
+  });
+    
   app.get('/api/container_stats/current/top5/memory', function (req, res) {
     CurrentContainerStat.aggregate({
       $project: {
         _id: 0,
-        Names: 1,
+        "container.name": 1,
         ratio: {
           $divide: ["$memory_stats.usage", "$memory_stats.limit"]
         }
       }
     }, {
       $project: {
-        Names: 1,
+        "container.name": 1,
         percent: {
           $multiply: ["$ratio", 100]
         }
@@ -126,7 +158,7 @@ function initialize(app) {
       {
         "$project": {
           lxc_id: 1,
-          Names: 1,
+          "container.name": 1,
           blkio_stats: 1
         }
       }
@@ -156,22 +188,22 @@ function initialize(app) {
         console.log(diskItem.blkio_stats.io_service_bytes_recursive);
         diskItem.blkio_stats.io_service_bytes_recursive.forEach(function (diskIOItem, index, arr) {
           if ((diskIOItem.major == 253) && (diskIOItem.op == "Read") && (diskIOItem.minor > 0)) {
-            console.log("Found Read on " + diskItem.Names + " disk " + diskIOItem.major + " " + diskIOItem.minor + " with " + diskIOItem.op + " operations at " + diskIOItem.value);
+            console.log("Found Read on " + diskItem.container.name + " disk " + diskIOItem.major + " " + diskIOItem.minor + " with " + diskIOItem.op + " operations at " + diskIOItem.value);
 
             var keyname = diskItem.lxc_id
-            containerToDiskIORead[keyname] = {key: diskItem.lxc_id, name: diskItem.Names, read: diskIOItem.value};
+            containerToDiskIORead[keyname] = {key: diskItem.lxc_id, name: diskItem.container.name, read: diskIOItem.value};
             return;
           } else if ((diskIOItem.major == 253) && (diskIOItem.op == "Write") && (diskIOItem.minor > 0)) {
-            console.log("Found Write on " + diskItem.Names + " disk " + diskIOItem.major + " " + diskIOItem.minor + " with " + diskIOItem.op + " operations at " + diskIOItem.value);
+            console.log("Found Write on " + diskItem.container.name + " disk " + diskIOItem.major + " " + diskIOItem.minor + " with " + diskIOItem.op + " operations at " + diskIOItem.value);
 
             var keyname = diskItem.lxc_id;
-            containerToDiskIOWrite[keyname] = {key: diskItem.lxc_id, name: diskItem.Names, write: diskIOItem.value};
+            containerToDiskIOWrite[keyname] = {key: diskItem.lxc_id, name: diskItem.container.name, write: diskIOItem.value};
             return;
           } else if ((diskIOItem.major == 253) && (diskIOItem.op == "Total") && (diskIOItem.minor > 0)) {
-            console.log("Found Total on " + diskItem.Names + " disk " + diskIOItem.major + " " + diskIOItem.minor + " with " + diskIOItem.op + " operations at " + diskIOItem.value);
+            console.log("Found Total on " + diskItem.container.name + " disk " + diskIOItem.major + " " + diskIOItem.minor + " with " + diskIOItem.op + " operations at " + diskIOItem.value);
 
             var keyname = diskItem.lxc_id;
-            containerToDiskIOTotal[keyname] = {key: diskItem.lxc_id, name: diskItem.Names, total: diskIOItem.value};
+            containerToDiskIOTotal[keyname] = {key: diskItem.lxc_id, name: diskItem.container.name, total: diskIOItem.value};
             return;
           }
 

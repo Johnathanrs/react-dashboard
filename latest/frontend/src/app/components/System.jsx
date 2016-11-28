@@ -19,7 +19,9 @@ export default class System extends React.Component {
     super(props);
     this.state = {
       containers: [],
-      cpuUtilizationItems: []
+      cpuUtilizationItems: [],
+        diskUtilizationItems: [],
+        memoryUtilizationItems: []
     };
   }
 
@@ -28,8 +30,29 @@ export default class System extends React.Component {
       this.setState({containers: result});
     });
     $.get(settings.apiBase + '/container_stats/current/top5/cpu').then((result) => {
+        console.log("/container_stats/current/top5/cpu")
+        console.log(result)
       this.setState({cpuUtilizationItems: result});
     });
+          $.get(settings.apiBase + '/container_stats/current/top5/disk').then((result) => {
+        console.log("/container_stats/current/top5/disk")
+        console.log(result)
+      this.setState({diskUtilizationItems: result});
+    });
+                $.get(settings.apiBase + '/container_stats/current/top5/memory').then((result) => {
+        console.log("/container_stats/current/top5/memory")
+        console.log(result)
+      this.setState({memoryUtilizationItems: result});
+            
+    });
+      
+                 $.get(settings.apiBase + '/container_stats/current/top5/network').then((result) => {
+        console.log("/container_stats/current/top5/network")
+        console.log(result)
+      this.setState({networkUtilizationItems: result});
+            
+    });
+      
   }
 
   componentDidMount() {
@@ -37,6 +60,10 @@ export default class System extends React.Component {
   }
 
   render() {
+      console.log("this.state.containers")
+      console.log(this.state.containers)
+      console.log("this.state.cpuUtilizationItems")
+      console.log(this.state.cpuUtilizationItems)
     return <div>
       <div className="bg-d v2">
         <div className="container ff">
@@ -55,13 +82,13 @@ export default class System extends React.Component {
 
           <Table items={ this.state.containers }>
             <TableColumn title="Container name" classes="name"
-                         getter={(item) => (_.isArray(item.Names) ? item.Names[0] : item.Names)}/>
+                         getter={(item) => item.container.name.substr(1)}/>
             <TableColumn title="Host" getter="host_dns"/>
             <TableColumn title="Host ring" getter={ () => 'HOST_RING_123' }/>
             <TableColumn title="Owner" getter={ () => 'Jason Richards' }/>
             <TableColumn title="CPU"
                          getter={ (item) => (Math.round((item.cpu_stats[0].cpu_usage[0].total_usage / item.cpu_stats[0].system_cpu_usage) * 100 * 100) / 100)+'%' }/>
-            <TableColumn title="Network" getter={ (item) => `${item.network.tx_bytes}b / ${item.network.rx_bytes}b`}/>
+            <TableColumn title="Network" getter={ (item) => `${item.networks.cali0.tx_bytes}b / ${item.networks.cali0.rx_bytes}b`}/>
             <TableColumn title="Memory" getter={
             (item) => {
               const stat = item.memory_stats[0];
@@ -84,21 +111,21 @@ export default class System extends React.Component {
             <div className="col">
 
               <Panel title="Memory Utilization">
-                <MemoryUtilization/>
+                <MemoryUtilization items={ this.state.memoryUtilizationItems }/>
               </Panel>
 
             </div>
             <div className="col">
 
               <Panel title="Network">
-                <Network />
+                <Network items={ this.state.networkUtilizationItems}/>
               </Panel>
 
             </div>
             <div className="col">
 
               <Panel title="Disk">
-                <Disk />
+                <Disk items={ this.state.diskUtilizationItems } />
               </Panel>
 
             </div>

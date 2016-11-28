@@ -1,61 +1,30 @@
 import React from 'react';
 
-const MemoryUtilization = (props) => <section id="memory" className="overall-over v3">
-  <article>
+const renderItems = (items) => _.map(items, (item, index)  => {
+  return  <article>
     <div className="left">
-      <h4 className="appName">1. Application ABC</h4>
+      <h4 className="appName">{item.container.name.substr(5)}</h4>
     </div>
     <div className="right">
-      <h4>100%</h4>
+      <h4>{Math.round(item.percent)}%</h4>
     </div>
     <ul>
-      <li><span className="purple" style={ {width: '10%'} }></span></li>
+      <li><span className="purple" style={ {width: item.percent+'%'} }></span></li>
     </ul>
   </article>
-  <article>
-    <div className="left">
-      <h4 className="appName">2. Application ABC</h4>
-    </div>
-    <div className="right">
-      <h4>100%</h4>
-    </div>
-    <ul>
-      <li><span className="purple" style={ {width: '10%'} }></span></li>
-    </ul>
-  </article>
-  <article>
-    <div className="left">
-      <h4 className="appName">3. Application ABC</h4>
-    </div>
-    <div className="right">
-      <h4>100%</h4>
-    </div>
-    <ul>
-      <li><span className="purple" style={ {width: '10%'} }></span></li>
-    </ul>
-  </article>
-  <article>
-    <div className="left">
-      <h4 className="appName">4. Application ABC</h4>
-    </div>
-    <div className="right">
-      <h4>100%</h4>
-    </div>
-    <ul>
-      <li><span className="purple" style={ {width: '10%'} }></span></li>
-    </ul>
-  </article>
-  <article>
-    <div className="left">
-      <h4 className="appName">5. Application ABC</h4>
-    </div>
-    <div className="right">
-      <h4>100%</h4>
-    </div>
-    <ul>
-      <li><span className="purple" style={ {width: '10%'} }></span></li>
-    </ul>
-  </article>
+});
+
+
+/**
+ * A component for CPU Utilization visualization.
+ * @param props React component properties
+ * @constructor
+ */
+const MemoryUtilization = (props) => <section id="memory" className="overall-over">
+  { renderItems(props.items) }
 </section>;
+
+
+
 
 export default MemoryUtilization;
