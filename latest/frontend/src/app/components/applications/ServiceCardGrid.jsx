@@ -10,7 +10,7 @@ export default class ServiceCardGrid extends React.Component {
                     selectedId={ this.props.selectedId }
                     onSelectService={ (id) => { this.props.onSelectService(id) } }
                     onServiceNeedsDeleting={ (service) => { this.props.onServiceNeedsDeleting(service) } } />
-      <ServiceCardApplications />
+      <ServiceCardApplications card={ item } />
     </div>);
   }
 
