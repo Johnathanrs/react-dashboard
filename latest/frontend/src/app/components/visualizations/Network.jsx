@@ -10,12 +10,8 @@ function bytesToSize(bytes) {
 
 const renderItems = (items) => _.map(items, (item, index)  => {
   return  <article>
-    <div className="left">
-      <h4>{index + 1}. {item.container.name.substr(5)} </h4>
-    </div>
-    <div className="right">
-      <h4>{bytesToSize(item.networks.cali0.tx_bytes)}/{bytesToSize(item.networks.cali0.rx_bytes)} </h4>
-    </div>
+    <h4>{index + 1}. {item.container.name.substr(5)} </h4>
+    <h4 className="text-right">{bytesToSize(item.networks.cali0.tx_bytes)} / {bytesToSize(item.networks.cali0.rx_bytes)} </h4>
   </article>
 });
 
