@@ -1,6 +1,7 @@
 import React from 'react';
 
 import Button from '../common/button/Button.jsx';
+import CloseRedButton from '../common/button/CloseRedButton.jsx';
 import EditInPlace from '../common/edit/EditInPlace.jsx';
 import Table from '../common/table/Table.jsx';
 import TableColumn from '../common/table/TableColumn.jsx';
@@ -36,12 +37,20 @@ const EmbeddedServiceApplicationTable = (props) => {
 
 const ServiceDetails = (props) => {
   const applications = props.item._applications || _.filter(props.allApplications, (application) => _.includes(props.item.svcApplications, application._id));
+  var serviceId = props.item._id;
+  var className = 'service-card';
+  if(props.selectedId === serviceId)
+    className += ' active';
+
   return <td colSpan="7">
-    <div className="service-card">
+    <div className={className} onClick={ () => { props.onSelectService(serviceId) } }>
       <div className="graph">
         <img src={ mockImageUrls['3'] } alt=""/>
       </div>
       <div className="stats">
+        <div className="delete-service-btn">
+          <CloseRedButton onClick={ () => { props.onServiceNeedsDeleting(props.item) } } />
+        </div>
         <ul>
           <li className="orange">
             <strong>2</strong>
@@ -69,6 +78,7 @@ const ServiceDetails = (props) => {
             null))()
         }
       </div>
+      <div className="clearfix"></div>
     </div>
   </td>;
 };
@@ -84,7 +94,6 @@ const ServiceTable = (props) => {
   const owner = 'Jason Bourne';
   const status = 'TODO'; // TODO show the weakest status from all the applications in the service
   const errorCount = 0; // TODO sum of all the applications' errors
-
   return <Table items={props.items} classes="table services">
     <TableColumn title="Name" classes="name" getter={ nameColumnGetter }/>
     <TableColumn title="Owner" classes="owner" getter={ (item) => owner }/>
@@ -92,8 +101,11 @@ const ServiceTable = (props) => {
     <TableColumn title="Errors" classes="errors" getter={ () => <ErrorCount value={ errorCount } /> }/>
     <DetailsExtraRow>
       <ServiceDetails allApplications={props.allApplications}
+                      selectedId={ props.selectedId }
+                      onSelectService={ (id) => { props.onSelectService(id) } }
                       onApplicationChange={ (application) => { props.onApplicationChange(application) } }
-                      onServiceNeedsSaving={ (service) => { props.onServiceNeedsSaving(service) } }/>
+                      onServiceNeedsSaving={ (service) => { props.onServiceNeedsSaving(service) } }
+                      onServiceNeedsDeleting={ (service) => { props.onServiceNeedsDeleting(service) } } />
     </DetailsExtraRow>
   </Table>;
 };

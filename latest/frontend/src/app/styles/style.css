@@ -475,6 +475,10 @@ a:hover {
     max-width: 963px;
     margin: 10px auto 16px;
     background: #ffffff;
+    cursor: pointer;
+}
+.service-card.active {
+    border: 2px solid #4fb1e2;
 }
 
 .service-card .right-side {
@@ -528,6 +532,25 @@ a:hover {
 
 .service-card .right-side .graph {
     overflow: hidden;
+}
+
+.service-card .delete-service-btn {
+    position: absolute;    
+    z-index: 3;
+    display: none;    
+}
+
+.service-card.active .delete-service-btn {
+    display: block;
+}
+
+.service-card .left-side .delete-service-btn {
+    margin: -20px 20px;
+    right: 0;
+}
+.service-card .stats .delete-service-btn {
+    margin: -10px 0;
+    right: 0;
 }
 
 .service-card .left-side .avatar img {
@@ -911,6 +934,7 @@ img {
 
 .table.services tr.details-extra-row td {
     background: white;
+    padding: 0;
 }
 
 .table.services .details td {
@@ -921,7 +945,9 @@ img {
 
 .table.services .service-card {
     display: block;
-    padding: 6px 0;
+    /*padding: 6px 0;*/
+    padding: 26px 15px;
+    margin: 0;
 }
 
 .table.services .service-card table {

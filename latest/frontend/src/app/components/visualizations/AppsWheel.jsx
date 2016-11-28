@@ -8,13 +8,13 @@ import ReactDOM from 'react-dom';
 
 function prepareData(data) {
   var idata = [[], [], []];
-    console.log("logging data passed to prepareData")
-    console.log(data)
-    console.log("toString prepareData ")
-    console.log(data.toString());
+    // console.log("logging data passed to prepareData")
+    // console.log(data)
+    // console.log("toString prepareData ")
+    // console.log(data.toString());
     var parsedJSON= JSON.parse(data);
-     console.log("parsed json")
-      console.log(parsedJSON);
+     // console.log("parsed json")
+     //  console.log(parsedJSON);
   parsedJSON.forEach(function (d) {
 //      data.forEach(function (d) {
     if (d.apps != null) {
@@ -74,11 +74,16 @@ export default class AppsWheel extends React.Component {
   _buildVisualization(containerElement) {
     if (this.props.visualizationData && this.props.visualizationData.length > 0) {
       const preparedData = prepareData(this.props.visualizationData);
-      const componentDomNode = ReactDOM.findDOMNode(this);
-      buildVisualization(d3.select(containerElement), componentDomNode.getBoundingClientRect(), preparedData, 'Apps Wheel');
-      this.setState({
-        visualization: containerElement.toReact()
-      });
+
+      try {
+        const componentDomNode = ReactDOM.findDOMNode(this);
+        buildVisualization(d3.select(containerElement), componentDomNode.getBoundingClientRect(), preparedData, 'Apps Wheel');
+        this.setState({
+          visualization: containerElement.toReact()
+        });
+      } catch (e) {
+        
+      }
     } else {
       // We can render loading spinner here if necessary
     }

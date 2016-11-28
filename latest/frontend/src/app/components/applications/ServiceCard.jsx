@@ -1,6 +1,6 @@
 import React from 'react';
 import AppsWheel from '../visualizations/AppsWheel.jsx';
-
+import CloseRedButton from '../common/button/CloseRedButton.jsx';
 import appsWheelMockData from '../../data/visualizations-appsWheel.js';
 
 console.log('appsWheelMockData', appsWheelMockData );
@@ -17,10 +17,9 @@ const mockImageUrls = {
 };
 
 class ServiceCard extends React.Component {
-    
   render() {
     const service = this.props.card;
-      const serviceAppsWheelData = this.props.data
+    const serviceAppsWheelData = this.props.data
     const errorCount = 0;
     const instances = 12;
     const responseTime = '12 sec';
@@ -28,8 +27,17 @@ class ServiceCard extends React.Component {
     const databaseCount = 7;
     const webEngineCount = 12;
     const applicationCount = 19;
-    return <div className="service-card">
+    
+    var serviceId = service._id;
+    var className = 'service-card';
+    if(this.props.selectedId === serviceId)
+      className += ' active';
+    
+    return <div className={className} onClick={ () => { this.props.onSelectService(serviceId) } }>
       <div className="left-side">
+        <div className="delete-service-btn">
+          <CloseRedButton onClick={ () => { this.props.onServiceNeedsDeleting(service) } } />
+        </div>
         <div className="avatar">
           <img src={ mockImageUrls['2'] } alt=""/>
         </div>
@@ -74,7 +82,7 @@ class ServiceCard extends React.Component {
         </div>
         <div className="graph">
                <AppsWheel visualizationData={ serviceAppsWheelData }></AppsWheel>
-        </div>
+        </div>        
       </div>
     </div>;
   }
