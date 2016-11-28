@@ -2,15 +2,17 @@ import React from 'react';
 
 const renderItems = (items) => _.map(items, (item, index)  => {
   return  <article>
-    <div className="left">
-      <h4 className="appName">{item.container.name.substr(5)}</h4>
+    <h4 className="appName">{item.container.name.substr(5)}</h4>
+    <div className="percent-row">
+      <div className="right">
+        <h4>{Math.round(item.percent)}%</h4>
+      </div>
+      <div className="left">
+        <ul>
+          <li><span className="purple" style={ {width: item.percent+'%'} }></span></li>
+        </ul>
+      </div>
     </div>
-    <div className="right">
-      <h4>{Math.round(item.percent)}%</h4>
-    </div>
-    <ul>
-      <li><span className="purple" style={ {width: item.percent+'%'} }></span></li>
-    </ul>
   </article>
 });
 

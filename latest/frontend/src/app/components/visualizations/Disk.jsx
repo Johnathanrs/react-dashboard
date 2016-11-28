@@ -9,16 +9,18 @@ function bytesToSize(bytes) {
 
 const renderItems = (items) => _.map(items, (item, index)  => {
   return <article>
-    <div className="left">
-      <h4>{index + 1}. {item.name.substr(5).substr(0,15)} </h4>
+    <h4>{index + 1}. {item.name.substr(5).substr(0,15)} </h4>
+    <div className="percent-row">
+      <div className="right">
+        <h4>{bytesToSize(item.read)}</h4><h4>{bytesToSize(item.write)}</h4>
+      </div>
+      <div className="left">
+        <ul>
+          <li className="purple-bar"><span className="purple" style={ {width: '80%'} }></span></li>
+          <li><span className="red" style={ {width: '75%'} }></span></li>
+        </ul>
+      </div>
     </div>
-    <div className="right">
-      <h4>{bytesToSize(item.read)}/{bytesToSize(item.write)}</h4>
-    </div>
-    <ul>
-      <li><span className="purple" style={ {width: '80%'} }></span></li>
-      <li><span className="red" style={ {width: '75%'} }></span></li>
-    </ul>
   </article>
 });
 

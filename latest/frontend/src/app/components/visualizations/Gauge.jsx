@@ -2,7 +2,7 @@ import React from 'react';
 import * as d3 from 'd3';
 import ReactFauxDOM from 'react-faux-dom';
 
-const gaugeContainerSideLength = 28;
+const gaugeContainerSideLength = 40;
 const gaugeTransform = 'translate(' + (gaugeContainerSideLength / 2) + ',' + (gaugeContainerSideLength / 2) + ')';
 const gaugeInactiveColor = '#e8eef0';
 const gaugeActiveColor = '#4fb1e2';

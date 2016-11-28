@@ -1366,18 +1366,87 @@ img {
 
 .overall-over article {
     position: relative;
-    margin-bottom: -3px;
-    padding: 11px 23px 0 20px;
+    /*margin-bottom: -3px;*/
+    padding: 9px 23px 0 20px;
+    margin: 10px 0;
+}
+
+.overall-over article h4 {
+    font-size: 12px;
+    font-family: sans-serif;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+    white-space: nowrap;
+}
+
+.overall-over article .text-right {
+    text-align: right;
 }
 
 #cpu.overall-over article {
-    height: 35px;
+    padding-top: 5px;
+}
+
+#cpu.overall-over article .left1 {
+    margin-top: 12px;
+}
+
+#cpu.overall-over article .right1 {
+    float: right;
+}
+
+#memory.overall-over article {
+    padding-top: 12px;
+}
+
+#memory.overall-over article .percent-row .left{
+    width: 80%;
+    margin-top: 5px;
+}
+
+#memory.overall-over article .percent-row .right {
+    width: 20%;
+    float: right;
+    margin-top: -10px;
+    text-align: right;    
+}
+
+#disk.overall-over article .percent-row .left{
+    width: 75%;
+    margin-top: 5px;
+}
+
+#disk.overall-over article .percent-row .right {
+    width: 25%;
+    float: right;
+    margin-top: -5px;
+    text-align: right;
+}
+
+#disk.overall-over article .percent-row .right h4 {
+    line-height: 13px;
+    text-align: right;
+    overflow: visible;
+}
+
+#disk.overall-over article {
     padding-top: 2px;
+    margin: 5px 0;
+}
+
+#disk.overall-over article .percent-row .purple-bar {
+    margin-bottom: 10px;
+}
+
+.overall-over article .percent-row:after {
+    content: "";
+    display: block;
+    clear: both;
 }
 
 .overall-over .left, .overall-over .left1, .overall-over .left2, .overall-over .left3, .overall-over .left4, .overall-over .left5 {
     float: left;
-    width: 130px;
+    width: 140px;
     min-height: 1px;
 }
 
