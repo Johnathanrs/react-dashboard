@@ -182,9 +182,11 @@ function initialize(app) {
           data: "Error occured: " + err
         });
       }else{
-        res.json({
-          type: true,
-          data: 'Application info: ' + req.params.id + " deleted successfully"
+        felicityApi.deleteAllApplication(application_info.appName).then((felicityResult) => {
+          res.json({
+            type: true,
+            data: 'Application info: ' + req.params.id + ", " + application_info.appName + " deleted successfully"
+          });
         });
       }
     });    

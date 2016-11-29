@@ -296,14 +296,7 @@ export default class Application extends React.Component {
       dataType: 'json',
       contentType: 'application/json'
     }).then(() => {
-
       this._fetchApplications();
-      $.ajax({
-        type: 'DELETE',
-        url: 'http://felicity.evolute.io/?name=' + application.appName,
-        dataType: 'json',
-        contentType: 'application/json'
-      });
     });
   }
 
