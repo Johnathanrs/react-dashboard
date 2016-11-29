@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 import Button from '../common/button/Button.jsx';
 import EditInPlace from '../common/edit/EditInPlace.jsx';
+import CloseRedButton from '../common/button/CloseRedButton.jsx';
 
 const mockImageUrls = {
   '1': require('../../img/1.png'),
@@ -23,6 +24,7 @@ class ApplicationCard extends React.Component {
   render() {
     // TODO render real data
     const card = this.props.card;
+    const appId = card._id;
     //const errorCount = 0;
     const instanceCount = 12;
     const responseTime = '12 sec';
@@ -32,7 +34,14 @@ class ApplicationCard extends React.Component {
     const classes = {
       dirty: !!this.state.dirty
     };
-    return <article className={ classNames(classes) }>
+    var className = classNames(classes);
+    if(this.props.selectedAppId === appId)
+      className += ' active';
+
+    return <article className={ className } onClick={ () => { this.props.onSelectApplication(appId) } } >
+      <div className="delete-app-btn">
+        <CloseRedButton onClick={ () => { this.props.onApplicationNeedsDeleting(card) } } />
+      </div>
       <div className="head">
         <img src={ mockImageUrls['1'] } alt=""/>
         <h4><EditInPlace ref="appNameEdit"

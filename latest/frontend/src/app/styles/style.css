@@ -705,6 +705,37 @@ a:hover {
     margin: 0 0 15px 1.538%;
     border: 1px solid #eef1f3;
     background: #fff;
+    cursor: pointer;
+}
+
+#appls table tr {
+    cursor: pointer;
+}
+
+#appls table tr.active, .add-application article.active {
+    border: 2px solid #4fb1e2;
+}
+
+#appls table tr.active .delete-app-btn, .add-application article.active .delete-app-btn {
+    display: block;
+}
+
+#appls table tr.active, .add-application article.active {
+    border: 2px solid #4fb1e2;
+}
+
+.add-application article .delete-app-btn {
+    position: absolute;
+    right: 0;
+    margin: 10px;
+}
+
+#appls table tr .delete-app-btn, .add-application article .delete-app-btn {
+    display: none;
+}
+
+.cols-list .add-application article:first-child .delete-app-btn {
+    display: none;
 }
 
 .add-application article.dirty {
