@@ -73,7 +73,7 @@ export default class ContainerUtilization extends React.Component {
 		super(props);
 		this.state = {
 			visualization3: null,
-			
+
 		};
 	}
 	render() {
@@ -104,7 +104,7 @@ export default class ContainerUtilization extends React.Component {
 		containerElement.style.setProperty('height', 60);
 		console.log("abc");
 		setTimeout(() => {
-			this._buildVisualization(containerElement);
+		//	this._buildVisualization(containerElement);
 		}, 100);
 	}	
 	
@@ -123,9 +123,9 @@ export default class ContainerUtilization extends React.Component {
 			buildVisualization(e, s, d, { appId: "4e87c0a643626201999d67c5bccb7ea43a3e0636d80ad1a2ee4fce41319fc444" });
 			buildVisualization(e, s, d, { appId: "480e6c8ae9b0959123253e93b230bdb3e48eeba2ee62b96f463bc578e40208e2" });
 
-			//this.setState({
-			//	visualization3: containerElement.toReact()
-			//});
+			this.setState({
+				visualization3: containerElement.toReact()
+			});
 		} else {
 			// We can render loading spinner here if necessary
 		}
