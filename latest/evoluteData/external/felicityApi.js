@@ -45,10 +45,17 @@ function getApplicationStatus(applicationName) {
   return axios.get(url(params));
 }
 
+function deleteAllApplication(applicationName) {
+  const params = {
+    name: applicationName
+  };
+  return axios.delete(url(params));
+}
 
 module.exports = {
   getAllApplications,
   createApplication,
   scaleApplication,
-  getApplicationStatus
+  getApplicationStatus,
+  deleteAllApplication
 };

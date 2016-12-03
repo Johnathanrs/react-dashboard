@@ -168,6 +168,30 @@ function initialize(app) {
 
   });
 
+
+  /**
+   * @api DELETE /api/app_infos
+   * Delete the application with selected id
+   */
+  app.delete('/api/app_infos/:id', (req, res) => {
+    AppInfo.findByIdAndRemove(new Object(req.params.id), function(err, application_info) {
+      if(err) {
+        res.status(500);
+        res.json({
+          type: false,
+          data: "Error occured: " + err
+        });
+      }else{
+        felicityApi.deleteAllApplication(application_info.appName).then((felicityResult) => {
+          res.json({
+            type: true,
+            data: 'Application info: ' + req.params.id + ", " + application_info.appName + " deleted successfully"
+          });
+        });
+      }
+    });    
+  });
+
   console.log('Applications API initialized.');
 }
 

@@ -26,6 +26,9 @@ export default class ApplicationCardGrid extends React.Component {
     return (this.props.items || [])
       .map((item) => <ApplicationCard key={item._id}
                                       card={ item }
+                                      selectedAppId={ this.props.selectedAppId }
+                                      onSelectApplication={ (id) => { this.props.onSelectApplication(id) } }
+                                      onApplicationNeedsDeleting={(application) => { this.props.onApplicationNeedsDeleting(application) }}
                                       onApplyChanges={(application) => { this.onApplicationNeedsSaving(application) }}/>);
   }
 
@@ -35,6 +38,9 @@ export default class ApplicationCardGrid extends React.Component {
         (()=> this.state.applicationToAdd ?
           <ApplicationCard key="applicationToAdd"
                            card={ this.state.applicationToAdd }
+                           selectedAppId={ this.props.selectedAppId }
+                           onSelectApplication={ (id) => { this.props.onSelectApplication(id) } }
+                           onApplicationNeedsDeleting={(application) => { this.props.onApplicationNeedsDeleting(application) }}
                            onApplyChanges={(application) => { this.onApplicationNeedsSaving(application) }}
                            onCancelChanges={ () => { this.reset() } }/> :
           <AddApplicationCard onClick={ () => { this.onAddApplication() } }/>)()

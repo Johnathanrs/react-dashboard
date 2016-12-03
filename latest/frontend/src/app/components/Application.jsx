@@ -32,7 +32,8 @@ export default class Application extends React.Component {
       services: [],
       applicationOverview: null,
       serviceAppsWheel: null,
-      selectedId: null
+      selectedId: null,
+      selectedAppId: null
     };
   }
 
@@ -131,7 +132,10 @@ export default class Application extends React.Component {
     return <div className="cols-list">
       <ApplicationCardGrid ref="applicationCardGrid"
                            items={ this._applications() }
+                           selectedAppId={ this.state.selectedAppId }
                            onAddApplication={ () => { this.onAddApplication() } }
+                           onSelectApplication={ (id) => { this.onSelectApplication(id) } }
+                           onApplicationNeedsDeleting={ (application) => { this.deleteApplication(application) } }
                            onApplicationNeedsSaving={ (application) => { this.saveApplication(application) } }/>
     </div>;
   }
@@ -140,6 +144,9 @@ export default class Application extends React.Component {
     return <div className="row-list">
       <ApplicationTable ref="applicationTable"
                         items={ this._applications() }
+                        selectedAppId={ this.state.selectedAppId }
+                        onSelectApplication={ (id) => { this.onSelectApplication(id) } }
+                        onApplicationNeedsDeleting={ (application) => { this.deleteApplication(application) } }
                         onApplicationNeedsSaving={ (application) => { this.saveApplication(application) } }/>
     </div>;
   }
@@ -259,6 +266,10 @@ export default class Application extends React.Component {
     this.setState({'selectedId' : id});
   }
 
+  onSelectApplication(id) {
+    this.setState({'selectedAppId' : id});
+  }
+
   saveApplication(application) {
     application._isNew && (delete application._id);
     delete application._isNew;
@@ -276,6 +287,17 @@ export default class Application extends React.Component {
     this._fetchApplications();
     this.refs.applicationCardGrid && this.refs.applicationCardGrid.reset();
     this.refs.applicationTable && this.refs.applicationTable.reset();
+  }
+
+  deleteApplication(application) {
+    $.ajax({
+      type: 'DELETE',
+      url: settings.apiBase + '/app_infos/' + application._id,
+      dataType: 'json',
+      contentType: 'application/json'
+    }).then(() => {
+      this._fetchApplications();
+    });
   }
 
   saveService(service) {

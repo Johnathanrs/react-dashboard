@@ -1,12 +1,13 @@
 import React from 'react';
 
-import Table from '../common/table/Table.jsx';
+import CustomTable from '../common/table/CustomTable.jsx';
 import EditInPlace from '../common/edit/EditInPlace.jsx';
 import TableColumn from '../common/table/TableColumn.jsx';
 import FirstExtraRow from '../common/table/FirstExtraRow.jsx';
 import CustomRow from '../common/table/CustomRow.jsx';
 import DetailsExtraRow from '../common/table/DetailsExtraRow.jsx';
 import ErrorCount from './ErrorCount.jsx';
+import CloseRedButton from '../common/button/CloseRedButton.jsx';
 
 const imageUrls = {
   'ico_close': require('../../img/ico_close.png')
@@ -137,9 +138,12 @@ class ApplicationTable extends React.Component {
     // TODO this is EditInPlace to edit instance count. We should decide if we really need it
     // <EditInPlace value={ item.felicity ? item.felicity.instances : 0 } onApply={ () => {} } />
 
-    return <Table ref="table"
+    return <CustomTable ref="table"
                   items={ this.props.items }
                   supportsSelection={ this.props.supportsSelection }
+                  selectedAppId={ this.props.selectedAppId }
+                  onSelectApplication={ (id) => { this.props.onSelectApplication(id) } }
+                  onApplicationNeedsDeleting={ (app) => { props.onApplicationNeedsDeleting(app) } }
                   onSelectionChange={ (items) => { this.props.onSelectionChange(items) } }>
       <TableColumn title="Name" classes="name" getter="appName"/>
       <TableColumn title="Image" classes="image" getter={ () => image }/>
@@ -151,12 +155,13 @@ class ApplicationTable extends React.Component {
       <TableColumn title="Errors"
                    classes="errors"
                    getter={ (item) => <ErrorCount value={ item.errorCount ? item.errorCount : 0 } /> }/>
+      <TableColumn getter={ (item) => <div className="delete-app-btn"><CloseRedButton onClick={ () => { this.props.onApplicationNeedsDeleting(item) } }/></div> }/>
       <FirstExtraRow>
         <AddApplicationRow item={this.state.applicationToAdd}
                            onCancel={ () => { this.reset() } }
                            onApply={ (application) => { this.props.onApplicationNeedsSaving(application) } }/>
       </FirstExtraRow>
-    </Table>;
+    </CustomTable>;
   }
 
   requestAddApplication() {
