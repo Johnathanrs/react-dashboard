@@ -20,8 +20,8 @@ export default class Header extends React.Component {
 
       <div className="bottom">
         <div className="container">
-          <h1>Overall Health <span>Last updated on Dec 9 2015</span></h1>
 
+            <h1>Overall Health</h1>
           <div className="right">
             <SearchForm />
             <span className="div"></span>
