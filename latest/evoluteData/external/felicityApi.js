@@ -42,6 +42,15 @@ function getApplicationStatus(applicationName) {
     name: applicationName,
     query: 'status'
   };
+  console.log(params);
+  return axios.get(url(params));
+}
+
+function getApplicationByName(applicationName) {
+  const params = {
+    name: applicationName
+  };
+  console.log(params);
   return axios.get(url(params));
 }
 
@@ -57,5 +66,6 @@ module.exports = {
   createApplication,
   scaleApplication,
   getApplicationStatus,
-  deleteAllApplication
+  deleteAllApplication,
+  getApplicationByName
 };
