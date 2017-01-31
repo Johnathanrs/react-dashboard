@@ -52,9 +52,31 @@ var getNumberOfInstances = function (application) {
   });
 }
 
+function extractHealthResult(healthApiResult) {
+  if (healthApiResult) {
+    return _.filter(healthApiResult, (item) => item.Status !== 'passing').length;
+  } else {
+    return 0;
+  }
+}
+
+// Not tested.
 var getNumberOfErrors = function (application) {
   return new Promise((resolve, reject) => {
-    //TODO get more info about healthApi
+    CurrentContainerStat.find({}, 'container.name', (err, currentContainerStats) => {
+      const containerNamePrefix = '/evo-' + application.name; //?
+
+      const applicationContainersStats = _.filter(currentContainerStats,
+        (stat) => stat.container && _.startsWith(stat.container.name, containerNamePrefix));
+
+      _.each(applicationContainersStats, (item) => {
+        healthApi.getContainerHealth(item.container.name.substring(1)).then((results) => {
+          const sum = _.reduce(results, (total, x) => total + extractHealthResult(x.data), 0);
+          application.errorCount = sum;
+          resolve(application);
+        })
+      });
+    });
   });
 }
 
@@ -115,6 +137,7 @@ function initialize(app) {
           getApplicationStatus(application)
             .then(getApplicationUptime)
             .then(getNumberOfInstances)
+            // .then(getNumberOfErrors) // commented because I couldn't test this function
             .then((application) => {
               if (updatedApps == numberOfApps) {
                 res.send(applicationsWithFelicity);
