@@ -1,6 +1,5 @@
-const request = require('request');
+const axios = require('axios');
 const _ = require('lodash');
-const q = require('q');
 
 const utils = require('../utils');
 const felicityApi = require('../external/felicityApi');
@@ -8,33 +7,55 @@ const healthApi = require('../external/healthApi');
 const AppInfo = require('../models/AppInfo');
 const CurrentContainerStat = require('../models/CurrentContainerStat');
 
-function getApplicationErrors(appName) {
-  function extractHealthResult(healthApiResult) {
-    if (healthApiResult) {
-      return _.filter(healthApiResult, (item) => item.Status !== 'passing').length;
-    } else {
-      return 0;
-    }
-  }
-  const deferred = q.defer();
-  CurrentContainerStat.find({}, 'container.name', (err, currentContainerStats) => {
-    if (err) {
-      deferred.reject(err);
-    } else {
-      const containerNamePrefix = '/evo-' + appName;
-      const applicationContainersStats = _.filter(currentContainerStats,
-        (stat) => stat.container && _.startsWith(stat.container.name, containerNamePrefix));
-      const deferredHealthRequests = _.map(applicationContainersStats,
-        (containerStats) => healthApi.getContainerHealth(containerStats.container.name.substring(1)));
-      q.all(deferredHealthRequests).then((results) => {
-        const sum = _.reduce(results, (total, x) => total + extractHealthResult(x.data), 0);
-        deferred.resolve(sum);
-      }, (healthApiError) => {
-        deferred.reject(healthApiError);
-      });
-    }
+var getApplicationStatus = function (application) {
+  return new Promise((resolve, reject) => {
+    felicityApi.getApplicationStatus(application.appName).then(
+      (result) => {
+        application.status = result.data;
+        resolve(application);
+      },
+      (error) => {
+        console.error('Felicity error', error);
+        reject(error);
+    });
   });
-  return deferred.promise;
+}
+
+var getApplicationUptime = function (application) {
+  return new Promise((resolve, reject) => {
+    felicityApi.getApplicationByName(application.appName).then(
+      (result) => {
+        application.uptime = result.data.app.version;
+        resolve(application);
+      },
+      (error) => {
+        console.error('Felicity error', error);
+        reject(error);
+    });
+  });
+}
+
+var getNumberOfInstances = function (application) {
+  return new Promise((resolve, reject) => {
+    var regEx = new RegExp(application.appName);
+    axios('http://127.0.0.1:3000/api/container_stats/current').then(
+      (result) => {
+        var JSONcontainers = result.data;
+        var containersCount = _.filter(JSONcontainers, (item) => {item.container.name.match(regEx)}).length;
+        application.instances = containersCount;
+        resolve(application);
+      },
+      (error) => {
+        console.error('Felicity error!');
+        resolve(application);
+    });
+  });
+}
+
+var getNumberOfErrors = function (application) {
+  return new Promise((resolve, reject) => {
+    //TODO get more info about healthApi
+  });
 }
 
 function initialize(app) {
@@ -72,66 +93,6 @@ function initialize(app) {
     });
   });
 
-  app.get('/api/application/:app_name/status', (req, res) => {
-    const app_name = req.params.app_name;
-    console.log('Searching for status ', app_name);
-    felicityApi.getApplicationStatus(app_name).then(
-      (result) => {
-        res.send(result.data);
-      },
-      (error) => {
-        console.error('Felicity error', error);
-      }).catch((error) => { console.error('Internal error', error); });
-  });
-
-  app.get('/api/application/:app_name/uptime', (req, res) => {
-    const app_name = req.params.app_name;
-    felicityApi.getApplicationByName(app_name).then(
-      (result) => {
-        console.log("version", result.data.app.version);
-        res.send({version: result.data.app.version});
-      },
-      (error) => {
-        console.error('Felicity error', error);
-      }).catch((error) => { console.error('Internal error', error); });
-  });
-
-  app.get('/api/application/:app_name/count', (req, res) => {
-    var query = `^/${req.params.app_name}`;
-    var regEx = new RegExp(query);
-    request({
-      method: 'GET',
-      url: 'http://127.0.0.1:3000/api/container_stats/current'
-    }, function (error, response, body) {
-      if (error) {
-        res.json(502, {
-          error: "bad_gateway",
-          reason: err.code
-        });
-        return;
-      } else {
-        var containerNames = [];
-        var testarray = [];
-        var responseString = JSON.stringify(response);
-        var responseJSON = JSON.parse(responseString);
-        var containers = responseJSON.body;
-        var containersJSON = JSON.parse(containers);
-
-        containersJSON.forEach(function (containerItem, index, arr) {
-          containerNames.push(containerItem.container.name);
-        });
-
-        containerNames.forEach(function (containerNamesItem, index, arr) {
-          if (containerNamesItem.match(regEx)) {
-            testarray.push(containerNamesItem)
-          }
-          return testarray.length;
-        });
-        res.send({numberOfIstances: testarray.length});
-      }
-    });
-  });
-
   app.get('/api/app_infos', (req, res) => {
     AppInfo.find(function (err, applications) {
       felicityApi.getAllApplications().then((felicityResult) => {
@@ -146,16 +107,19 @@ function initialize(app) {
             appExec: application.appExec,
           }, {felicity}) : application;
         });
-        const applicationErrorRequests = _.map(applicationsWithFelicity,
-          (application) => getApplicationErrors(application.appName));
-        q.all(applicationErrorRequests).then((errorCounts) => {
-          _.each(applicationsWithFelicity, (application, index) => {
-            const errorCount = errorCounts[index];
-            _.isNumber(errorCount) && (application.errorCount = errorCount);
-          });
-          res.send(applicationsWithFelicity);
-        }, (error) => {
-          res.send(applicationsWithFelicity);
+
+        const numberOfApps = applicationsWithFelicity.length;
+        var updatedApps = 0;
+        _.each(applicationsWithFelicity, (application) => {
+          updatedApps++;
+          getApplicationStatus(application)
+            .then(getApplicationUptime)
+            .then(getNumberOfInstances)
+            .then((application) => {
+              if (updatedApps == numberOfApps) {
+                res.send(applicationsWithFelicity);
+              }
+            });
         });
       });
     });

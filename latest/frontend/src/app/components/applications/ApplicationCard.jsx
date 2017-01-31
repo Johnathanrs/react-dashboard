@@ -1,13 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
 import _ from 'lodash';
-import moment from 'moment';
 
 import Button from '../common/button/Button.jsx';
 import EditInPlace from '../common/edit/EditInPlace.jsx';
 import CloseRedButton from '../common/button/CloseRedButton.jsx';
 
 import settings from '../../app.settings.dev';
+import { formatUptime } from '../common/utils'
 
 const mockImageUrls = {
   '1': require('../../img/1.png'),
@@ -20,47 +20,8 @@ class ApplicationCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      dirty: null,
-      status: 'undefined',
-      numberOfIstances: 0,
-      uptime: 'undefined'
+      dirty: null
     };
-  }
-
-  _fetchNumberOfInstances(appName) {
-    $.get(settings.apiBase + `/application/${appName}/count`).then((result) => {
-      this.setState({numberOfIstances: result.numberOfIstances});
-    });
-  }
-
-  _fetchStatus(appName) {
-    $.get(settings.apiBase + `/application/${appName}/status`).then((result) => {
-      this.setState({status: result});
-    });
-  }
-
-  _fetchUptime(appName) {
-    $.get(settings.apiBase + `/application/${appName}/uptime`).then((result) => {
-      console.log('uiiuiuiuiui', result.version)
-      var version = moment(result.version);
-      var duration = moment.duration(moment().diff(version));
-      var days = parseInt(duration.asDays());
-      var hours = parseInt(duration.asHours());
-      var hours = hours - days*24;
-
-      console.log(days);
-      this.setState({uptime: `${days} days & ${hours} hours`});
-    });
-  }
-
-  _fetchData() {
-    this._fetchNumberOfInstances(this.props.card.appName);
-    this._fetchStatus(this.props.card.appName);
-    this._fetchUptime(this.props.card.appName);
-  }
-
-  componentWillMount() {
-    this._fetchData();
   }
 
   render() {
@@ -95,7 +56,7 @@ class ApplicationCard extends React.Component {
           </div>
           <div href="javascript:void(0)" className="stat ins">
             <img src={ mockImageUrls['ico_green'] } width="13" alt=""/>
-            <span><EditInPlace value={ this.state.numberOfIstances }
+            <span><EditInPlace value={ card.instances }
                                decorator={ (value) => ( value ? value : 0 ) + ' INSTANCES' }
                                styles={ {width: '60px'} }
                                onApply={ (value) => { this.onAppInstanceCountChange(value) } }/> </span>
@@ -103,10 +64,10 @@ class ApplicationCard extends React.Component {
         </div>
       </div>
       <ul>
-        <li><strong>Image</strong><span>{ card.appImage ? card.appImage : '' }</span></li>
-        <li><strong>Exec</strong><span>{ card.appExec }</span></li>
-        <li><strong>Uptime</strong><span>{ this.state.uptime }</span></li>
-        <li><strong>Status</strong><span>{ this.state.status }</span></li>
+        <li><strong>Image</strong><span>{ card.appImage ? card.appImage : '-' }</span></li>
+        <li><strong>Exec</strong><span>{ card.appExec ? card.appExec : '-' }</span></li>
+        <li><strong>Uptime</strong><span>{ card.uptime ? formatUptime(card.uptime) : '-' }</span></li>
+        <li><strong>Status</strong><span>{ card.status ? card.status : '-' }</span></li>
       </ul>
       {
         (() => {
