@@ -1,8 +1,9 @@
 const _ = require('lodash');
 const axios = require('axios');
 
-const baseUrl = 'http://felicity.evolute.io';
 //const baseUrl = 'http://localhost:8001';
+//const baseUrl = 'http://52.88.125.22';
+const baseUrl = 'http://felicity.evolute.io';
 
 function paramsToString(params) {
   // TODO escape values as they come from user input
@@ -10,6 +11,46 @@ function paramsToString(params) {
 }
 
 function url(params) {
+    const baseUrl = 'http://52.88.125.22';
+    var http = require('http'),
+    options = {method: 'HEAD', host: 'felicity.evolute.io', port: 80, path: '/'},
+//    options = {method: 'HEAD', host: '52.88.125.22', port: 80, path: '/'},
+    req = http.request(options, function(r) {
+        
+        console.log(JSON.stringify(r.headers));
+        console.log(r.statusCode)
+    });
+//baseUrl=''
+req.on('error', function (e) {
+    console.log("error triggered")
+    const baseUrl = 'http://52.88.125.22';
+  // General error, i.e.
+  //  - ECONNRESET - server closed the socket unexpectedly
+  //  - ECONNREFUSED - server did not listen
+  //  - HPE_INVALID_VERSION
+  //  - HPE_INVALID_STATUS
+  //  - ... (other HPE_* codes) - server returned garbage
+  console.log("logging error from http request host felicity.evolute.io ");
+  console.log(e);
+    
+});
+req.on('data', function (response) {
+    console.log("data triggered")
+  const baseUrl = 'http://52.88.125.22';
+//  response.on('data', function (chunk) {
+//    body += chunk;
+    
+  });
+req.on('success', function (response) {
+    console.log("success triggered")
+   const baseUrl = 'http://52.88.125.22';
+//  response.on('data', function (chunk) {
+//    body += chunk;
+    
+  });
+
+req.end();
+
   return _.isEmpty(params) ? baseUrl + '/' : baseUrl + '/?' + paramsToString(params);
 }
 
@@ -28,6 +69,7 @@ function createApplication(application) {
   };
   return axios.post(url(params));
 }
+
 
 function scaleApplication(applicationName, instanceCount) {
   const params = {
