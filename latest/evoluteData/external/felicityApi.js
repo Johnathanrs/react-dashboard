@@ -2,56 +2,48 @@ const _ = require('lodash');
 const axios = require('axios');
 
 //const baseUrl = 'http://localhost:8001';
-//const baseUrl = 'http://52.88.125.22';
-const baseUrl = 'http://felicity.evolute.io';
+//const baseUrl = 'http://52.88.125.22top';
+
+var request = require("request");
+var EventEmitter = require("events").EventEmitter;
+var body = new EventEmitter();
+
+
 
 function paramsToString(params) {
   // TODO escape values as they come from user input
   return _.map(params, (val, key) => key + '=' + val).join('&');
 }
 
-function url(params) {
-    const baseUrl = 'http://52.88.125.22';
-    var http = require('http'),
-    options = {method: 'HEAD', host: 'felicity.evolute.io', port: 80, path: '/'},
-//    options = {method: 'HEAD', host: '52.88.125.22', port: 80, path: '/'},
-    req = http.request(options, function(r) {
-        
-        console.log(JSON.stringify(r.headers));
-        console.log(r.statusCode)
-    });
-//baseUrl=''
-req.on('error', function (e) {
-    console.log("error triggered")
-    const baseUrl = 'http://52.88.125.22';
-  // General error, i.e.
-  //  - ECONNRESET - server closed the socket unexpectedly
-  //  - ECONNREFUSED - server did not listen
-  //  - HPE_INVALID_VERSION
-  //  - HPE_INVALID_STATUS
-  //  - ... (other HPE_* codes) - server returned garbage
-  console.log("logging error from http request host felicity.evolute.io ");
-  console.log(e);
-    
+
+function updateBaseURL() {
+        body.baseUrl = 'http://52.88.125.22';
+    }
+
+
+request("http://felicity.evolute.io", function(error, response, data) {
+    body.data = data;
+    body.emit('update');
 });
-req.on('data', function (response) {
-    console.log("data triggered")
-  const baseUrl = 'http://52.88.125.22';
-//  response.on('data', function (chunk) {
-//    body += chunk;
-    
-  });
-req.on('success', function (response) {
-    console.log("success triggered")
-   const baseUrl = 'http://52.88.125.22';
-//  response.on('data', function (chunk) {
-//    body += chunk;
-    
-  });
 
-req.end();
+body.on('update', function () {
+    console.log("logging body.data")
+    console.log(body.data); // HOORAY! THIS WORKS!
+    if (!body.data){
+        console.log("no body.data")
+        updateBaseURL()   
+    }
+    else{
+        console.log("we're able to retrieve body.data")
+        body.baseUrl = 'http://felicity.evolute.io';
+    }
+     
+});
 
-  return _.isEmpty(params) ? baseUrl + '/' : baseUrl + '/?' + paramsToString(params);
+function url(params) {  
+    console.log("logging body baseurl before use")
+    console.log(body.baseUrl)
+  return _.isEmpty(params) ? body.baseUrl + '/' : body.baseUrl + '/?' + paramsToString(params);
 }
 
 function getAllApplications() {
