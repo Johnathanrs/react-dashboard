@@ -7,7 +7,7 @@ import EditInPlace from '../common/edit/EditInPlace.jsx';
 import CloseRedButton from '../common/button/CloseRedButton.jsx';
 
 import settings from '../../app.settings.dev';
-import { formatUptime } from '../common/utils'
+import { formatUptime, capitalizeFirstLetter, shortenAppImage, trimAppImage } from '../common/utils'
 
 const mockImageUrls = {
   '1': require('../../img/1.png'),
@@ -33,6 +33,7 @@ class ApplicationCard extends React.Component {
     const classes = {
       dirty: !!this.state.dirty
     };
+    const appImage = trimAppImage(card.appImage);
     var className = classNames(classes);
     if(this.props.selectedAppId === appId)
       className += ' active';
@@ -64,10 +65,10 @@ class ApplicationCard extends React.Component {
         </div>
       </div>
       <ul>
-        <li><strong>Image</strong><span>{ card.appImage ? card.appImage : '-' }</span></li>
+        <li><strong>Image</strong><span>{ appImage ? shortenAppImage(appImage) : '-' }</span></li>
         <li><strong>Exec</strong><span>{ card.appExec ? card.appExec : '-' }</span></li>
         <li><strong>Uptime</strong><span>{ card.uptime ? formatUptime(card.uptime) : '-' }</span></li>
-        <li><strong>Status</strong><span>{ card.status ? card.status : '-' }</span></li>
+        <li><strong>Status</strong><span>{ card.status ? capitalizeFirstLetter(card.status) : '-' }</span></li>
       </ul>
       {
         (() => {

@@ -1,11 +1,10 @@
-const axios = require('axios');
 const _ = require('lodash');
 
 const utils = require('../utils');
 const felicityApi = require('../external/felicityApi');
-const healthApi = require('../external/healthApi');
 const AppInfo = require('../models/AppInfo');
 const CurrentContainerStat = require('../models/CurrentContainerStat');
+const HealthStats = require('../models/HealthStats');
 
 var getApplicationStatus = function (application) {
   return new Promise((resolve, reject) => {
@@ -37,45 +36,39 @@ var getApplicationUptime = function (application) {
 
 var getNumberOfInstances = function (application) {
   return new Promise((resolve, reject) => {
-    var regEx = new RegExp(application.appName);
-    axios('http://127.0.0.1:3000/api/container_stats/current').then(
-      (result) => {
-        var JSONcontainers = result.data;
-        var containersCount = _.filter(JSONcontainers, (item) => {item.container.name.match(regEx)}).length;
-        application.instances = containersCount;
+    CurrentContainerStat.find((err, containers) => {
+      if(!err) {
+        var numberOfInstances = _.filter(containers, (item) => {
+          if(item.container.name.startsWith("/" + application.appName + "-")) {
+            return item;
+          }
+        }).length;
+        application.instances = numberOfInstances;
         resolve(application);
-      },
-      (error) => {
-        console.error('Felicity error!');
+      } else {
+        console.error(err);
         resolve(application);
+      }
     });
   });
 }
 
-function extractHealthResult(healthApiResult) {
-  if (healthApiResult) {
-    return _.filter(healthApiResult, (item) => item.Status !== 'passing').length;
-  } else {
-    return 0;
-  }
-}
-
-// Not tested.
 var getNumberOfErrors = function (application) {
   return new Promise((resolve, reject) => {
-    CurrentContainerStat.find({}, 'container.name', (err, currentContainerStats) => {
-      const containerNamePrefix = '/evo-' + application.name; //?
-
-      const applicationContainersStats = _.filter(currentContainerStats,
-        (stat) => stat.container && _.startsWith(stat.container.name, containerNamePrefix));
-
-      _.each(applicationContainersStats, (item) => {
-        healthApi.getContainerHealth(item.container.name.substring(1)).then((results) => {
-          const sum = _.reduce(results, (total, x) => total + extractHealthResult(x.data), 0);
-          application.errorCount = sum;
-          resolve(application);
-        })
-      });
+    HealthStats.find((err, stats) => {
+      if(!err) {
+        var errorCount = 0;
+        _.each(stats, (stat) => {
+          if(stat.containerName.startsWith("/" + application.appName + "-")) {
+            errorCount += stat.health;
+          }
+        });
+        application.errorCount = errorCount;
+        resolve(application);
+      } else {
+        console.error(err);
+        resolve(application);
+      }
     });
   });
 }
@@ -116,35 +109,23 @@ function initialize(app) {
   });
 
   app.get('/api/app_infos', (req, res) => {
-    AppInfo.find(function (err, applications) {
-      felicityApi.getAllApplications().then((felicityResult) => {
-        const felicities = felicityResult.data.apps;
-        const applicationsWithFelicity = _.map(applications, (application) => {
-          // NOTE the algorithm is full scan here, it can be optimized
-          const felicity = _.find(felicities, (felicity) => felicity.id === '/' + application.appName);
-          return felicity ? _.defaults({
-            _id: application._id,
-            appName: application.appName,
-            appImage: application.appImage,
-            appExec: application.appExec,
-          }, {felicity}) : application;
-        });
-
-        const numberOfApps = applicationsWithFelicity.length;
+    AppInfo.find().lean().exec(function (err, applications) {
+      if(!err) {
+        const numberOfApps = applications.length;
         var updatedApps = 0;
-        _.each(applicationsWithFelicity, (application) => {
+        _.each(applications, (application) => {
           updatedApps++;
           getApplicationStatus(application)
             .then(getApplicationUptime)
             .then(getNumberOfInstances)
-            // .then(getNumberOfErrors) // commented because I couldn't test this function
+            .then(getNumberOfErrors)
             .then((application) => {
               if (updatedApps == numberOfApps) {
-                res.send(applicationsWithFelicity);
+                res.send(applications);
               }
             });
         });
-      });
+      }
     });
   });
 
@@ -162,9 +143,7 @@ function initialize(app) {
         });
       }
     });
-
   });
-
 
   /**
    * @api DELETE /api/app_infos

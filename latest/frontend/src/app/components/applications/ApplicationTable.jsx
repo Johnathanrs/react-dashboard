@@ -9,7 +9,7 @@ import DetailsExtraRow from '../common/table/DetailsExtraRow.jsx';
 import ErrorCount from './ErrorCount.jsx';
 import CloseRedButton from '../common/button/CloseRedButton.jsx';
 
-import { formatUptime } from '../common/utils'
+import { formatUptime, capitalizeFirstLetter, trimAppImage } from '../common/utils'
 
 const imageUrls = {
   'ico_close': require('../../img/ico_close.png')
@@ -148,9 +148,9 @@ class ApplicationTable extends React.Component {
                   onApplicationNeedsDeleting={ (app) => { props.onApplicationNeedsDeleting(app) } }
                   onSelectionChange={ (items) => { this.props.onSelectionChange(items) } }>
       <TableColumn title="Name" classes="name" getter="appName"/>
-      <TableColumn title="Image" classes="image" getter={ (item) => item.appImage ? item.appImage : '-' }/>
+      <TableColumn title="Image" classes="image" getter={ (item) => trimAppImage(item.appImage) ? trimAppImage(item.appImage) : '-' }/>
         <TableColumn title="Exec" classes="exec" getter={ (item) => item.appExec ? item.appExec : '-'}/>
-      <TableColumn title="Status" classes="status" getter={ (item) => item.status ? item.status : '-' }/>
+      <TableColumn title="Status" classes="status" getter={ (item) => item.status ? capitalizeFirstLetter(item.status) : '-' }/>
       <TableColumn title="Instances" classes="instances"
                    getter={ (item) => item.instances ? item.instances : 0  }/>
       <TableColumn title="Uptime" classes="time" getter={ (item) => item.uptime ? formatUptime(item.uptime) : '-' }/>
