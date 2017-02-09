@@ -7,10 +7,10 @@ const appInfoSchema = new mongoose.Schema({
   appName: {
     type: String
   },
-      appExec: {
+  appExec: {
     type: String
   },
-      appType: {
+  appType: {
     type: String
   },
   appStatus: {
@@ -23,6 +23,9 @@ const appInfoSchema = new mongoose.Schema({
     type: String
   },
   appUptime: {
+    type: String
+  },
+  appImage: {
     type: String
   }
 });

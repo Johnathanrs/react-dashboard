@@ -19,7 +19,7 @@ import ServiceTable from './applications/ServiceTable.jsx';
 import ServiceCardApplications from './applications/ServiceCardApplications.jsx';
 import ServiceCreationPanel from './applications/ServiceCreationPanel.jsx';
 
-import settings from '../app.settings';
+import settings from '../app.settings.dev';
 
 export default class Application extends React.Component {
   constructor(props) {
@@ -49,7 +49,6 @@ export default class Application extends React.Component {
       this.setState({services: result});
     });
   }
-
 
   _fetchData() {
     this._fetchApplications();
@@ -88,7 +87,7 @@ export default class Application extends React.Component {
 
   _renderServiceCards() {
     return <div className="cols-list">
-      <ServiceCardGrid  items={ this._services() } 
+      <ServiceCardGrid  items={ this._services() }
                         data={ this.state.serviceAppsWheel }
                         selectedId={ this.state.selectedId }
                         onSelectService={ (id) => { this.onSelectService(id) } }
@@ -164,14 +163,13 @@ export default class Application extends React.Component {
       }
     </div>;
   }
-    
-    
-      _fetchServiceAppsWheel() {
+
+  _fetchServiceAppsWheel() {
     $.get(settings.apiBase + '/visualizations/serviceAppsWheel').then((result) => {
       this.setState({serviceAppsWheel: result}, function() {
-          });
-    });
-      
+      });
+  });
+
   }
   render() {
     return <div>
@@ -333,4 +331,3 @@ export default class Application extends React.Component {
     });
   }
 }
-

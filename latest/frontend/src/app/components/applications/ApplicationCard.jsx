@@ -6,6 +6,9 @@ import Button from '../common/button/Button.jsx';
 import EditInPlace from '../common/edit/EditInPlace.jsx';
 import CloseRedButton from '../common/button/CloseRedButton.jsx';
 
+import settings from '../../app.settings.dev';
+import { formatUptime, capitalizeFirstLetter, shortenAppImage, trimAppImage } from '../common/utils'
+
 const mockImageUrls = {
   '1': require('../../img/1.png'),
   'ico_red': require('../../img/ico_red.png'),
@@ -26,14 +29,11 @@ class ApplicationCard extends React.Component {
     const card = this.props.card;
     const appId = card._id;
     //const errorCount = 0;
-    const instanceCount = 12;
     const responseTime = '12 sec';
-    const status = 'Deployed';
-    const image = 'container-image';
-    const exec = '/usr/sbin/application';
     const classes = {
       dirty: !!this.state.dirty
     };
+    const appImage = trimAppImage(card.appImage);
     var className = classNames(classes);
     if(this.props.selectedAppId === appId)
       className += ' active';
@@ -57,7 +57,7 @@ class ApplicationCard extends React.Component {
           </div>
           <div href="javascript:void(0)" className="stat ins">
             <img src={ mockImageUrls['ico_green'] } width="13" alt=""/>
-            <span><EditInPlace value={ card.felicity ? card.felicity.instances : '' }
+            <span><EditInPlace value={ card.instances }
                                decorator={ (value) => ( value ? value : 0 ) + ' INSTANCES' }
                                styles={ {width: '60px'} }
                                onApply={ (value) => { this.onAppInstanceCountChange(value) } }/> </span>
@@ -65,10 +65,10 @@ class ApplicationCard extends React.Component {
         </div>
       </div>
       <ul>
-        <li><strong>Image</strong><span>{ image }</span></li>
-        <li><strong>Exec</strong><span>{ exec }</span></li>
-        <li><strong>Uptime</strong><span>{ card.appUptime }</span></li>
-        <li><strong>Status</strong><span>{ status }</span></li>
+        <li><strong>Image</strong><span>{ appImage ? shortenAppImage(appImage) : '-' }</span></li>
+        <li><strong>Exec</strong><span>{ card.appExec ? card.appExec : '-' }</span></li>
+        <li><strong>Uptime</strong><span>{ card.uptime ? formatUptime(card.uptime) : '-' }</span></li>
+        <li><strong>Status</strong><span>{ card.status ? capitalizeFirstLetter(card.status) : '-' }</span></li>
       </ul>
       {
         (() => {
