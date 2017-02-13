@@ -1,7 +1,7 @@
 import React from 'react';
 
 const renderItems = (items) => _.map(items, (item, index)  => {
-  return  <article>
+  return  <article key={index}>
     <h4 className="appName">{item.container.name.substr(5)}</h4>
     <div className="percent-row">
       <div className="right">

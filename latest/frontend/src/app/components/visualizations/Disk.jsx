@@ -8,7 +8,7 @@ function bytesToSize(bytes) {
 };
 
 const renderItems = (items) => _.map(items, (item, index)  => {
-  return <article>
+  return <article key={index}>
     <h4>{index + 1}. {item.name.substr(5).substr(0,15)} </h4>
     <div className="percent-row">
       <div className="right">
