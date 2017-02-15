@@ -11,10 +11,6 @@ const mockImageUrls = {
   'ico_red': require('../../img/ico_red.png')
 };
 
-const renderCards = (items) => {
-  return items.map((item) => <ApplicationCard key={item._id} card={item}/>);
-};
-
 // TODO remove this
 const mockCard = () => ({_id: 'id_' + _.uniqueId(), appName: 'test', appStatus: 'Deployed', appUptime: '4h 3min'});
 
@@ -24,6 +20,11 @@ class ServiceCardApplications extends React.Component {
     this.state = {
       active: false
     };
+    this.applications = [];
+  }
+
+  componentWillMount() {
+    this.applications = _.filter(this.props.allApplications, (application) => _.includes(this.props.card.svcApplications, application._id));
   }
 
   _toggleActive() {
@@ -31,9 +32,7 @@ class ServiceCardApplications extends React.Component {
   }
 
   render() {
-      const service = this.props.card;
-      console.log("logging service")
-      console.log(service)
+    const service = this.props.card;
     const serviceName = service.svcName;
     return <div className="gate-apl">
       <h3 className={classNames({active: this.state.active})} onClick={ () => { this._toggleActive() } }>
@@ -42,7 +41,9 @@ class ServiceCardApplications extends React.Component {
 
       <div className={classNames({active: this.state.active, inside: true})}>
         <section className="add-application">
-          { renderCards([mockCard(), mockCard(), mockCard()]) }
+          { (this.applications || []).map((item) => {
+            return <ApplicationCard key={ item._id } card={ item } />
+          }) }
         </section>
       </div>
     </div>;

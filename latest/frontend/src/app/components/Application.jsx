@@ -88,6 +88,7 @@ export default class Application extends React.Component {
   _renderServiceCards() {
     return <div className="cols-list">
       <ServiceCardGrid  items={ this._services() }
+                        allApplications={ this._applications() }
                         data={ this.state.serviceAppsWheel }
                         selectedId={ this.state.selectedId }
                         onSelectService={ (id) => { this.onSelectService(id) } }

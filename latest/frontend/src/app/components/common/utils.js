@@ -1,4 +1,5 @@
 import moment from 'moment';
+import _ from 'lodash';
 
 export function formatUptime(uptime) {
   const diff = moment.duration(moment().diff(uptime));
@@ -65,5 +66,41 @@ export function shortenAppImage(appImage) {
     return appImage.slice(0,12) + "..." + appImage.slice(-5);
   } else {
     return appImage;
+  }
+}
+
+export function determineServiceStatus(allApplications, serviceApplications) {
+  const filteredApplications = _.filter(allApplications, (application) => _.includes(serviceApplications, application._id));
+  var result = "-";
+  if (filteredApplications.length > 0) {
+    result = "Deployed";
+    _.each(filteredApplications, (application) => {
+      if (application.status && application.status.toLowerCase() !== "deployed") {
+        result = "Undeployed";
+      }
+    });
+  }
+  return result;
+}
+
+export function determineServiceAvailability(allApplications, serviceApplications) {
+  const filteredApplications = _.filter(allApplications, (application) => _.includes(serviceApplications, application._id));
+  if (filteredApplications.length == 0) {
+    return "-";
+  } else {
+    var appErrorsSum = 0;
+    _.each(filteredApplications, (application) => {
+      appErrorsSum += application.errorCount;
+    });
+    return isNaN(appErrorsSum) ? '-' : appErrorsSum / filteredApplications.length;
+  }
+}
+
+export function getNumberOfAppsByType(allApplications, serviceApplications, type) {
+  const filteredApplications = _.filter(allApplications, (application) => _.includes(serviceApplications, application._id));
+  if (filteredApplications.length == 0) {
+    return 0;
+  } else {
+    return _.filter(filteredApplications, (application) => _.includes(application, type)).length;
   }
 }
