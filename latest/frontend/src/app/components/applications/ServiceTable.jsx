@@ -111,7 +111,7 @@ const ServiceTable = (props) => {
 
   return <Table items={props.items} classes="table services">
     <TableColumn title="Name" classes="name" getter={ nameColumnGetter }/>
-    <TableColumn title="Owner" classes="owner" getter={ (item) => item.svcOwner || '-' }/>
+    <TableColumn title="Owner" classes="owner" getter={ (item) => item.ownerName || '-' }/>
     <TableColumn title="Status" classes="deployment" getter={ (item) => determineServiceStatus(props.allApplications, item.svcApplications) }/>
     <TableColumn title="Availability" classes="errors" getter={ (item) => <ErrorCount value={ determineServiceAvailability(props.allApplications, item.svcApplications) } /> }/>
     <DetailsExtraRow>

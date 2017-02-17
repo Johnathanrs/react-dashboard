@@ -57,7 +57,7 @@ class ServiceCard extends React.Component {
         </div>
         <ul>
           <li><strong>Status</strong><span>{ status }</span></li>
-          <li><strong>Owner</strong><span>{ service.svcOwner || '-' }</span></li>
+          <li><strong>Owner</strong><span>{ service.ownerName || '-' }</span></li>
           <li><strong>Service</strong><span>-</span></li>
           <li><strong>Uptime</strong><span>{ service.svcUptime || '-'}</span></li>
         </ul>
