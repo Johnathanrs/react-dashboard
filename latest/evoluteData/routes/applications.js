@@ -119,7 +119,7 @@ function initialize(app) {
             .then(getApplicationUptime)
             .then(getNumberOfInstances)
             .then(getNumberOfErrors)
-            .then((application) => {
+            .then(() => {
               if (updatedApps == numberOfApps) {
                 res.send(applications);
               }
