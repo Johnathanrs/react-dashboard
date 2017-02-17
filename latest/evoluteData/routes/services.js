@@ -2,6 +2,37 @@ const _ = require('lodash');
 
 const utils = require('../utils');
 const ServiceInfo = require('../models/ServiceInfo');
+const GroupInfos = require('../models/GroupInfos');
+const UserInfos = require('../models/UserInfos');
+
+var getServiceOwnerName = function (service) {
+  return new Promise((resolve, reject) => {
+    if (service.svcOwner.startsWith("G")) {
+      GroupInfos.findOne({"groupId": service.svcOwner}, (err, group) => {
+        if(!err) {
+          service.ownerName = group.groupName;
+          resolve(service);
+        } else {
+          console.error(err);
+          resolve(service);
+        }
+      });
+    } else if (service.svcOwner.startsWith("U")) {
+      UserInfos.findOne({"userId": service.svcOwner}, (err, user) => {
+        if(!err) {
+          service.ownerName = `${user.firstName} ${user.lastName}`;
+          resolve(service);
+        } else {
+          console.error(err);
+          resolve(service);
+        }
+      });
+    } else {
+      service.ownerName = '-';
+      resolve(service);
+    }
+  });
+}
 
 function initialize(app) {
 
@@ -10,8 +41,20 @@ function initialize(app) {
    * Gets all the services
    */
   app.get('/api/service_infos', function (req, res) {
-    ServiceInfo.find(function (err, data) {
-      res.json(data);
+    ServiceInfo.find().lean().exec(function (err, services) {
+      if(!err){
+        const numberOfServices = services.length;
+        var updatedServices = 0;
+        _.each(services, (service) => {
+          updatedServices++;
+          getServiceOwnerName(service)
+            .then(() => {
+              if(updatedServices == numberOfServices) {
+                res.send(services);
+              }
+            });
+        });
+      }
     });
   });
 
@@ -54,7 +97,7 @@ function initialize(app) {
           data: 'Service info: ' + req.params.id + " deleted successfully"
         });
       }
-    });    
+    });
   });
 
   /**
