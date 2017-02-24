@@ -114,15 +114,18 @@ function initialize(app) {
         const numberOfApps = applications.length;
         var updatedApps = 0;
         _.each(applications, (application) => {
-          updatedApps++;
           getApplicationStatus(application)
             .then(getApplicationUptime)
             .then(getNumberOfInstances)
             .then(getNumberOfErrors)
             .then(() => {
+              updatedApps++;
               if (updatedApps == numberOfApps) {
                 res.send(applications);
               }
+            })
+            .catch((error) => {
+              console.error(error);
             });
         });
       }
