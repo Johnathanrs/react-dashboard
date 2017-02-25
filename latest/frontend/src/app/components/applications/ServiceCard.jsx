@@ -48,7 +48,7 @@ class ServiceCard extends React.Component {
         <div className="tags">
           <a href="#" className="stat">
             <img src={ mockImageUrls[errorCount > 0 ? 'ico_red' : 'ico_flag'] } width="15" alt=""/>
-            <span>{errorCount} ERRORS</span>
+            <span>{errorCount} AVAILABILITY</span>
           </a>
           <a href="#" className="stat ins">
             <img src={ mockImageUrls['ico_green'] } width="17" alt=""/>
@@ -56,7 +56,7 @@ class ServiceCard extends React.Component {
           </a>
         </div>
         <ul>
-          <li><strong>Status</strong><span>{ status }</span></li>
+          <li><strong>Status</strong><span>{ status ? status : 'Unknown' }</span></li>
           <li><strong>Owner</strong><span>{ service.ownerName || '-' }</span></li>
           <li><strong>Service</strong><span>-</span></li>
           <li><strong>Uptime</strong><span>{ service.svcUptime || '-'}</span></li>

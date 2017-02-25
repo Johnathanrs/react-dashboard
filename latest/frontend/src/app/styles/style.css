@@ -535,9 +535,9 @@ a:hover {
 }
 
 .service-card .delete-service-btn {
-    position: absolute;    
+    position: absolute;
     z-index: 3;
-    display: none;    
+    display: none;
 }
 
 .service-card.active .delete-service-btn {
@@ -647,7 +647,7 @@ a:hover {
 
 .service-card .left-side {
     float: left;
-    width: 370px;
+    width: 410px;
     padding: 39px 45px;
     background: #ecf0f2;
 }
@@ -1439,7 +1439,7 @@ img {
     width: 20%;
     float: right;
     margin-top: -10px;
-    text-align: right;    
+    text-align: right;
 }
 
 #disk.overall-over article .percent-row .left{
@@ -2728,6 +2728,3 @@ img {
     text-align: right;
     padding-right: 10px;
 }
-
-
-

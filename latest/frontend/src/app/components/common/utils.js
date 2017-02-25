@@ -71,12 +71,12 @@ export function shortenAppImage(appImage) {
 
 export function determineServiceStatus(allApplications, serviceApplications) {
   const filteredApplications = _.filter(allApplications, (application) => _.includes(serviceApplications, application._id));
-  var result = "-";
+  var result = '';
   if (filteredApplications.length > 0) {
-    result = "Deployed";
+    result = 'Deployed';
     _.each(filteredApplications, (application) => {
-      if (application.status && application.status.toLowerCase() !== "deployed") {
-        result = "Undeployed";
+      if (application.status && application.status.toLowerCase() !== 'deployed') {
+        result = 'Undeployed';
       }
     });
   }
@@ -90,9 +90,11 @@ export function determineServiceAvailability(allApplications, serviceApplication
   } else {
     var appErrorsSum = 0;
     _.each(filteredApplications, (application) => {
-      appErrorsSum += application.errorCount;
+      if(!isNaN(application.errorCount)) {
+        appErrorsSum += application.errorCount;
+      }
     });
-    return isNaN(appErrorsSum) ? '-' : appErrorsSum / filteredApplications.length;
+    return appErrorsSum == 0 ? 0 : appErrorsSum / filteredApplications.length;
   }
 }
 

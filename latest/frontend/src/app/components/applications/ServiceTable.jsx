@@ -107,12 +107,14 @@ const ServiceTable = (props) => {
     <EditInPlace value={ item.svcName }
                  placeholder="Input name here"
                  onApply={ (newValue) => { props.onServiceChange(_.defaultsDeep({svcName: newValue}, item)) } }/>
-  </div>;
+  </div>
+  };
 
   return <Table items={props.items} classes="table services">
-    <TableColumn title="Name" classes="name" getter={ nameColumnGetter }/>
+    <TableColumn title="Name" classes="name" getter={ item => item.svcName }/>
+    {/* <TableColumn title="Name" classes="name" getter={ nameColumnGetter }/> */}
     <TableColumn title="Owner" classes="owner" getter={ (item) => item.ownerName || '-' }/>
-    <TableColumn title="Status" classes="deployment" getter={ (item) => determineServiceStatus(props.allApplications, item.svcApplications) }/>
+    <TableColumn title="Status" classes="deployment" getter={ (item) => determineServiceStatus(props.allApplications, item.svcApplications) || 'Unknown' }/>
     <TableColumn title="Availability" classes="errors" getter={ (item) => <ErrorCount value={ determineServiceAvailability(props.allApplications, item.svcApplications) } /> }/>
     <DetailsExtraRow>
       <ServiceDetails allApplications={props.allApplications}
