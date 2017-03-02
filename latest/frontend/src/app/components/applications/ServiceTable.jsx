@@ -108,7 +108,6 @@ const ServiceTable = (props) => {
                  placeholder="Input name here"
                  onApply={ (newValue) => { props.onServiceChange(_.defaultsDeep({svcName: newValue}, item)) } }/>
   </div>
-  };
 
   return <Table items={props.items} classes="table services">
     <TableColumn title="Name" classes="name" getter={ item => item.svcName }/>
