@@ -535,9 +535,9 @@ a:hover {
 }
 
 .service-card .delete-service-btn {
-    position: absolute;    
+    position: absolute;
     z-index: 3;
-    display: none;    
+    display: none;
 }
 
 .service-card.active .delete-service-btn {
@@ -658,6 +658,7 @@ a:hover {
 #body {
     position: relative;
     overflow: hidden;
+    height: 100%;
 }
 
 #body .container {
@@ -1439,7 +1440,7 @@ img {
     width: 20%;
     float: right;
     margin-top: -10px;
-    text-align: right;    
+    text-align: right;
 }
 
 #disk.overall-over article .percent-row .left{
@@ -2729,5 +2730,47 @@ img {
     padding-right: 10px;
 }
 
+#loader {
+  margin: auto;
+  position: absolute;
+  left: 0; right: 0;
+  width: 80px;
+  margin-top: 80px;
+}
 
+#loader span{
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  background-color: #4fb1e2;
+  margin: 35px 5px;
+}
 
+#loader span:nth-child(1){
+  animation: bounce 1s ease-in-out infinite;
+}
+
+#loader span:nth-child(2){
+  animation: bounce 1s ease-in-out 0.33s infinite;
+}
+
+#loader span:nth-child(3){
+  animation: bounce 1s ease-in-out 0.66s infinite;
+}
+
+@keyframes bounce{
+  0%, 75%, 100%{
+    -webkit-transform: translateY(0);
+    -ms-transform: translateY(0);
+    -o-transform: translateY(0);
+    transform: translateY(0);
+  }
+
+  25%{
+    -webkit-transform: translateY(-20px);
+    -ms-transform: translateY(-20px);
+    -o-transform: translateY(-20px);
+    transform: translateY(-20px);
+  }
+}
