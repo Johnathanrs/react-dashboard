@@ -2,6 +2,7 @@ import React from 'react';
 import $ from 'jquery';
 import _ from 'lodash';
 
+import Loader from './common/loader/Loader.jsx';
 import Panel from './common/panel/Panel.jsx';
 import Table from './common/table/Table.jsx';
 import TableColumn from './common/table/TableColumn.jsx';
@@ -33,13 +34,15 @@ export default class Application extends React.Component {
       applicationOverview: null,
       serviceAppsWheel: null,
       selectedId: null,
-      selectedAppId: null
+      selectedAppId: null,
+      fetchingApplications: false
     };
   }
 
   _fetchApplications() {
+    this.setState({fetchingApplications: true});
     $.get(settings.apiBase + '/app_infos').then((result) => {
-      this.setState({applications: result});
+      this.setState({applications: result, fetchingApplications: false});
     });
   }
 
@@ -129,15 +132,19 @@ export default class Application extends React.Component {
    */
 
   _renderApplicationCards() {
-    return <div className="cols-list">
-      <ApplicationCardGrid ref="applicationCardGrid"
-                           items={ this._applications() }
-                           selectedAppId={ this.state.selectedAppId }
-                           onAddApplication={ () => { this.onAddApplication() } }
-                           onSelectApplication={ (id) => { this.onSelectApplication(id) } }
-                           onApplicationNeedsDeleting={ (application) => { this.deleteApplication(application) } }
-                           onApplicationNeedsSaving={ (application) => { this.saveApplication(application) } }/>
-    </div>;
+    if(this.state.fetchingApplications == true) {
+      return <Loader />
+    } else {
+      return <div className="cols-list">
+        <ApplicationCardGrid ref="applicationCardGrid"
+          items={ this._applications() }
+          selectedAppId={ this.state.selectedAppId }
+          onAddApplication={ () => { this.onAddApplication() } }
+          onSelectApplication={ (id) => { this.onSelectApplication(id) } }
+          onApplicationNeedsDeleting={ (application) => { this.deleteApplication(application) } }
+          onApplicationNeedsSaving={ (application) => { this.saveApplication(application) } }/>
+        </div>;
+    }
   }
 
   _renderApplicationRows() {

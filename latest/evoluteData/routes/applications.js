@@ -15,7 +15,7 @@ var getApplicationStatus = function (application) {
       },
       (error) => {
         console.error('Felicity error', error);
-        reject(error);
+        resolve(application);
     });
   });
 }
@@ -24,12 +24,12 @@ var getApplicationUptime = function (application) {
   return new Promise((resolve, reject) => {
     felicityApi.getApplicationByName(application.appName).then(
       (result) => {
-        application.uptime = result.data.app.version;
+        application.uptime = result.data.app && result.data.app.version;
         resolve(application);
       },
       (error) => {
         console.error('Felicity error', error);
-        reject(error);
+        resolve(application);
     });
   });
 }
@@ -114,15 +114,18 @@ function initialize(app) {
         const numberOfApps = applications.length;
         var updatedApps = 0;
         _.each(applications, (application) => {
-          updatedApps++;
           getApplicationStatus(application)
             .then(getApplicationUptime)
             .then(getNumberOfInstances)
             .then(getNumberOfErrors)
-            .then((application) => {
+            .then(() => {
+              updatedApps++;
               if (updatedApps == numberOfApps) {
                 res.send(applications);
               }
+            })
+            .catch((error) => {
+              console.error(error);
             });
         });
       }
