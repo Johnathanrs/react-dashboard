@@ -7,7 +7,7 @@ const UserInfos = require('../models/UserInfos');
 
 var getServiceOwnerName = function (service) {
   return new Promise((resolve, reject) => {
-    if (service.svcOwner.startsWith("G")) {
+    if (service.svcOwner && service.svcOwner.startsWith("G")) {
       GroupInfos.findOne({"groupId": service.svcOwner}, (err, group) => {
         if(!err) {
           service.ownerName = group.groupName;
@@ -17,7 +17,7 @@ var getServiceOwnerName = function (service) {
           resolve(service);
         }
       });
-    } else if (service.svcOwner.startsWith("U")) {
+    } else if (service.svcOwner && service.svcOwner.startsWith("U")) {
       UserInfos.findOne({"userId": service.svcOwner}, (err, user) => {
         if(!err) {
           service.ownerName = `${user.firstName} ${user.lastName}`;
