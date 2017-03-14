@@ -3,7 +3,7 @@ import AppsWheel from '../visualizations/AppsWheel.jsx';
 import CloseRedButton from '../common/button/CloseRedButton.jsx';
 import appsWheelMockData from '../../data/visualizations-appsWheel.js';
 
-import { determineServiceStatus, determineServiceAvailability, getNumberOfAppsByType } from '../common/utils';
+import { determineServiceStatus, determineServiceAvailability, determineServiceInstancesNumber, getNumberOfAppsByType } from '../common/utils';
 
 console.log('appsWheelMockData', appsWheelMockData );
 
@@ -24,7 +24,7 @@ class ServiceCard extends React.Component {
     const serviceAppsWheelData = this.props.data
     const errorCount = determineServiceAvailability(this.props.allApplications, this.props.card.svcApplications);
     const status = determineServiceStatus(this.props.allApplications, this.props.card.svcApplications);
-    const instances = 12;
+    const instances = determineServiceInstancesNumber(this.props.allApplications, this.props.card.svcApplications);
     const responseTime = '12 sec';
     const databaseCount = getNumberOfAppsByType(this.props.allApplications, service.svcApplications, 'database');
     const webEngineCount = getNumberOfAppsByType(this.props.allApplications, service.svcApplications, 'webengine');
@@ -58,8 +58,6 @@ class ServiceCard extends React.Component {
         <ul>
           <li><strong>Status</strong><span>{ status ? status : 'Unknown' }</span></li>
           <li><strong>Owner</strong><span>{ service.ownerName || '-' }</span></li>
-          <li><strong>Service</strong><span>-</span></li>
-          <li><strong>Uptime</strong><span>{ service.svcUptime || '-'}</span></li>
         </ul>
       </div>
       <div className="right-side">

@@ -46,9 +46,9 @@ function initialize(app) {
         const numberOfServices = services.length;
         var updatedServices = 0;
         _.each(services, (service) => {
-          updatedServices++;
           getServiceOwnerName(service)
             .then(() => {
+              updatedServices++;
               if(updatedServices == numberOfServices) {
                 res.send(services);
               }

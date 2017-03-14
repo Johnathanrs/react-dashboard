@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 export function formatUptime(uptime) {
   const diff = moment.duration(moment().diff(uptime));
-  var units = 0;
+  let units = 0;
   if(diff._data.years != 0) {
     units = Math.round(diff.asYears());
     if(units == 1) {
@@ -54,7 +54,7 @@ export function capitalizeFirstLetter(string) {
 }
 
 export function trimAppImage(appImage) {
-  var result = "";
+  let result = '';
   if(appImage) {
     result = appImage.split('/')[1];
   }
@@ -71,14 +71,15 @@ export function shortenAppImage(appImage) {
 
 export function determineServiceStatus(allApplications, serviceApplications) {
   const filteredApplications = _.filter(allApplications, (application) => _.includes(serviceApplications, application._id));
-  var result = '';
+  let result;
   if (filteredApplications.length > 0) {
-    result = 'Deployed';
-    _.each(filteredApplications, (application) => {
-      if (application.status && application.status.toLowerCase() !== 'deployed') {
-        result = 'Undeployed';
-      }
-    });
+    if(_.filter(filteredApplications, (application) => !application.status).length > 0) {
+      result = 'Unknown';
+    } else if (_.filter(filteredApplications, (application) => application.status && application.status.toLowerCase !== 'deployed').length > 0) {
+      result = 'Undeployed';
+    } else {
+      result = 'Deployed';
+    }
   }
   return result;
 }
@@ -88,7 +89,7 @@ export function determineServiceAvailability(allApplications, serviceApplication
   if (filteredApplications.length == 0) {
     return "-";
   } else {
-    var appErrorsSum = 0;
+    let appErrorsSum = 0;
     _.each(filteredApplications, (application) => {
       if(!isNaN(application.errorCount)) {
         appErrorsSum += application.errorCount;
@@ -104,5 +105,14 @@ export function getNumberOfAppsByType(allApplications, serviceApplications, type
     return 0;
   } else {
     return _.filter(filteredApplications, (application) => _.includes(application, type)).length;
+  }
+}
+
+export function determineServiceInstancesNumber(allApplications, serviceApplications) {
+  const filteredApplications = _.filter(allApplications, (application) => _.includes(serviceApplications, application._id));
+  if (filteredApplications.length == 0) {
+    return 0;
+  } else {
+    return _.sumBy(filteredApplications, 'instances');
   }
 }
