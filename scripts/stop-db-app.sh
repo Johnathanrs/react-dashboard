@@ -1,5 +1,13 @@
 #!/bin/bash
-exec ./pass-prompt.sh
+. ./pass-prompt.sh
+
+if [[ $? > 0 ]] ; then
+     echo "Password prompt failed. Exiting..."
+     exit  
+else
+     echo "Password prompt succeeded. Continuing..."
+fi
+
 echo "Stopping MongoDB Database..."
 echo $password | sudo -S killall mongod
 echo "MongoDB termination sent."

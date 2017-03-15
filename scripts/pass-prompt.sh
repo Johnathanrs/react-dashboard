@@ -12,7 +12,7 @@ do
     if [[ $CHAR == $'\0' ]] ; then
     	if [ $CHARCOUNT -lt 1 ] ; then
     		echo -n "No password entered. Exiting."
-		exit
+		exit 1
     	fi
         break
     fi
@@ -33,5 +33,4 @@ do
 
 
 done
-
 stty echo

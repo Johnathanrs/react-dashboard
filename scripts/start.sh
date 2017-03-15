@@ -1,7 +1,13 @@
 #!/bin/bash
-exec ./pass-prompt.sh
+. ./pass-prompt.sh
+if [[ $? > 0 ]] ; then
+	echo "Password prompt failed. Exiting..."
+	exit
+else
+	echo "Password prompt succeeded. Continuing..."
+fi
+
 echo
-#echo "Done. Password=$password"
 
 echo "Starting MongoDB Database..."
 echo $password | sudo -S mongod --config /usr/local/etc/mongod.conf &
@@ -13,6 +19,5 @@ echo "Backend initiated."
 
 echo "Starting Frontend in the background..."
 pushd ../latest/frontend && npm run dev &
-pushd ../../scripts
 echo "Frontend initiated."
 
