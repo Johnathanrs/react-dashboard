@@ -29,15 +29,32 @@ The process to get the application running is typically:
   
   Source: http://bit.ly/EvoUIExampleData
 
+#### Automated Build of Backend and Frontend
+* Build backend and frontend
 
-#### Start Backend
-* Start backend
+  evo-ui[feature/phase_1] scripts/build.sh
+
+#### Automated Start of MongoDB, Backend and Frontend
+* Start all
+
+  evo-ui[feature/phase_1] scripts/start.sh
+
+#### Automated Stop of Backend and Frontend
+* Stop application backend and frontend
+
+  evo-ui[feature/phase_1] scripts/stop-db-app.sh
+
+
+#### Automated Stop of MongoDB, Backend and Frontend
+* Start all
+
+  evo-ui[feature/phase_1] scripts/stop-db-app.sh
+
+
+#### Manual Start Backend and Frontend
+* Start backend and frontend
 
   evo-ui[feature/phase_1] latest/evoluteData $ node evoluteData.js
-
-#### Start Frontend
-* Start frontend
-
   evo-ui[feature/phase_1] latest/frontend $ npm run dev
 
 #### Access Frontend
