@@ -1,5 +1,5 @@
 #!/bin/bash
-./pass-prompt.sh
+exec ./pass-prompt.sh
 echo
 #echo "Done. Password=$password"
 
@@ -8,11 +8,11 @@ echo $password | sudo -S mongod --config /usr/local/etc/mongod.conf &
 echo "MongoDB executed."
 
 echo "Running Backend in the background..."
-node latest/evoluteData/evoluteData.js &
+node ../latest/evoluteData/evoluteData.js &
 echo "Backend initiated."
 
 echo "Starting Frontend in the background..."
-pushd latest/frontend && npm run dev &
-pushd ..
+pushd ../latest/frontend && npm run dev &
+pushd ../../scripts
 echo "Frontend initiated."
 

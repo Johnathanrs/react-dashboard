@@ -1,5 +1,5 @@
 #!/bin/bash
-./pass-prompt.sh
+exec ./pass-prompt.sh
 echo
 #echo "Done. Password=$password"
 

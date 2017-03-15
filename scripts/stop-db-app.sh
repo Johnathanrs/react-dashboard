@@ -1,5 +1,5 @@
 #!/bin/bash
-./pass-prompt.sh
+exec ./pass-prompt.sh
 echo "Stopping MongoDB Database..."
 echo $password | sudo -S killall mongod
 echo "MongoDB termination sent."
