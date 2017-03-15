@@ -55,6 +55,7 @@ The process to get the application running is typically:
 * Start backend and frontend
 
   evo-ui[feature/phase_1] latest/evoluteData $ node evoluteData.js
+  
   evo-ui[feature/phase_1] latest/frontend $ npm run dev
 
 #### Access Frontend
