@@ -20,10 +20,10 @@ echo
 #echo "Done. Password=$password"
 
 echo "Stopping Backend..."
-echo $password | sudo -S killall node
+echo $PASSWORD | sudo -S killall node
 echo "Backend termination sent."
 
 echo "Stopping Frontend..."
-echo $password | sudo -S killall npm
+echo $PASSWORD | sudo -S killall npm
 echo "Frontend termination sent."
 

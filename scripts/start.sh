@@ -10,7 +10,7 @@ fi
 echo
 
 echo "Starting MongoDB Database..."
-echo $password | sudo -S mongod --config /usr/local/etc/mongod.conf &
+echo $PASSWORD | sudo -S mongod --config /usr/local/etc/mongod.conf &
 echo "MongoDB executed."
 
 echo "Running Backend in the background..."
