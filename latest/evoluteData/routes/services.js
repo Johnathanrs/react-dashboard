@@ -66,6 +66,7 @@ function initialize(app) {
     const serviceData = {
       _id: utils.generateId(),
       svcName: req.body.svcName,
+      svcOwner: req.body.svcOwner,
       svcApplications: _.map(req.body.svcApplications, (application) => application._id)
     };
     const newInstance = new ServiceInfo(serviceData);
