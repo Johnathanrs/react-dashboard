@@ -71,11 +71,11 @@ export function shortenAppImage(appImage) {
 
 export function determineServiceStatus(allApplications, serviceApplications) {
   const filteredApplications = _.filter(allApplications, (application) => _.includes(serviceApplications, application._id));
-  let result;
+  let result = '';
   if (filteredApplications.length > 0) {
-    if(_.filter(filteredApplications, (application) => !application.status).length > 0) {
+    if(_.filter(filteredApplications, application => !application.status).length > 0) {
       result = 'Unknown';
-    } else if (_.filter(filteredApplications, (application) => application.status && application.status.toLowerCase !== 'deployed').length > 0) {
+    } else if (_.filter(filteredApplications, (application) => application.status.toLowerCase() !== 'deployed').length > 0) {
       result = 'Undeployed';
     } else {
       result = 'Deployed';
