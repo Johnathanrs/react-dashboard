@@ -39,7 +39,7 @@ var getNumberOfInstances = function (application) {
     CurrentContainerStat.find((err, containers) => {
       if(!err) {
         var numberOfInstances = _.filter(containers, (item) => {
-          if(item.container.name.startsWith("/" + application.appName + "-")) {
+          if(item.container.name.startsWith(`/evo-${application.appName}-`)) {
             return item;
           }
         }).length;
@@ -59,7 +59,7 @@ var getNumberOfErrors = function (application) {
       if(!err) {
         var errorCount = 0;
         _.each(stats, (stat) => {
-          if(stat.containerName.startsWith("/" + application.appName + "-")) {
+          if(stat.containerName.startsWith(`/evo-${application.appName}-`)) {
             errorCount += stat.health;
           }
         });
