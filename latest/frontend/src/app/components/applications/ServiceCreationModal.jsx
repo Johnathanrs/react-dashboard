@@ -139,6 +139,7 @@ class ServiceCreationModal extends React.Component {
         newType: application.newType
       }))
     });
+    preparedServiceData.svcOwner = 'G0000001';
     this.props.onApply && this.props.onApply(preparedServiceData);
   }
 }

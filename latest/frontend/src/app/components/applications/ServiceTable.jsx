@@ -8,6 +8,8 @@ import TableColumn from '../common/table/TableColumn.jsx';
 import DetailsExtraRow from '../common/table/DetailsExtraRow.jsx';
 import ErrorCount from './ErrorCount.jsx';
 
+import { formatUptime, determineServiceStatus, determineServiceAvailability, getNumberOfAppsByType } from '../common/utils';
+
 const mockImageUrls = {
   '2': require('../../img/2.png'),
   '3': require('../../img/3.png'),
@@ -22,22 +24,39 @@ const mockImageUrls = {
   'ico_se_1': require('../../img/ico_se_1.png')
 };
 
+function mapIconToAppType(appType) {
+  switch(appType) {
+    case "database":
+      return mockImageUrls['ico_se_1'];
+    break;
+    case "webengine":
+      return mockImageUrls['ico_se_2'];
+    break;
+    case "application":
+      return mockImageUrls['ico_se_3'];
+    break;
+  }
+}
+
 const EmbeddedServiceApplicationTable = (props) => {
   return <Table classes="" items={ props.items }>
     <TableColumn title="Name"
-                 getter={ (item) => <span><img src={ mockImageUrls['ico_se_1'] } alt=""/><a href="#">{ item.appName }</a></span> }/>
-    <TableColumn title="Uptime" getter={ (item) => item.appUptime }/>
+                 getter={ (item) => <span><img src={ mapIconToAppType(item.appType) } alt=""/><a href="#">{ item.appName || '-' }</a></span> }/>
+    <TableColumn title="Uptime" getter={ (item) => item.uptime ? formatUptime(item.uptime) : '-' }/>
     <TableColumn title="Instances"
-                 getter={ (item) => <EditInPlace value={ item.appInstanceCount }
+                 getter={ (item) => <EditInPlace value={ item.instances || '-' }
                  placeholder="Click to edit"
                  onApply={ (newValue) => { props.onApplicationChange(_.defaults({appInstanceCount: newValue}, item)) } } /> }/>
-    <TableColumn title="Type" getter={ () => 'Database' }/>
+    <TableColumn title="Type" getter={ (item) => item.appType }/>
   </Table>;
 };
 
 const ServiceDetails = (props) => {
   const applications = props.item._applications || _.filter(props.allApplications, (application) => _.includes(props.item.svcApplications, application._id));
   var serviceId = props.item._id;
+  const databaseCount = getNumberOfAppsByType(props.allApplications, props.item.svcApplications, 'database');
+  const webEngineCount = getNumberOfAppsByType(props.allApplications, props.item.svcApplications, 'webengine');
+  const applicationCount = getNumberOfAppsByType(props.allApplications, props.item.svcApplications, 'application');
   var className = 'service-card';
   if(props.selectedId === serviceId)
     className += ' active';
@@ -53,17 +72,17 @@ const ServiceDetails = (props) => {
         </div>
         <ul>
           <li className="orange">
-            <strong>2</strong>
+            <strong>{ databaseCount }</strong>
             <img src={ mockImageUrls['ico_se_1'] } alt=""/>
             <span className="text">Database</span>
           </li>
           <li className="purple">
-            <strong>10</strong>
+            <strong>{ webEngineCount }</strong>
             <img src={ mockImageUrls['ico_se_2'] } alt=""/>
             <span className="text">Web Engine</span>
           </li>
           <li className="blue">
-            <strong>12</strong>
+            <strong>{ applicationCount }</strong>
             <img src={ mockImageUrls['ico_se_3'] } alt=""/>
             <span className="text">Applications</span>
           </li>
@@ -88,17 +107,14 @@ const ServiceTable = (props) => {
     <EditInPlace value={ item.svcName }
                  placeholder="Input name here"
                  onApply={ (newValue) => { props.onServiceChange(_.defaultsDeep({svcName: newValue}, item)) } }/>
+  </div>
 
-  </div>;
-
-  const owner = 'Jason Bourne';
-  const status = 'TODO'; // TODO show the weakest status from all the applications in the service
-  const errorCount = 0; // TODO sum of all the applications' errors
   return <Table items={props.items} classes="table services">
-    <TableColumn title="Name" classes="name" getter={ nameColumnGetter }/>
-    <TableColumn title="Owner" classes="owner" getter={ (item) => owner }/>
-    <TableColumn title="Deployment" classes="deployment" getter={ (item) => status }/>
-    <TableColumn title="Errors" classes="errors" getter={ () => <ErrorCount value={ errorCount } /> }/>
+    <TableColumn title="Name" classes="name" getter={ item => item.svcName }/>
+    {/* <TableColumn title="Name" classes="name" getter={ nameColumnGetter }/> */}
+    <TableColumn title="Owner" classes="owner" getter={ (item) => item.ownerName || '-' }/>
+    <TableColumn title="Status" classes="deployment" getter={ (item) => determineServiceStatus(props.allApplications, item.svcApplications) || 'Unknown' }/>
+    <TableColumn title="Availability" classes="errors" getter={ (item) => <ErrorCount value={ determineServiceAvailability(props.allApplications, item.svcApplications) } /> }/>
     <DetailsExtraRow>
       <ServiceDetails allApplications={props.allApplications}
                       selectedId={ props.selectedId }
@@ -115,4 +131,3 @@ ServiceTable.defaultProps = {
 };
 
 export default ServiceTable;
-

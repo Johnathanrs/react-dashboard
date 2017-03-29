@@ -15,7 +15,7 @@ var getApplicationStatus = function (application) {
       },
       (error) => {
         console.error('Felicity error', error);
-        reject(error);
+        resolve(application);
     });
   });
 }
@@ -24,12 +24,12 @@ var getApplicationUptime = function (application) {
   return new Promise((resolve, reject) => {
     felicityApi.getApplicationByName(application.appName).then(
       (result) => {
-        application.uptime = result.data.app.version;
+        application.uptime = result.data.app && result.data.app.version;
         resolve(application);
       },
       (error) => {
         console.error('Felicity error', error);
-        reject(error);
+        resolve(application);
     });
   });
 }
@@ -39,7 +39,7 @@ var getNumberOfInstances = function (application) {
     CurrentContainerStat.find((err, containers) => {
       if(!err) {
         var numberOfInstances = _.filter(containers, (item) => {
-          if(item.container.name.startsWith("/" + application.appName + "-")) {
+          if(item.container.name.startsWith(`/evo-${application.appName}-`)) {
             return item;
           }
         }).length;
@@ -59,7 +59,7 @@ var getNumberOfErrors = function (application) {
       if(!err) {
         var errorCount = 0;
         _.each(stats, (stat) => {
-          if(stat.containerName.startsWith("/" + application.appName + "-")) {
+          if(stat.containerName.startsWith(`/evo-${application.appName}-`)) {
             errorCount += stat.health;
           }
         });
@@ -114,15 +114,18 @@ function initialize(app) {
         const numberOfApps = applications.length;
         var updatedApps = 0;
         _.each(applications, (application) => {
-          updatedApps++;
           getApplicationStatus(application)
             .then(getApplicationUptime)
             .then(getNumberOfInstances)
             .then(getNumberOfErrors)
-            .then((application) => {
+            .then(() => {
+              updatedApps++;
               if (updatedApps == numberOfApps) {
                 res.send(applications);
               }
+            })
+            .catch((error) => {
+              console.error(error);
             });
         });
       }

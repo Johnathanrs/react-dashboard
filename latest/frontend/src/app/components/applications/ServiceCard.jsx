@@ -3,6 +3,8 @@ import AppsWheel from '../visualizations/AppsWheel.jsx';
 import CloseRedButton from '../common/button/CloseRedButton.jsx';
 import appsWheelMockData from '../../data/visualizations-appsWheel.js';
 
+import { determineServiceStatus, determineServiceAvailability, determineServiceInstancesNumber, getNumberOfAppsByType } from '../common/utils';
+
 console.log('appsWheelMockData', appsWheelMockData );
 
 const mockImageUrls = {
@@ -20,19 +22,19 @@ class ServiceCard extends React.Component {
   render() {
     const service = this.props.card;
     const serviceAppsWheelData = this.props.data
-    const errorCount = 0;
-    const instances = 12;
+    const errorCount = determineServiceAvailability(this.props.allApplications, this.props.card.svcApplications);
+    const status = determineServiceStatus(this.props.allApplications, this.props.card.svcApplications);
+    const instances = determineServiceInstancesNumber(this.props.allApplications, this.props.card.svcApplications);
     const responseTime = '12 sec';
-    const owner = '';
-    const databaseCount = 7;
-    const webEngineCount = 12;
-    const applicationCount = 19;
-    
+    const databaseCount = getNumberOfAppsByType(this.props.allApplications, service.svcApplications, 'database');
+    const webEngineCount = getNumberOfAppsByType(this.props.allApplications, service.svcApplications, 'webengine');
+    const applicationCount = getNumberOfAppsByType(this.props.allApplications, service.svcApplications, 'application');
+
     var serviceId = service._id;
     var className = 'service-card';
     if(this.props.selectedId === serviceId)
       className += ' active';
-    
+
     return <div className={className} onClick={ () => { this.props.onSelectService(serviceId) } }>
       <div className="left-side">
         <div className="delete-service-btn">
@@ -46,7 +48,7 @@ class ServiceCard extends React.Component {
         <div className="tags">
           <a href="#" className="stat">
             <img src={ mockImageUrls[errorCount > 0 ? 'ico_red' : 'ico_flag'] } width="15" alt=""/>
-            <span>{errorCount} ERRORS</span>
+            <span>{errorCount} AVAILABILITY</span>
           </a>
           <a href="#" className="stat ins">
             <img src={ mockImageUrls['ico_green'] } width="17" alt=""/>
@@ -54,10 +56,8 @@ class ServiceCard extends React.Component {
           </a>
         </div>
         <ul>
-          <li><strong>Deployment</strong><span>{ service.svcStatus }</span></li>
-          <li><strong>Owner</strong><span>{ owner }</span></li>
-          <li><strong>Service</strong><span>None</span></li>
-          <li><strong>Uptime</strong><span>{ service.svcUptime }</span></li>
+          <li><strong>Status</strong><span>{ status ? status : 'Unknown' }</span></li>
+          <li><strong>Owner</strong><span>{ service.ownerName || '-' }</span></li>
         </ul>
       </div>
       <div className="right-side">
@@ -82,7 +82,7 @@ class ServiceCard extends React.Component {
         </div>
         <div className="graph">
                <AppsWheel visualizationData={ serviceAppsWheelData }></AppsWheel>
-        </div>        
+        </div>
       </div>
     </div>;
   }
