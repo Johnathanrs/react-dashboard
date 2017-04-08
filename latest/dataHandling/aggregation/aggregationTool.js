@@ -15,7 +15,7 @@ const configuration = {
       name: 'Container Stats',
       aggregatorFactory: require('./aggregatorFactory.containerStats'),
       sourceCollectionName: 'container_stats',
-      targetCollectionName: 'container_stats_aggregated'
+      targetCollectionName: 'aggregated_container_stats'
     },
     {
       name: 'Health Stats',
